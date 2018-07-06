@@ -27,7 +27,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
     OperationDate: any,
     ProjectID: any,
     TicketID: any,
-    TicketNo: any,
+    LeadNo: any,
     TicketStatus: any,
     UserName: any,
     check: any
@@ -49,7 +49,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
       'CompanyID': data.CompanyID,
       'ProjectID': data.ProjectID,
       'TicketID': data.TicketID,
-      'TicketNo': data.TicketNo,
+      'LeadNo': data.LeadNo,
       'TicketStatus': data.TicketStatus,
     };
     this.ticketStatus = data.TicketStatus.toString();
@@ -60,7 +60,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.ticketId = this.ticketData.TicketID;
-    this.ticketNo = this.ticketData.TicketNo;
+    this.ticketNo = this.ticketData.LeadNo;
     // console.log('---Ticket Id----', this.ticketId);
     this.checkMessage(this.ticketId);
 
@@ -96,7 +96,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
           const OperationBy = data[i].OperationBy;
           const OperationDate = moment(data[i].OperationDate);
           const TicketID = data[i].TicketID;
-          const TicketNo = data[i].TicketNo;
+          const LeadNo = data[i].LeadNo;
           const TicketStatus = data[i].TicketStatus;
           const UserName = data[i].UserName;
           let check;
@@ -125,7 +125,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
             OperationDate: OperationDate,
             ProjectID: ProjectID,
             TicketID: TicketID,
-            TicketNo: TicketNo,
+            LeadNo: LeadNo,
             TicketStatus: TicketStatus,
             UserName: UserName,
             check: check
@@ -149,7 +149,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
       CompanyID: this.ticketData.CompanyID,
       ProjectID: this.ticketData.ProjectID,
       TicketID: this.ticketData.TicketID,
-      TicketNo: this.ticketData.TicketNo,
+      LeadNo: this.ticketData.LeadNo,
       TicketStatus: this.ticketData.TicketStatus
     };
 

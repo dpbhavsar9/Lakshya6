@@ -8,6 +8,16 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
 
+@media screen and (max-width: 400px) {
+  .container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 100px;
+  }
+}
 
 #counterCard {
   border-bottom: 3px inset transparent;
@@ -131,12 +141,12 @@ th {
   margin-bottom: 16px;
 }
 
-#ticket {
+#lead {
   border-bottom: 1px solid lightblue;
   cursor: default;
 }
 
-.ticketBody {
+.leadBody {
   align-items: flex-start;
 }
 

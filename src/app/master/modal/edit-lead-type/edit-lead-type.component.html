@@ -1,12 +1,12 @@
 <div class="customDialog">
 
   <!--Contact Form-->
-  <form [formGroup]="updateTicketTypeForm" (ngSubmit)="updateTicketType()" class="custom-form-field">
+  <form [formGroup]="updateLeadTypeForm" (ngSubmit)="updateLeadType()" class="custom-form-field">
 
     <mat-dialog-title>
       <div class="customHeader h4-responsive">
         <i class="fa fa-ticket" aria-hidden="true" style="padding-right: 10px;"></i>
-        <strong>Edit Ticket Type</strong>
+        <strong>Edit Lead Type</strong>
       </div>
     </mat-dialog-title>
 
@@ -16,8 +16,8 @@
           <div class="card">
             <div class="card-body">
               <mat-form-field>
-              <input matInput placeholder="Type" formControlName="TypeName">
-            </mat-form-field>
+                <input matInput placeholder="Type" formControlName="TypeName">
+              </mat-form-field>
             </div>
           </div>
         </div>
@@ -27,12 +27,12 @@
           <div class="card">
             <div class="card-body">
               <mat-form-field>
-              <mat-select placeholder="Company" name="CompanyID" formControlName="CompanyID" (selectionChange)="loadProjects()" ngDefaultControl>
-                <mat-option *ngFor="let company of companyList" [value]="company.Oid">
-                  {{company.CompanyName}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+                <mat-select placeholder="Company" name="CompanyID" formControlName="CompanyID" (selectionChange)="loadProjects()" ngDefaultControl>
+                  <mat-option *ngFor="let company of companyList" [value]="company.Oid">
+                    {{company.CompanyName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
         </div>
@@ -41,12 +41,12 @@
           <div class="card">
             <div class="card-body">
               <mat-form-field>
-              <mat-select placeholder="Project" name="ProjectID" formControlName="ProjectID" ngDefaultControl>
-                <mat-option *ngFor="let item of projectList" [value]="item.Oid">
-                  {{item.ProjectName}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+                <mat-select placeholder="Project" name="ProjectID" formControlName="ProjectID" ngDefaultControl>
+                  <mat-option *ngFor="let item of projectList" [value]="item.Oid">
+                    {{item.ProjectName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
         </div>
@@ -57,12 +57,12 @@
           <div class="card">
             <div class="card-body">
               <mat-form-field>
-              <mat-select placeholder="Status" name="Status" formControlName="Status" ngDefaultControl>
-                <mat-option *ngFor="let status of status" [value]="status.value">
-                  {{status.viewValue}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+                <mat-select placeholder="Status" name="Status" formControlName="Status" ngDefaultControl>
+                  <mat-option *ngFor="let status of status" [value]="status.value">
+                    {{status.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@
 
     <mat-dialog-actions style="float: right;">
       <div class="text-right">
-        <button class="btn indigo waves-light" type="submit" mdbWavesEffect [disabled]="!updateTicketTypeForm.valid">
+        <button class="btn indigo waves-light" type="submit" mdbWavesEffect [disabled]="!updateLeadTypeForm.valid">
           Save
         </button>
       </div>

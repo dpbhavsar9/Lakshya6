@@ -32,7 +32,6 @@ import { SignupComponent } from './signup/signup.component';
 import { CompanyComponent } from './master/company/company.component';
 import { UserComponent } from './master/user/user.component';
 import { ProjectComponent } from './master/project/project.component';
-import { TicketTypeComponent } from './master/ticket-type/ticket-type.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EngineService } from './services/engine.service';
 import { CreateUserComponent } from './master/user/create-user/create-user.component';
@@ -42,15 +41,13 @@ import { CreateProjectComponent } from './master/project/create-project/create-p
 import { CreateCompanyComponent } from './master/company/create-company/create-company.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
-import { CreateTicketComponent } from './transaction/create-ticket/create-ticket.component';
 import { CreateTeamComponent } from './master/team/create-team/create-team.component';
 import { TeamComponent } from './master/team/team.component';
-import { CreateTicketTypeComponent } from './master/ticket-type/create-ticket-type/create-ticket-type.component';
 import { EditUserDialogComponent } from './master/modal/edit-user-dialog/edit-user-dialog.component';
 import { EditProjectComponent } from './master/modal/edit-project/edit-project.component';
 import { EditCompanyComponent } from './master/modal/edit-company/edit-company.component';
 import { EditTeamComponent } from './master/modal/edit-team/edit-team.component';
-import { EditTicketTypeComponent } from './master/modal/edit-ticket-type/edit-ticket-type.component';
+
 
 import { MeslogComponent } from './transaction/meslog/meslog.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
@@ -59,6 +56,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { EditAuthGuard } from './services/edit-auth-guard.service';
 import { MasterAuthGuard } from './services/master-auth-guard.service';
 import { FileDropModule } from 'ngx-file-drop';
+import { LeadTypeComponent } from './master/lead-type/lead-type.component';
+import { CreateLeadComponent } from './transaction/create-lead/create-lead.component';
+import { CreateLeadTypeComponent } from './master/lead-type/create-lead-type/create-lead-type.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +72,7 @@ import { FileDropModule } from 'ngx-file-drop';
     CompanyComponent,
     UserComponent,
     ProjectComponent,
-    TicketTypeComponent,
+    LeadTypeComponent,
     CreateTeamComponent,
     DashboardComponent,
     EditUserDialogComponent,
@@ -82,12 +82,12 @@ import { FileDropModule } from 'ngx-file-drop';
     EditProjectComponent,
     CreateCompanyComponent,
     EditCompanyComponent,
-    CreateTicketComponent,
+    CreateLeadComponent,
     CreateTeamComponent,
     TeamComponent,
-    CreateTicketTypeComponent,
+    CreateLeadTypeComponent,
     EditTeamComponent,
-    EditTicketTypeComponent,
+    EditLeadTypeComponent,
     MeslogComponent,
     TimeAgoPipe,
     AlertComponent,
@@ -120,7 +120,7 @@ import { FileDropModule } from 'ngx-file-drop';
     EditProjectComponent,
     EditCompanyComponent,
     EditTeamComponent,
-    EditTicketTypeComponent,
+    EditLeadTypeComponent,
     AlertComponent,
     MeslogComponent],
   schemas: [NO_ERRORS_SCHEMA],
@@ -146,5 +146,5 @@ import { FileDropModule } from 'ngx-file-drop';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  title = 'R-Support';
+  title = 'Lakshya';
 }

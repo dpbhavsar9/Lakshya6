@@ -8,29 +8,29 @@ import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { UploadEvent, UploadFile, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 
 @Component({
-  selector: 'app-create-ticket',
-  templateUrl: './create-ticket.component.html',
-  styleUrls: ['./create-ticket.component.scss']
+  selector: 'app-create-lead',
+  templateUrl: './create-lead.component.html',
+  styleUrls: ['./create-lead.component.scss']
 })
-export class CreateTicketComponent implements OnInit {
+export class CreateLeadComponent implements OnInit {
 
   url: any;
-  createTicketForm: FormGroup;
+  createLeadForm: FormGroup;
   companyList: any[] = [];
   projectList: any[] = [];
-  allTicketTypeList: any[] = [];
-  ticketTypeList: any[] = [];
+  allLeadTypeList: any[] = [];
+  leadTypeList: any[] = [];
   teamList: any[] = [];
   assignToUserList: any[];
   fileToUpload: File = null;
   // tslint:disable-next-line:max-line-length
   priorityList: any[] = [{ value: 'High', viewValue: 'High' }, { value: 'Medium', viewValue: 'Medium' }, { value: 'Low', viewValue: 'Low' }];
   data = {
-    TicketID: '',
-    TicketNo: '',
-    TicketBacklogID: ''
+    LeadID: '',
+    LeadNo: '',
+    LeadBacklogID: ''
   };
-  ticketSaved = false;
+  leadSaved = false;
   files: UploadFile[] = [];
 
   // tslint:disable-next-line:max-line-length
@@ -46,22 +46,22 @@ export class CreateTicketComponent implements OnInit {
 
     this.loadCompany();
     // this.loadAssignTo();
-    this.loadTicketType();
+    this.loadLeadType();
     // this.loadTeams();
   }
 
   prepareForm() {
-    this.createTicketForm = new FormGroup({
+    this.createLeadForm = new FormGroup({
 
       CompanyID: new FormControl(null, Validators.required),
       ProjectID: new FormControl(null, Validators.required),
-      TicketType: new FormControl(null, Validators.required),
+      LeadType: new FormControl(null, Validators.required),
       Priority: new FormControl(null, Validators.required),
       Subject: new FormControl(null, Validators.required),
-      TicketDescription: new FormControl(null, Validators.required),
+      LeadDescription: new FormControl(null, Validators.required),
       TeamID: new FormControl(null, Validators.required),
       AssignTo: new FormControl(null),
-      CreatedBy: new FormControl(this._cookieService.get('Oid'))
+      NewBy: new FormControl(this._cookieService.get('Oid'))
     });
   }
 
@@ -81,7 +81,7 @@ export class CreateTicketComponent implements OnInit {
   }
 
   loadProjects() {
-    const CompanyID = this.createTicketForm.get('CompanyID').value;
+    const CompanyID = this.createLeadForm.get('CompanyID').value;
     // // console.log(CompanyID);
     // Company Dropdown - start
     this.url = 'Project/GetProject';
@@ -98,7 +98,7 @@ export class CreateTicketComponent implements OnInit {
   }
 
   loadTeams() {
-    const ProjectID = this.createTicketForm.get('ProjectID').value;
+    const ProjectID = this.createLeadForm.get('ProjectID').value;
     this.url = 'Team/GetTeamProject/' + ProjectID;
     this.engineService.getData(this.url).toPromise()
       .then(res => {
@@ -112,7 +112,7 @@ export class CreateTicketComponent implements OnInit {
 
 
   loadTeamMembers() {
-    const TeamID = this.createTicketForm.get('TeamID').value;
+    const TeamID = this.createLeadForm.get('TeamID').value;
     this.url = 'Users/GetTeamMembers/' + TeamID;
     this.engineService.getData(this.url).toPromise()
       .then(res => {
@@ -125,18 +125,18 @@ export class CreateTicketComponent implements OnInit {
       });
   }
 
-  loadTicketType() {
-    // TicketType Dropdown - start
-    this.url = 'Ticket/GetTicketType';
+  loadLeadType() {
+    // LeadType Dropdown - start
+    this.url = 'Lead/GetLeadType';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
         // console.log(res);
-        this.allTicketTypeList = res;
+        this.allLeadTypeList = res;
       })
       .catch(err => {
         this.alertService.danger('Server response error!');
       });
-    // TicketType Dropdown - end
+    // LeadType Dropdown - end
   }
 
   public dropped(event: UploadEvent) {
@@ -179,32 +179,32 @@ export class CreateTicketComponent implements OnInit {
     });
   }
 
-  updateTicketType() {
-    this.ticketTypeList = this.allTicketTypeList.filter(x =>
-      x.CompanyID === this.createTicketForm.get('CompanyID').value && x.ProjectID === this.createTicketForm.get('ProjectID').value);
+  updateLeadType() {
+    this.leadTypeList = this.allLeadTypeList.filter(x =>
+      x.CompanyID === this.createLeadForm.get('CompanyID').value && x.ProjectID === this.createLeadForm.get('ProjectID').value);
   }
 
-  createTicket() {
+  createLead() {
     this.engineService.validateUser();
-    if (this.createTicketForm.status === 'VALID') {
-      // console.log(this.createTicketForm.value);
-      this.url = 'Ticket/PostTicket';
-      this.engineService.postData(this.url, this.createTicketForm.value).then(response => {
+    if (this.createLeadForm.status === 'VALID') {
+      // console.log(this.createLeadForm.value);
+      this.url = 'Lead/PostLead';
+      this.engineService.postData(this.url, this.createLeadForm.value).then(response => {
         console.log('--------Response---------', JSON.stringify(response));
         const res = response.json();
         const res2 = JSON.parse(res);
         console.log('--------Response---------', JSON.stringify(res2));
-        this.data.TicketID = res2.TicketID;
-        this.data.TicketNo = res2.TicketNo;
-        this.data.TicketBacklogID = res2.TicketBacklogID;
+        this.data.LeadID = res2.LeadID;
+        this.data.LeadNo = res2.LeadNo;
+        this.data.LeadBacklogID = res2.LeadBacklogID;
 
         if (response.status === 201 || response.status === 200) {
-          // this.alertService.success('Ticket successfully created!');
-          this.ticketSaved = true;
+          // this.alertService.success('Lead successfully created!');
+          this.leadSaved = true;
         }
       }).catch(error => {
         // console.log(error);
-        this.alertService.danger('Ticket creation failed!');
+        this.alertService.danger('Lead creation failed!');
       });
     }
   }

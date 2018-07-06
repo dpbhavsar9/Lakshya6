@@ -21,12 +21,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   title = 'Welcome';
   logoutflag = false;
   rows: any[] = [];
-  openTicketCounter = 0;
+  openLeadCounter = 0;
   userName: string;
   userRole: string;
   password: string;
   UserCustomer: string;
-  dashboardState = 'mytickets';
+  dashboardState = 'myleads';
   cloneDashboardState = this.dashboardState;
   subscription: Subscription;
   url: string;
@@ -66,13 +66,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // console.log("------- ngONIT -------------"+this.password)
 
-    this.url = 'Ticket/GetMyTickets/' + this._cookieService.get('Oid');
+    this.url = 'Lead/GetMyLeads/' + this._cookieService.get('Oid');
     this.engineService.getData(this.url).toPromise().then(res => {
       this.rows = res;
-      this.openTicketCounter = res.filter(data => {
-        if (data.TicketStatus.toString() === '1' ||
-          data.TicketStatus.toString() === '2' ||
-          data.TicketStatus.toString() === '3') {
+      this.openLeadCounter = res.filter(data => {
+        if (data.LeadStatus.toString() === '1' ||
+          data.LeadStatus.toString() === '2' ||
+          data.LeadStatus.toString() === '3') {
           return true;
         }
       }).length;
@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       height: 'auto',
       minWidth: '30%',
       data: 'Do you want to Logout ?',
-      panelClass: 'ticketDialog',
+      panelClass: 'leadDialog',
       hasBackdrop: true,
       closeOnNavigation: true
     });

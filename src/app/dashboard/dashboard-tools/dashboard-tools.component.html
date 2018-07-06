@@ -1,29 +1,31 @@
 <div class="pt-5 mx-auto">
   <div class="container-fluid" *ngIf="userRole!=='Administrator'">
 
-    <div class="row justify-content-center animated rotateInDownLeft" style="padding-top: 25px">
+    <div class="row justify-content-center animated rotateInDownLeft" style="margin-top: 25px">
       <div class="col" *ngFor="let item of data; let id= index;" style="padding-top: 10px; ">
         <div class="card" style="margin-bottom: 10px;
-           cursor: pointer; " (click)="updateTicketLogTypeSelector(id)" id="counterCard">
+           cursor: pointer; " (click)="updateleadLogTypeSelector(id)" id="counterCard">
           <div class="card-body text-center" style="background-color: rgba(255,255,255,0.4); ">
             <div class="h2-responsive" style="color: rgb(3, 0, 34)">
               <strong>{{item.Count}}</strong>
             </div>
-            <span class="card-text" style="color: #32375f"><strong>{{item.TicketStatus}}</strong></span>
+            <span class="card-text" style="color: #32375f">
+              <strong>{{item.LeadStatus}}</strong>
+            </span>
           </div>
           <div class="" [ngClass]="{
-            'badge-default2':item.TicketStatus==='Open' ,
-            'badge-primary2':item.TicketStatus==='WIP',
-            'badge-warning2':item.TicketStatus==='Hold',
-            'badge-success2':item.TicketStatus==='Close',
-            'badge-grey2':item.TicketStatus==='Cancel'
+            'badge-default2':item.LeadStatus==='New' ,
+            'badge-primary2':item.LeadStatus==='Pipeline',
+            'badge-warning2':item.LeadStatus==='Won',
+            'badge-success2':item.LeadStatus==='Lost',
+            'badge-grey2':item.LeadStatus==='Hold'
             }">
           </div>
         </div>
       </div>
-      <div class="col animated slideInRight" style="padding-top: 10px;" *ngIf="chartVisible">
+      <div class="col animated slideInRight" style="margin-top: 10px;" *ngIf="chartVisible">
         <div class="card hoverable" style="margin-bottom: 10px;
-             cursor: pointer; " (click)="updateTicketLogTypeSelector(id)">
+             cursor: pointer; " (click)="updateleadLogTypeSelector(id)">
           <div class="card-body text-center" style="display: block; ;background-color: rgba(255,255,255,0.4); ">
             <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels" [colors]="chartColors" [options]="chartOptions"
               [legend]="true" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
@@ -34,49 +36,49 @@
     </div>
 
     <div class="row animated rotateInDownLeft" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: center; padding-left: 10px; padding-right: 10px; ">
-      <mat-form-field>
+      <mat-form-field style="margin-right: 5px">
         <input matInput placeholder="Search here" (keyup)='updateFilter()' [(ngModel)]="val">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field style="margin-right: 5px">
         <mat-select placeholder="Searching In" name="SearchHere" (selectionChange)="updateFilter()" [(ngModel)]="searchIn" ngDefaultControl>
 
           <mat-option value="Multiple">Multiple</mat-option>
-          <mat-option value="TicketNo">TicketNo</mat-option>
+          <mat-option value="LeadNo">LeadNo</mat-option>
           <mat-option value="Subject">Subject</mat-option>
-          <mat-option value="TicketDescription">Description</mat-option>
+          <mat-option value="LeadDescription">Description</mat-option>
           <mat-option value="TeamName">Team</mat-option>
           <mat-option value="ProjectName">Project</mat-option>
           <mat-option value="CompanyName">Company</mat-option>
           <mat-option value="Priority">Priority</mat-option>
           <mat-option value="AssignByName">Assign By</mat-option>
           <mat-option value="AssignToName">Assign To</mat-option>
-          <mat-option value="CancelByName">Cancel By</mat-option>
-          <mat-option value="CloseByName">Close By</mat-option>
-          <mat-option value="CreatedByName">Craeted By</mat-option>
           <mat-option value="HoldByName">Hold By</mat-option>
-          <mat-option value="WIPByName">WIP By</mat-option>
+          <mat-option value="LostByName">Lost By</mat-option>
+          <mat-option value="CreatedByName">Created By</mat-option>
+          <mat-option value="WonByName">Won By</mat-option>
+          <mat-option value="PipelineByName">Pipeline By</mat-option>
 
         </mat-select>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field style="margin-right: 5px">
         <mat-select placeholder="Sorting On" name="SortHere" (selectionChange)="updateFilter()" [(ngModel)]="valSort" ngDefaultControl>
 
           <mat-option value="">None</mat-option>
 
-          <mat-option value="TicketNo">TicketNo</mat-option>
+          <mat-option value="LeadNo">LeadNo</mat-option>
 
           <mat-option value="Priority">Priority</mat-option>
 
           <mat-option value="Subject">Subject</mat-option>
 
-          <mat-option value="TicketDescription">Description</mat-option>
+          <mat-option value="LeadDescription">Description</mat-option>
 
           <mat-option value="CreatedDate">Creation Date</mat-option>
 
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field style="margin-right: 5px">
         <mat-select placeholder="Sort Type" name="SortType" (selectionChange)="updateFilter()" [(ngModel)]="ascSort" ngDefaultControl>
 
           <mat-option value=true>Ascending</mat-option>
@@ -85,21 +87,21 @@
 
         </mat-select>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field style="margin-right: 5px">
 
         <mat-select placeholder="Allocation" name="SortType" (selectionChange)="updateFilter()" [(ngModel)]="allocationType" ngDefaultControl>
 
           <mat-option value="Team">Team</mat-option>
 
-          <mat-option value="OnlyMe">My Tickets Only</mat-option>
+          <mat-option value="OnlyMe">My Leads Only</mat-option>
 
           <mat-option value="ExceptMe">Team but Except Me</mat-option>
 
         </mat-select>
       </mat-form-field>
-      <mat-checkbox color="primary" matTooltip="Grid view of tickets" [(ngModel)]="condensedView">Condensed View</mat-checkbox>
-      <i class="fa fa-bar-chart" matTooltip="Click to see Chart" (click)="toggleChart()" style="padding-bottom: 10px"></i>
-      <i class="fa fa-refresh" matTooltip="Clear and refresh" (click)="clearSerchCriteria()" style="padding-bottom: 10px;"></i>
+      <mat-checkbox style="margin-right: 5px" color="primary" matTooltip="Grid view of tickets" [(ngModel)]="condensedView">Condensed View</mat-checkbox>
+      <i class="fa fa-bar-chart" style="margin-right: 5px" matTooltip="Click to see Chart" (click)="toggleChart()" style="padding-bottom: 10px"></i>
+      <i class="fa fa-refresh" style="margin-right: 5px" matTooltip="Clear and refresh" (click)="clearSerchCriteria()" style="padding-bottom: 10px;"></i>
     </div>
 
 
@@ -111,7 +113,7 @@
           <div class="container-fluid" *ngFor="let src of source; let i=
             index;">
 
-            <div class="row" *ngIf="this.ticketLogTypeSelector===src.status">
+            <div class="row" *ngIf="this.leadLogTypeSelector===src.status">
               <div class="col">
 
                 <div>
@@ -129,7 +131,7 @@
                         <div class="row ticketBody" aria-expanded="true">
                           <div class="col-2">
                             <a (click)="demoBasic.show(); updateModal(data);" matTooltip="Ticket No" style="color: #32375f">
-                              <strong>#{{data.TicketNo}}</strong>
+                              <strong>#{{data.LeadNo}}</strong>
                             </a>
                           </div>
                           <div class="col-10" data-target="#basicExample">
@@ -149,47 +151,48 @@
 
                                 <mat-menu class="actionsButton" #menu="matMenu">
 
-                                  <button mat-menu-item [disabled]="!(src.status=== 'Open' && 
-                                          dashboardState==='mytickets')" (click)="processTicket(data.Oid,2)">
+                                  <button mat-menu-item [disabled]="!(src.status=== 'New' && 
+                                          dashboardState==='mytickets')" (click)="processLead(data.Oid,2)">
                                     <span>Take Ticket</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!(((src.status=== 'Hold' || src.status==='Close') && userRole==='Manager') || (src.status==='Hold' &&  userRole==='User' && dashboardState==='mytickets') || ((src.status=== 'Hold' || src.status==='Close') && userRole==='User' && dashboardState==='mytickets' && Oid===data.TeamLeader.toString()))"
-                                    (click)="processTicket(data.Oid,1)">
-                                    <span>Re-open</span>
+                                  <button class="actionsButton" mat-menu-item [disabled]="!(((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='mytickets') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='mytickets' && Oid===data.TeamLeader.toString()))"
+                                    (click)="processLead(data.Oid,1)">
+                                    <span>Re-New</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!((src.status==='Open' || src.status==='WIP') && (userRole==='Manager'
+                                  <button class="actionsButton" mat-menu-item [disabled]="!((src.status==='New' || src.status==='Pipeline') && (userRole==='Manager'
                                           || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString())))"
-                                    (click)="processTicket(data.Oid,3)">
+                                    (click)="processLead(data.Oid,3)">
+                                    <span>Won</span>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item [disabled]="!((userRole==='Manager' || (src.status==='Pipeline' && (dashboardState==='mytickets' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold')"
+                                    (click)="processLead(data.Oid,4)">
+                                    <span>Lost</span>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item [disabled]="!(userRole==='Manager' || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='New' || src.TicketStatus==='Pipeline' || src.TicketStatus==='Won'))"
+                                    (click)="processLead(data.Oid,5)">
                                     <span>Hold</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!((userRole==='Manager' || (src.status==='WIP' && (dashboardState==='mytickets' && userRole==='User'))) && src.status!=='Close' && src.status!=='Cancel')"
-                                    (click)="processTicket(data.Oid,4)">
-                                    <span>Close</span>
-                                  </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!(userRole==='Manager' || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='Open' || src.TicketStatus==='WIP' || src.TicketStatus==='Hold'))"
-                                    (click)="processTicket(data.Oid,5)">
-                                    <span>Cancel</span>
-                                  </button>
                                   <mat-divider></mat-divider>
-                                  <button mat-menu-item style="font-style: oblique" [disabled]="(src.status==='Cancel' || src.status==='Close' || dashboardState==='byme') && Oid !== TeamLeader" [matMenuTriggerFor]="assignMenu">
+                                  <button mat-menu-item style="font-style: oblique" [disabled]="(src.status==='Hold' || src.status==='Lost' || dashboardState==='byme') && Oid !== TeamLeader"
+                                    [matMenuTriggerFor]="assignMenu">
                                     <span style="margin-right: 10px">Assign Ticket</span>
                                   </button>
-                                  <button mat-menu-item style="font-style: oblique" [disabled]="src.status==='Close' || src.status==='Cancel'" [matMenuTriggerFor]="priorityMenu">
+                                  <button mat-menu-item style="font-style: oblique" [disabled]="src.status==='Lost' || src.status==='Hold'" [matMenuTriggerFor]="priorityMenu">
                                     <span style="margin-right: 10px">Change Priority</span>
                                   </button>
-                                  <button mat-menu-item style="font-style: oblique" (click)="openTicketMessage(i,p)">
+                                  <button mat-menu-item style="font-style: oblique" (click)="NewTicketMessage(i,p)">
                                     <span style="margin-right: 10px">Message</span>
                                     <i class="fa fa-comment"></i>
                                   </button>
                                 </mat-menu>
                                 <mat-menu #priorityMenu="matMenu">
-                                    <button mat-menu-item (click)="changePriority(i, p, 'High')">High</button>
-                                    <button mat-menu-item (click)="changePriority(i, p, 'Medium')">Medium</button>
-                                    <button mat-menu-item (click)="changePriority(i, p, 'Low')">Low</button>
-                                  </mat-menu>
-                                  <mat-menu #assignMenu="matMenu" >
-                                    <button mat-menu-item *ngFor="let item of data.TeamMembers; let id= index;" (click)="assignTicket(i, p, item.UserID)">{{item.UserName | titlecase}}</button>
-                                  </mat-menu>
+                                  <button mat-menu-item (click)="changePriority(i, p, 'High')">High</button>
+                                  <button mat-menu-item (click)="changePriority(i, p, 'Medium')">Medium</button>
+                                  <button mat-menu-item (click)="changePriority(i, p, 'Low')">Low</button>
+                                </mat-menu>
+                                <mat-menu #assignMenu="matMenu">
+                                  <button mat-menu-item *ngFor="let item of data.TeamMembers; let id= index;" (click)="assignTicket(i, p, item.UserID)">{{item.UserName | titlecase}}</button>
+                                </mat-menu>
                                 <span *ngIf="data.Priority!==''" class="badge" matTooltip="Priority" [ngClass]="{
                                       'red': data.Priority === 'High',
                                       'blue': data.Priority === 'Medium',
@@ -200,7 +203,7 @@
                             </div>
                             <div class="card-text text-center" style="padding: 10px;  margin-top: 5px; border-bottom: 1px solid rgba(255, 255, 255, 0); margin-right: 10px; display: flex; align-items: center; border-radius: 5px; "
                               (click)="demoBasic.show(); updateModal(data);">
-                              <strong>Description:</strong>&nbsp;{{data.TicketDescription}}
+                              <strong>Description:</strong>&nbsp;{{data.LeadDescription}}
                             </div>
 
                             <div class="card-text" style="padding-left: 10px; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; font-size: medium; justify-items: center;">
@@ -218,7 +221,7 @@
                               <div class="badge-light2 mr-1" matTooltip="Ticket created by" (click)="demoBasic.show(); updateModal(data);">
                                 Created By: {{ data.CreatedByName | titlecase}}
                               </div>
-                              <div class="row badge-light2 mr-1" matTooltip="Last communication" (click)="openTicketMessage(i,p)">
+                              <div class="row badge-light2 mr-1" matTooltip="Last communication" (click)="NewTicketMessage(i,p)">
                                 {{data.Message.OperationByName | titlecase}}: {{data.Message.MessageLog}} -
                                 <time> {{data.Message.OperationDate | timeAgo }} </time>
                               </div>
@@ -229,34 +232,34 @@
                               <div style="display: flex; flex-direction: row; justify-content: flex-end; flex-wrap: wrap; padding-right: 10px;">
 
 
-                                <!-- <button class="btn btn-sm btn-outline-info" *ngIf="src.status=== 'Open' && 
-                                  dashboardState==='mytickets'" (click)="processTicket(data.Oid,2)">
+                                <!-- <button class="btn btn-sm btn-outline-info" *ngIf="src.status=== 'New' && 
+                                  dashboardState==='mytickets'" (click)="processLead(data.Oid,2)">
                                   <strong>Take Ticket
                                   </strong>
                                 </button>
 
-                                <button class="btn btn-sm btn-outline-info" *ngIf="((src.status=== 'Hold' || src.status==='Close') && userRole==='Manager') || (src.status==='Hold' &&  userRole==='User' && dashboardState==='mytickets') || ((src.status=== 'Hold' || src.status==='Close') && userRole==='User' && dashboardState==='mytickets' && Oid===data.TeamLeader.toString())"
-                                  (click)="processTicket(data.Oid,1)">
-                                  <strong>Re-open</strong>
+                                <button class="btn btn-sm btn-outline-info" *ngIf="((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='mytickets') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='mytickets' && Oid===data.TeamLeader.toString())"
+                                  (click)="processLead(data.Oid,1)">
+                                  <strong>Re-New</strong>
                                 </button>
 
                                 <button class="btn btn-sm
-                                  btn-outline-warning" *ngIf="(src.status==='Open' || src.status==='WIP') && (userRole==='Manager'
+                                  btn-outline-warning" *ngIf="(src.status==='New' || src.status==='Pipeline') && (userRole==='Manager'
                                   || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString()))"
-                                  (click)="processTicket(data.Oid,3)">
+                                  (click)="processLead(data.Oid,3)">
+                                  <strong>Won</strong>
+                                </button>
+
+                                <button class="btn btn-sm
+                                  btn-outline-success" *ngIf="(userRole==='Manager' || (src.status==='Pipeline' && (dashboardState==='mytickets' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold'"
+                                  (click)="processLead(data.Oid,4)">
+                                  <strong>Lost</strong>
+                                </button>
+
+                                <button class="btn btn-sm
+                                  btn-outline-danger" *ngIf="userRole==='Manager' || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='New' || src.TicketStatus==='Pipeline' || src.TicketStatus==='Won')"
+                                  (click)="processLead(data.Oid,5)">
                                   <strong>Hold</strong>
-                                </button>
-
-                                <button class="btn btn-sm
-                                  btn-outline-success" *ngIf="(userRole==='Manager' || (src.status==='WIP' && (dashboardState==='mytickets' && userRole==='User'))) && src.status!=='Close' && src.status!=='Cancel'"
-                                  (click)="processTicket(data.Oid,4)">
-                                  <strong>Close</strong>
-                                </button>
-
-                                <button class="btn btn-sm
-                                  btn-outline-danger" *ngIf="userRole==='Manager' || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='Open' || src.TicketStatus==='WIP' || src.TicketStatus==='Hold')"
-                                  (click)="processTicket(data.Oid,5)">
-                                  <strong>Cancel</strong>
                                 </button> -->
 
                               </div>
@@ -280,7 +283,7 @@
                         </ng-template>
 
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Ticket" prop="TicketNo"></ngx-datatable-column>
+                      <ngx-datatable-column name="Lead" prop="LeadNo"></ngx-datatable-column>
                       <ngx-datatable-column name="Subject" prop="Subject" [width]="300">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           <strong style="color: #32375f">{{value }}</strong>
@@ -343,27 +346,27 @@
                           {{value | titlecase}}
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Cancel By" prop="CancelByName">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                          {{value | titlecase}}
-                        </ng-template>
-                      </ngx-datatable-column>
-                      <ngx-datatable-column name="Close By" prop="CloseByName">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                          {{value | titlecase}}
-                        </ng-template>
-                      </ngx-datatable-column>
-                      <ngx-datatable-column name="Created By" prop="CreatedByName">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                          {{value | titlecase}}
-                        </ng-template>
-                      </ngx-datatable-column>
                       <ngx-datatable-column name="Hold By" prop="HoldByName">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           {{value | titlecase}}
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="WIP By" prop="WIPByName">
+                      <ngx-datatable-column name="Lost By" prop="LostByName">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                          {{value | titlecase}}
+                        </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Created By" prop="NewByName">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                          {{value | titlecase}}
+                        </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Won By" prop="WonByName">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                          {{value | titlecase}}
+                        </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Pipeline By" prop="PipelineByName">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           {{value | titlecase}}
                         </ng-template>
@@ -450,12 +453,12 @@
 
                 <div class="row" style="margin-bottom: 25px;">
                   <div class="col">
-                    <div [routerLink]="['ticket-type']" class="dropdown-item
+                    <div [routerLink]="['lead-type']" class="dropdown-item
                           waves-light" routerLinkActive="animated" mdbWavesEffect>
                       <div class="card-body">
                         <a>
                           <i class="fa fa-ticket" aria-hidden="true"></i>
-                          Ticket Type</a>
+                          Lead Type</a>
                       </div>
                     </div>
                   </div>
@@ -465,11 +468,11 @@
 
             <div class="divider dropdown-divider"></div>
 
-            <div class="" [routerLink]="['create-ticket']" class="dropdown-item
+            <div class="" [routerLink]="['create-lead']" class="dropdown-item
                   waves-light" routerLinkActive="animated" mdbWavesEffect>
               <div class="card-body">
                 <a>
-                  <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create Ticket
+                  <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create Lead
                 </a>
               </div>
             </div>
@@ -488,18 +491,18 @@
   <div class="modal-dialog modal-fluid modalsize" role="document">
     <div class="modal-content">
       <div class="modal-header" [ngClass]="{
-        'moddef':modalData.TicketStatus=='1',
-        'modpri':modalData.TicketStatus=='2',
-        'modwar':modalData.TicketStatus=='3',
-        'modsuc':modalData.TicketStatus=='4',
-        'modgre':modalData.TicketStatus=='5'
+        'moddef':modalData.LeadStatus=='1',
+        'modpri':modalData.LeadStatus=='2',
+        'modwar':modalData.LeadStatus=='3',
+        'modsuc':modalData.LeadStatus=='4',
+        'modgre':modalData.LeadStatus=='5'
         }">
-        <h4 style="color: rgb(69, 84, 92); font-weight: bold;" class="modal-title" id="myModalLabel">#{{modalData.TicketNo}}:&nbsp;
+        <h4 style="color: rgb(69, 84, 92); font-weight: bold;" class="modal-title" id="myModalLabel">#{{modalData.LeadNo}}:&nbsp;
           <strong>{{modalData.Subject}}</strong>
           <br>
         </h4>
 
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="demoBasic.hide()">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Lost" (click)="demoBasic.hide()">
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -521,16 +524,16 @@
                 <span [ngClass]="{'space': modalData.AssignByName == ''}">Assign</span>
               </th>
               <th>
-                <span [ngClass]="{'space': modalData.WIPByName == ''}">WIP</span>
+                <span [ngClass]="{'space': modalData.PipelineByName == ''}">Pipeline</span>
+              </th>
+              <th>
+                <span [ngClass]="{'space': modalData.WonByName == ''}">Won</span>
+              </th>
+              <th>
+                <span [ngClass]="{'space': modalData.LostByName == ''}">Lost</span>
               </th>
               <th>
                 <span [ngClass]="{'space': modalData.HoldByName == ''}">Hold</span>
-              </th>
-              <th>
-                <span [ngClass]="{'space': modalData.CloseByName == ''}">Close</span>
-              </th>
-              <th>
-                <span [ngClass]="{'space': modalData.CancelByName == ''}">Cancel</span>
               </th>
             </tr>
           </thead>
@@ -548,28 +551,28 @@
                 <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignDate | date }}</div>
               </td>
               <td>
-                <div *ngIf="modalData.WIPByName == ''">
+                <div *ngIf="modalData.PipelineByName == ''">
                   <span class="space"></span>
                 </div>
-                <div *ngIf="modalData.WIPByName !== ''">{{modalData.WIPDate | date }}</div>
+                <div *ngIf="modalData.PipelineByName !== ''">{{modalData.PipelineDate | date }}</div>
+              </td>
+              <td>
+                <div *ngIf="modalData.WonByName == ''">
+                  <span class="space"></span>
+                </div>
+                <div *ngIf="modalData.WonByName !== ''">{{modalData.WonDate | date }}</div>
+              </td>
+              <td>
+                <div *ngIf="modalData.LostByName == ''">
+                  <span class="space"></span>
+                </div>
+                <div *ngIf="modalData.LostByName !== ''">{{modalData.LostDate | date }}</div>
               </td>
               <td>
                 <div *ngIf="modalData.HoldByName == ''">
                   <span class="space"></span>
                 </div>
                 <div *ngIf="modalData.HoldByName !== ''">{{modalData.HoldDate | date }}</div>
-              </td>
-              <td>
-                <div *ngIf="modalData.CloseByName == ''">
-                  <span class="space"></span>
-                </div>
-                <div *ngIf="modalData.CloseByName !== ''">{{modalData.CloseDate | date }}</div>
-              </td>
-              <td>
-                <div *ngIf="modalData.CancelByName == ''">
-                  <span class="space"></span>
-                </div>
-                <div *ngIf="modalData.CancelByName !== ''">{{modalData.CancelDate | date }}</div>
               </td>
             </tr>
 
@@ -586,28 +589,28 @@
                 <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignDate | date: 'shortTime'}}</div>
               </td>
               <td>
-                <div *ngIf="modalData.WIPByName == ''">
+                <div *ngIf="modalData.PipelineByName == ''">
                   <span class="space"></span>
                 </div>
-                <div *ngIf="modalData.WIPByName !== ''">{{modalData.WIPDate | date: 'shortTime'}}</div>
+                <div *ngIf="modalData.PipelineByName !== ''">{{modalData.PipelineDate | date: 'shortTime'}}</div>
+              </td>
+              <td>
+                <div *ngIf="modalData.WonByName == ''">
+                  <span class="space"></span>
+                </div>
+                <div *ngIf="modalData.WonByName !== ''">{{modalData.WonDate | date: 'shortTime'}}</div>
+              </td>
+              <td>
+                <div *ngIf="modalData.LostByName == ''">
+                  <span class="space"></span>
+                </div>
+                <div *ngIf="modalData.LostByName !== ''">{{modalData.LostDate | date: 'shortTime'}}</div>
               </td>
               <td>
                 <div *ngIf="modalData.HoldByName == ''">
                   <span class="space"></span>
                 </div>
                 <div *ngIf="modalData.HoldByName !== ''">{{modalData.HoldDate | date: 'shortTime'}}</div>
-              </td>
-              <td>
-                <div *ngIf="modalData.CloseByName == ''">
-                  <span class="space"></span>
-                </div>
-                <div *ngIf="modalData.CloseByName !== ''">{{modalData.CloseDate | date: 'shortTime'}}</div>
-              </td>
-              <td>
-                <div *ngIf="modalData.CancelByName == ''">
-                  <span class="space"></span>
-                </div>
-                <div *ngIf="modalData.CancelByName !== ''">{{modalData.CancelDate | date: 'shortTime'}}</div>
               </td>
             </tr>
 
@@ -624,28 +627,28 @@
                 <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignByName | titlecase}}</div>
               </td>
               <td>
-                <div *ngIf="modalData.WIPByName == ''">
+                <div *ngIf="modalData.PipelineByName == ''">
                   <span class="space"></span>
                 </div>
-                <div *ngIf="modalData.WIPByName !== ''">{{modalData.WIPByName | titlecase}}</div>
+                <div *ngIf="modalData.PipelineByName !== ''">{{modalData.PipelineByName | titlecase}}</div>
+              </td>
+              <td>
+                <div *ngIf="modalData.WonByName == ''">
+                  <span class="space"></span>
+                </div>
+                <div *ngIf="modalData.WonByName !== ''">{{modalData.WonByName | titlecase}}</div>
+              </td>
+              <td>
+                <div *ngIf="modalData.LostByName == ''">
+                  <span class="space"></span>
+                </div>
+                <div *ngIf="modalData.LostByName !== ''">{{modalData.LostByName | titlecase}}</div>
               </td>
               <td>
                 <div *ngIf="modalData.HoldByName == ''">
                   <span class="space"></span>
                 </div>
                 <div *ngIf="modalData.HoldByName !== ''">{{modalData.HoldByName | titlecase}}</div>
-              </td>
-              <td>
-                <div *ngIf="modalData.CloseByName == ''">
-                  <span class="space"></span>
-                </div>
-                <div *ngIf="modalData.CloseByName !== ''">{{modalData.CloseByName | titlecase}}</div>
-              </td>
-              <td>
-                <div *ngIf="modalData.CancelByName == ''">
-                  <span class="space"></span>
-                </div>
-                <div *ngIf="modalData.CancelByName !== ''">{{modalData.CancelByName | titlecase}}</div>
               </td>
             </tr>
 

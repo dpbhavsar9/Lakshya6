@@ -6,14 +6,14 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie';
 
 @Component({
-  selector: 'app-create-ticket-type',
-  templateUrl: './create-ticket-type.component.html',
-  styleUrls: ['./create-ticket-type.component.scss']
+  selector: 'app-create-lead-type',
+  templateUrl: './create-lead-type.component.html',
+  styleUrls: ['./create-lead-type.component.scss']
 })
-export class CreateTicketTypeComponent implements OnInit {
+export class CreateLeadTypeComponent implements OnInit {
 
   url: any;
-  createTicketTypeForm: FormGroup;
+  createLeadTypeForm: FormGroup;
   companyList: any[] = [];
   projectList: any[] = [];
   status = [
@@ -32,7 +32,7 @@ export class CreateTicketTypeComponent implements OnInit {
   }
 
   prepareForm() {
-    this.createTicketTypeForm = new FormGroup({
+    this.createLeadTypeForm = new FormGroup({
       TypeName: new FormControl(null, Validators.required),
       CompanyID: new FormControl(null, Validators.required),
       ProjectID: new FormControl(null, Validators.required),
@@ -57,7 +57,7 @@ export class CreateTicketTypeComponent implements OnInit {
   }
 
   loadProjects() {
-    const company = this.createTicketTypeForm.get('CompanyID').value;
+    const company = this.createLeadTypeForm.get('CompanyID').value;
     // console.log(company);
     // Company Dropdown - start
     this.url = 'Project/GetProject';
@@ -74,18 +74,18 @@ export class CreateTicketTypeComponent implements OnInit {
   }
 
 
-  createTicketType() {
+  createLeadType() {
     this.engineService.validateUser();
-    if (this.createTicketTypeForm.status === 'VALID') {
+    if (this.createLeadTypeForm.status === 'VALID') {
 
-      this.url = 'Ticket/PostTicketType';
-      this.engineService.postData(this.url, this.createTicketTypeForm.value).then(response => {
+      this.url = 'Lead/PostLeadType';
+      this.engineService.postData(this.url, this.createLeadTypeForm.value).then(response => {
         if (response.status === 201) {
-          this.alertService.success('Ticket-type successfully created!');
+          this.alertService.success('Lead-type successfully created!');
           this.router.navigate(['dashboard']);
         }
       }).catch(error => {
-        this.alertService.danger('Ticket-type creation failed!');
+        this.alertService.danger('Lead-type creation failed!');
       });
     }
   }

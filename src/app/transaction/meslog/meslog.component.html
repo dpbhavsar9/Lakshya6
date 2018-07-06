@@ -2,8 +2,8 @@
   <header class="top-bar">
     <div class="left">
       <i class="fa fa-envelope" aria-hidden="true"></i>
-      <h1 style="margin: 0px 0px 0px 10px">Ticket
-        <strong>#{{ticketNo}}</strong>
+      <h1 style="margin: 0px 0px 0px 10px">Lead
+        <strong>#{{LeadNo}}</strong>
       </h1>
     </div>
     <div class="right">
@@ -18,7 +18,7 @@
         <input matInput style="display: inline;" formControlName="chatmessage" placeholder='Message' autocomplete="off" autofocus
         />
         <!-- <button type="button" class="btn btn-sm btn-outline-default waves-effect"><i class="fa fa-paperclip pr-2" aria-hidden="true"></i></button> -->
-        
+
         <input class="btn btn-sm btn-outline-primary" style="display: inline" type="file" *ngIf="showAttachment">
         <a class="icons-sm fb-ic" style="padding-top: 5px; color: #009688" (click)="toggleShowAttachment()">
           <i class="fa fa-paperclip fa-2x" style="padding-top: 5px; color: #009688"> </i>

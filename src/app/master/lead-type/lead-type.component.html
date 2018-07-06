@@ -12,11 +12,11 @@
       <div class="col-lg-7 col-md-7 col-sm-6 col-xs-5">
         <div class="row">
           <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-              <div class="custom-form-field">
-                  <mat-form-field>
-                    <input matInput placeholder='Search here' (keyup)='updateFilter()' [(ngModel)]="val" />
-                  </mat-form-field>
-                </div>
+            <div class="custom-form-field">
+              <mat-form-field>
+                <input matInput placeholder='Search here' (keyup)='updateFilter()' [(ngModel)]="val" />
+              </mat-form-field>
+            </div>
           </div>
           <!-- <div class="col">
                   <i class="material-icons" (click)="onClear()">clear</i>
@@ -25,7 +25,7 @@
       </div>
       <div class="col text-right">
 
-        <button *ngIf="userRole!=='User'" class="btn btn-primary" [routerLink]="'./create-ticket-type'" type="button" mdbWavesEffect>
+        <button *ngIf="userRole!=='User'" class="btn btn-primary" [routerLink]="'./create-lead-type'" type="button" mdbWavesEffect>
           <a type="button" class="fa fa-plus"></a>
         </button>
         <div class="btn-group">
@@ -138,18 +138,18 @@
                           text-center pt-3" [ngClass]="{'text-right':row.Status === 'A'}">
             <ul class="list-unstyled list-inline font-small" *ngIf="userRole==='Manager'">
               <li class="list-inline-item pr-2">
-                <a class="white-text" mdbTooltip="Open Tickets" placement="top">
+                <a class="white-text" mdbTooltip="New Leads" placement="top">
                   <i class="fa fa-inbox" aria-hidden="true"></i>
                   {{row.Open}}</a>
               </li>
               <li class="list-inline-item">
-                <a class="white-text" mdbTooltip="WIP Tickets" placement="top">
+                <a class="white-text" mdbTooltip="Pipeline Leads" placement="top">
                   <i class="fa fa-envelope-open" aria-hidden="true"></i>
                   <strong> {{row.WIP}}</strong>
                 </a>
               </li>
               <li class="list-inline-item pr-2">
-                <a class="white-text" mdbTooltip="Closed Tickets" placement="top">
+                <a class="white-text" mdbTooltip="Lost Leads" placement="top">
                   <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                   {{row.Close}}</a>
               </li>

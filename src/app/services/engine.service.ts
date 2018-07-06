@@ -14,7 +14,8 @@ export class EngineService implements OnInit {
   headers: Headers;
   options: RequestOptions;
   // baseUrl = 'http://192.168.0.250:8002/api/';
-  baseUrl = 'http://192.168.0.13:8002/api/';
+  // baseUrl = 'http://192.168.0.13:8002/api/';
+  baseUrl = 'http://192.168.0.13:8004/api/';
   URL: string;
   users: any;
   excel: any;
@@ -173,7 +174,7 @@ export class EngineService implements OnInit {
   }
 
   // getKanbanSource() {
-  //   this.URL = this.baseUrl + 'Ticket/GetTicStatus';
+  //   this.URL = this.baseUrl + 'Lead/GetLeadStatus';
   //   return this.http.get(this.URL, this.options).map(res => res.json());
   // }
 
@@ -214,14 +215,14 @@ export class EngineService implements OnInit {
     header.append('Allow', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
     this.headers.append('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
     // this.headers.append('Content-Type', 'application/json; charset=utf-8');
-   const url = this.baseUrl + 'Upload/UploadFiles';
+    const url = this.baseUrl + 'Upload/UploadFiles';
 
-   const formData: FormData = new FormData();
-   formData.append('TicketID', data.TicketID);
-   formData.append('TicketNo', data.TicketNo);
-   formData.append('TicketBacklogID', data.TicketBacklogID);
+    const formData: FormData = new FormData();
+    formData.append('LeadID', data.LeadID);
+    formData.append('LeadNo', data.LeadNo);
+    formData.append('LeadBacklogID', data.LeadBacklogID);
     formData.append('FileName', filename);
-   formData.append('fileItem', fileItem, filename);
+    formData.append('fileItem', fileItem, filename);
 
     return this.httpC.post(url, formData, { headers: header })
       .toPromise();

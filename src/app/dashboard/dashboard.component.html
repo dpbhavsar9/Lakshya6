@@ -1,50 +1,60 @@
 <header>
   <mdb-navbar SideClass="navbar navbar-expand-lg navbar-expand-md navbar-light
-    white scrolling-navbar fixed-top" [containerInside]="false">
+    white scrolling-navbar fixed-top" id="customNavbar" [containerInside]="false">
 
     <logo>
 
-      <img src="assets/images/rsupport.png" style="max-width: 35px; padding-bottom: 2px; max-height: 35px; vertical-align: middle;"> 
-      <a class="logo navbar-brand" style="text-decoration: underlinetomato; color: red; font-weight: bold">
-        <strong style="border-bottom: 2px solid tomato">R-Support </strong>
+      <img src="assets/images/rsupport.png" style="max-width: 35px;
+        padding-bottom: 2px; max-height: 35px; vertical-align: middle;">
+      <a class="logo navbar-brand" style="text-decoration: underlinetomato;
+        color: red; font-weight: bold">
+        <strong style="border-bottom: 2px solid tomato">Lakshya </strong>
       </a>
 
       <ul class="navbar-nav mr-auto" style="display: inline;">
-        <li *ngIf="userRole!=='Administrator'" matTooltip="Tickets for me to work" class="nav-item btn-group" (click)="updateDashboardState('mytickets')"
-          [routerLink]="['/dashboard']">
-          <a id="navbar-dynamic-download" class="nav-link waves-effect waves-light btn btn-sm" [ngClass]="{
-              'badge-dashboard' : cloneDashboardState==='mytickets'
-              }">
+        <li *ngIf="userRole!=='Administrator'" matTooltip="Tickets for me to
+          work" class="nav-item btn-group" (click)="updateDashboardState('mytickets')" [routerLink]="['/dashboard']">
+          <a id="navbar-dynamic-download" class="nav-link waves-effect
+            waves-light btn btn-sm" [ngClass]="{
+            'badge-dashboard' : cloneDashboardState==='mytickets'
+            }">
             <i class="fa fa-envelope" aria-hidden="true"></i>
             <span class="clearfix d-none d-sm-inline-block">For Me</span>
           </a>
         </li>
 
-        <li *ngIf="userRole!=='Administrator'" matTooltip="Tickets created by me" class="nav-item dropdown btn-group" (click)="updateDashboardState('byme')"
-          [routerLink]="['/dashboard']">
-          <span *ngIf="openTicketCounter!=0" class="badge badge-light openTicketCounter">
-            <!-- data-toggle="modal" data-target="#basicExample" (click)="demoBasic.show()" -->
+        <li *ngIf="userRole!=='Administrator'" matTooltip="Tickets created by
+          me" class="nav-item dropdown btn-group" (click)="updateDashboardState('byme')" [routerLink]="['/dashboard']">
+          <span *ngIf="openTicketCounter!=0" class="badge badge-light
+            openTicketCounter">
+            <!-- data-toggle="modal" data-target="#basicExample"
+              (click)="demoBasic.show()" -->
             <strong>{{openTicketCounter}}</strong>
           </span>
-          <a id="navbar-dynamic-download" class="nav-link waves-effect waves-light btn btn-sm" [ngClass]="{
-              'badge-dashboard' : cloneDashboardState==='byme'
-              }">
+          <a id="navbar-dynamic-download" class="nav-link waves-effect
+            waves-light btn btn-sm" [ngClass]="{
+            'badge-dashboard' : cloneDashboardState==='byme'
+            }">
             <i class="fa fa-send" aria-hidden="true"></i>
             <span class="clearfix d-none d-sm-inline-block">By Me</span>
           </a>
         </li>
 
-        <li *ngIf="userRole==='Administrator'" class="nav-item dropdown btn-group" [routerLink]="['/dashboard']">
-          <a id="navbar-dynamic-download" matTooltip="Dashboard Screen" class="nav-link waves-effect waves-light btn btn-sm badge-dashboard">
+        <li *ngIf="userRole==='Administrator'" class="nav-item dropdown
+          btn-group" [routerLink]="['/dashboard']">
+          <a id="navbar-dynamic-download" matTooltip="Dashboard Screen" class="nav-link waves-effect waves-light btn btn-sm
+            badge-dashboard">
             <i class="fa fa-cog" aria-hidden="true"></i>
             <span class="clearfix d-none d-sm-inline-block">Dashboard</span>
           </a>
         </li>
 
-        <li *ngIf="userRole!=='Administrator'" class="nav-item dropdown btn-group" [routerLink]="['create-ticket']">
-          <a id="navbar-dynamic-download" class="nav-link waves-effect waves-light btn btn-sm">
+        <li *ngIf="userRole!=='Administrator'" class="nav-item dropdown
+          btn-group" [routerLink]="['create-ticket']">
+          <a id="navbar-dynamic-download" class="nav-link waves-effect
+            waves-light btn btn-sm">
             <i class="fa fa-plus" aria-hidden="true"></i>
-            <span class="clearfix d-none d-sm-inline-block">Create Ticket</span>
+            <span class="clearfix d-none d-sm-inline-block">Create Lead</span>
           </a>
         </li>
       </ul>
@@ -58,7 +68,7 @@
 
         <li class="nav-item dropdown btn-group" dropdown>
           <a dropdownToggle mdbWavesEffect type="button" *ngIf="userRole!=='User'" class="nav-link
-            dropdown-toggle waves-light  btn btn-sm" id="masterButton" mdbWavesEffect>
+            dropdown-toggle waves-light btn btn-sm" id="masterButton" mdbWavesEffect>
             Master
             <span class="caret"></span>
           </a>
@@ -83,10 +93,13 @@
       </ul>
 
       <ul class="navbar-nav">
-        <div data-target="#basicExample" (click)="basicModal.show(); resetForm();">
-          <span data-toggle="modal" style="cursor: pointer;margin-left: 15px !important;margin-right: 15px !important; padding-top: 5px; padding-bottom: 5px;" class="badge badge-pill badge-light"
-            id="logoutBadge">
-            <i class="fa fa-user" aria-hidden="true"></i>{{userName | titlecase}}</span>
+        <div data-target="#basicExample" (click)="basicModal.show();
+          resetForm();">
+          <span data-toggle="modal" style="cursor: pointer;margin-left: 15px
+            !important;margin-right: 15px !important; padding-top: 5px;
+            padding-bottom: 5px;" class="badge badge-pill badge-light" id="logoutBadge">
+            <i class="fa fa-user" aria-hidden="true"></i>{{userName | titlecase}}
+          </span>
         </div>
       </ul>
 
@@ -101,8 +114,8 @@
 <!--Main Layout-->
 <main>
 
-  <div mdbModal #basicModal="mdb-modal" class="modal modal-sm fade card-header" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-    aria-hidden="true" [config]="{backdrop: true}">
+  <div mdbModal #basicModal="mdb-modal" class="modal modal-sm fade
+      card-header" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true}">
     <div class="modal-dialog" role="document">
       <div class="modal-content" id="logoutModal">
         <form [formGroup]="passForm" (ngSubmit)="submitPass()">
@@ -122,35 +135,38 @@
           <div class="modal-body mb-0">
 
             <div style="display: block;" *ngIf="changePasswordVisible">
-
               <div>
                 <i class="fa fa-lock"></i>
                 <mat-form-field style="width: 80%;">
-                  <input type="{{typeVar}}" matInput placeholder="Current Password" formControlName="currPass" name="currPass" (focus)="focusChanged()"
-                    class="form-control">
+                  <input type="{{typeVar}}" matInput placeholder="Current
+                          Password" formControlName="currPass" name="currPass" (focus)="focusChanged()" class="form-control">
                 </mat-form-field>
               </div>
               <div>
                 <i class="fa fa-lock prefix"></i>
                 <mat-form-field style="width: 80%;">
-                  <input type="{{typeVar}}" matInput placeholder="Change Password" formControlName="newPass" name="newPass" class="form-control">
+                  <input type="{{typeVar}}" matInput placeholder="Change
+                          Password" formControlName="newPass" name="newPass" class="form-control">
                 </mat-form-field>
               </div>
               <div style="text-align: center; cursor: pointer;" (click)="updateTypeVar()">
                 <i class="fa fa-eye"></i>Show Password
               </div>
               <div class="text-center mt-1-half">
-                <div *ngIf="checkPassword" style="color: red; font-weight: bold; text-align: center">Password Not Matched !</div>
+                <div *ngIf="checkPassword" style="color: red; font-weight:
+                        bold; text-align: center">Password Not Matched !</div>
               </div>
 
             </div>
             <div class="modal-footer">
 
-              <button *ngIf="!changePasswordVisible" class="btn btn-sm btn-outline-danger" style="float: right;" (click)="toggleChangePasswordVisible()">
+              <button *ngIf="!changePasswordVisible" class="btn btn-sm
+                      btn-outline-danger" style="float: right;" (click)="toggleChangePasswordVisible()">
                 Change Password </button>
               <button class="btn btn-sm btn-danger" style="float: right;" (click)="basicModal.hide(); logout()" data-toggle="tooltip" data-html="true">
                 Logout </button>
-              <button type="submit" *ngIf="changePasswordVisible" [disabled]="!passForm.valid" class="btn btn-sm btn-primary mb-2 waves-effect waves-light">Update
+              <button type="submit" *ngIf="changePasswordVisible" [disabled]="!passForm.valid" class="btn btn-sm btn-primary
+                      mb-2 waves-effect waves-light">Update
                 <i class="fa fa-send ml-1"></i>
               </button>
             </div>

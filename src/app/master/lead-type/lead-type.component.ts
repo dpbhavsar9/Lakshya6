@@ -3,16 +3,15 @@ import { EngineService } from '../../services/engine.service';
 import { AlertService } from 'ngx-alerts';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { EditTicketTypeComponent } from '../modal/edit-ticket-type/edit-ticket-type.component';
 import { MatDialog } from '@angular/material';
 import { timer } from 'rxjs/internal/observable/timer';
 
 @Component({
-  selector: 'app-ticket-type',
-  templateUrl: './ticket-type.component.html',
-  styleUrls: ['./ticket-type.component.scss']
+  selector: 'app-lead-type',
+  templateUrl: './lead-type.component.html',
+  styleUrls: ['./lead-type.component.scss']
 })
-export class TicketTypeComponent implements OnInit, OnDestroy {
+export class LeadTypeComponent implements OnInit, OnDestroy {
 
   private timerSubscription: Subscription;
   hoveredRow: any[] = [];
@@ -75,7 +74,7 @@ export class TicketTypeComponent implements OnInit, OnDestroy {
   }
 
   public exportExcel(): void {
-    this.engineService.downloadExcel(this.rows, 'TicketType');
+    this.engineService.downloadExcel(this.rows, 'LeadType');
   }
 
   private subscribeToData(): void {
@@ -103,8 +102,8 @@ export class TicketTypeComponent implements OnInit, OnDestroy {
     this.updatedLength = temp.length;
   }
 
-  private updateTicketType(tickettypes: any) {
-    this.rows = tickettypes;
+  private updateLeadType(leadtypes: any) {
+    this.rows = leadtypes;
     this.temp = [...this.rows];
     this.initialLength = this.temp.length;
     this.updatedLength = this.temp.length;
@@ -117,12 +116,12 @@ export class TicketTypeComponent implements OnInit, OnDestroy {
   }
 
   private refreshData(): void {
-    this.url = 'Ticket/GetTicketType';
+    this.url = 'Lead/GetLeadType';
     this.engineService.getData(this.url)
       .toPromise()
       .then(res => {
-         // console.log(JSON.stringify(res));
-        this.updateTicketType(res);
+        // console.log(JSON.stringify(res));
+        this.updateLeadType(res);
         this.subscribeToData();
         this.updateFilter();
       }).catch(err => {
@@ -143,7 +142,7 @@ export class TicketTypeComponent implements OnInit, OnDestroy {
     // console.log(row);
     const dialogRef = this
       .dialog
-      .open(EditTicketTypeComponent, {
+      .open(EditLeadTypeComponent, {
         minWidth: '60%',
         maxWidth: '95%',
         panelClass: 'editDialog',

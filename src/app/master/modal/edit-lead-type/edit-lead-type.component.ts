@@ -6,14 +6,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CookieService } from 'ngx-cookie';
 
 @Component({
-  selector: 'app-edit-ticket-type',
-  templateUrl: './edit-ticket-type.component.html',
-  styleUrls: ['./edit-ticket-type.component.scss']
+  selector: 'app-edit-lead-type',
+  templateUrl: './edit-lead-type.component.html',
+  styleUrls: ['./edit-lead-type.component.scss']
 })
 export class EditTicketTypeComponent implements OnInit {
 
   url: any;
-  updateTicketTypeForm: FormGroup;
+  updateLeadTypeForm: FormGroup;
   companyList: any[] = [];
   projectList: any[] = [];
   status = [
@@ -34,7 +34,7 @@ export class EditTicketTypeComponent implements OnInit {
   }
 
   prepareForm() {
-    this.updateTicketTypeForm = new FormGroup({
+    this.updateLeadTypeForm = new FormGroup({
       Oid: new FormControl(this.data.Oid),
       TypeName: new FormControl(this.data.TypeName, Validators.required),
       CompanyID: new FormControl(this.data.CompanyID, Validators.required),
@@ -61,7 +61,7 @@ export class EditTicketTypeComponent implements OnInit {
   }
 
   loadProjects() {
-    const company = this.updateTicketTypeForm.get('CompanyID').value;
+    const company = this.updateLeadTypeForm.get('CompanyID').value;
     // console.log(company);
     // Company Dropdown - start
     this.url = 'Project/GetProject';
@@ -78,18 +78,18 @@ export class EditTicketTypeComponent implements OnInit {
   }
 
 
-  updateTicketType() {
+  updateLeadType() {
     this.engineService.validateUser();
-    if (this.updateTicketTypeForm.status === 'VALID') {
+    if (this.updateLeadTypeForm.status === 'VALID') {
 
-      this.url = 'Ticket/PutTicketType';
-      this.engineService.updateData(this.url, this.updateTicketTypeForm.value).then(response => {
+      this.url = 'Lead/PutLeadType';
+      this.engineService.updateData(this.url, this.updateLeadTypeForm.value).then(response => {
         if (response.status === 200 || response.status === 201) {
-          this.alertService.success('Ticket-type successfully updated!');
+          this.alertService.success('Lead-type successfully updated!');
           this.dialogRef.close();
         }
       }).catch(error => {
-        this.alertService.danger('Ticket-type creation failed!');
+        this.alertService.danger('Lead-type creation failed!');
       });
     }
   }
