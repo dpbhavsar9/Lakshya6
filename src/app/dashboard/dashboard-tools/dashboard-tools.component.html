@@ -126,11 +126,11 @@
                     <div id="cardPanel">
                       <div class="row ticketBody" *ngIf="src.data.length==0">No data found</div>
                       <div class="card-body" *ngFor="let data of
-                        src.data; let p= index;" id="ticket">
+                        src.data; let p= index;" id="lead">
 
                         <div class="row ticketBody" aria-expanded="true">
                           <div class="col-2">
-                            <a (click)="demoBasic.show(); updateModal(data);" matTooltip="Ticket No" style="color: #32375f">
+                            <a (click)="demoBasic.show(); updateModal(data);" matTooltip="Lead No" style="color: #32375f">
                               <strong>#{{data.LeadNo}}</strong>
                             </a>
                           </div>
@@ -152,23 +152,23 @@
                                 <mat-menu class="actionsButton" #menu="matMenu">
 
                                   <button mat-menu-item [disabled]="!(src.status=== 'New' && 
-                                          dashboardState==='mytickets')" (click)="processLead(data.Oid,2)">
+                                          dashboardState==='myleads')" (click)="processLead(data.Oid,2)">
                                     <span>Take Ticket</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!(((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='mytickets') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='mytickets' && Oid===data.TeamLeader.toString()))"
+                                  <button class="actionsButton" mat-menu-item [disabled]="!(((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='myleads') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='myleads' && Oid===data.TeamLeader.toString()))"
                                     (click)="processLead(data.Oid,1)">
                                     <span>Re-New</span>
                                   </button>
                                   <button class="actionsButton" mat-menu-item [disabled]="!((src.status==='New' || src.status==='Pipeline') && (userRole==='Manager'
-                                          || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString())))"
+                                          || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString())))"
                                     (click)="processLead(data.Oid,3)">
                                     <span>Won</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!((userRole==='Manager' || (src.status==='Pipeline' && (dashboardState==='mytickets' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold')"
+                                  <button class="actionsButton" mat-menu-item [disabled]="!((userRole==='Manager' || (src.status==='Pipeline' && (dashboardState==='myleads' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold')"
                                     (click)="processLead(data.Oid,4)">
                                     <span>Lost</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!(userRole==='Manager' || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='New' || src.TicketStatus==='Pipeline' || src.TicketStatus==='Won'))"
+                                  <button class="actionsButton" mat-menu-item [disabled]="!(userRole==='Manager' || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='New' || src.TicketStatus==='Pipeline' || src.TicketStatus==='Won'))"
                                     (click)="processLead(data.Oid,5)">
                                     <span>Hold</span>
                                   </button>
@@ -233,31 +233,31 @@
 
 
                                 <!-- <button class="btn btn-sm btn-outline-info" *ngIf="src.status=== 'New' && 
-                                  dashboardState==='mytickets'" (click)="processLead(data.Oid,2)">
+                                  dashboardState==='myleads'" (click)="processLead(data.Oid,2)">
                                   <strong>Take Ticket
                                   </strong>
                                 </button>
 
-                                <button class="btn btn-sm btn-outline-info" *ngIf="((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='mytickets') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='mytickets' && Oid===data.TeamLeader.toString())"
+                                <button class="btn btn-sm btn-outline-info" *ngIf="((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='myleads') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='myleads' && Oid===data.TeamLeader.toString())"
                                   (click)="processLead(data.Oid,1)">
                                   <strong>Re-New</strong>
                                 </button>
 
                                 <button class="btn btn-sm
                                   btn-outline-warning" *ngIf="(src.status==='New' || src.status==='Pipeline') && (userRole==='Manager'
-                                  || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString()))"
+                                  || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString()))"
                                   (click)="processLead(data.Oid,3)">
                                   <strong>Won</strong>
                                 </button>
 
                                 <button class="btn btn-sm
-                                  btn-outline-success" *ngIf="(userRole==='Manager' || (src.status==='Pipeline' && (dashboardState==='mytickets' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold'"
+                                  btn-outline-success" *ngIf="(userRole==='Manager' || (src.status==='Pipeline' && (dashboardState==='myleads' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold'"
                                   (click)="processLead(data.Oid,4)">
                                   <strong>Lost</strong>
                                 </button>
 
                                 <button class="btn btn-sm
-                                  btn-outline-danger" *ngIf="userRole==='Manager' || (dashboardState==='mytickets' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='New' || src.TicketStatus==='Pipeline' || src.TicketStatus==='Won')"
+                                  btn-outline-danger" *ngIf="userRole==='Manager' || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='New' || src.TicketStatus==='Pipeline' || src.TicketStatus==='Won')"
                                   (click)="processLead(data.Oid,5)">
                                   <strong>Hold</strong>
                                 </button> -->

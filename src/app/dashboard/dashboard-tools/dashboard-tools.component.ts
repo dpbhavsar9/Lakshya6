@@ -429,7 +429,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
 
     if (this.dashboardState === 'byme') {
       this.url = 'Lead/GetMyLeads/' + this._cookieService.get('Oid');
-    } else if (this.dashboardState === 'mytickets') {
+    } else if (this.dashboardState === 'myleads') {
       this.url = 'Lead/GetTeamLeads/' + this._cookieService.get('Oid');
     }
     this.engineService.getData(this.url).toPromise()

@@ -13,10 +13,10 @@
 
       <ul class="navbar-nav mr-auto" style="display: inline;">
         <li *ngIf="userRole!=='Administrator'" matTooltip="Tickets for me to
-          work" class="nav-item btn-group" (click)="updateDashboardState('mytickets')" [routerLink]="['/dashboard']">
+          work" class="nav-item btn-group" (click)="updateDashboardState('myleads')" [routerLink]="['/dashboard']">
           <a id="navbar-dynamic-download" class="nav-link waves-effect
             waves-light btn btn-sm" [ngClass]="{
-            'badge-dashboard' : cloneDashboardState==='mytickets'
+            'badge-dashboard' : cloneDashboardState==='myleads'
             }">
             <i class="fa fa-envelope" aria-hidden="true"></i>
             <span class="clearfix d-none d-sm-inline-block">For Me</span>
@@ -50,7 +50,7 @@
         </li>
 
         <li *ngIf="userRole!=='Administrator'" class="nav-item dropdown
-          btn-group" [routerLink]="['create-ticket']">
+          btn-group" [routerLink]="['create-lead']">
           <a id="navbar-dynamic-download" class="nav-link waves-effect
             waves-light btn btn-sm">
             <i class="fa fa-plus" aria-hidden="true"></i>
@@ -84,9 +84,9 @@
             <a [routerLink]="['user']" class="dropdown-item waves-light" mdbWavesEffect href="#" routerLinkActive="animated">
               <i class="fa fa-user-circle" aria-hidden="true"></i> User</a>
             <div class="divider dropdown-divider"></div>
-            <a [routerLink]="['ticket-type']" class="dropdown-item
+            <a [routerLink]="['lead-type']" class="dropdown-item
               waves-light" mdbWavesEffect href="#" routerLinkActive="animated">
-              <i class="fa fa-ticket" aria-hidden="true"></i> Ticket Type</a>
+              <i class="fa fa-ticket" aria-hidden="true"></i> Lead Type</a>
           </div>
         </li>
 

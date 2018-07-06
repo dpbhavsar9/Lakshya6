@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie';
   templateUrl: './edit-lead-type.component.html',
   styleUrls: ['./edit-lead-type.component.scss']
 })
-export class EditTicketTypeComponent implements OnInit {
+export class EditLeadTypeComponent implements OnInit {
 
   url: any;
   updateLeadTypeForm: FormGroup;
@@ -22,7 +22,7 @@ export class EditTicketTypeComponent implements OnInit {
   ];
 
   // tslint:disable-next-line:max-line-length
-  constructor(private alertService: AlertService, private engineService: EngineService, private _cookieService: CookieService, public dialogRef: MatDialogRef<EditTicketTypeComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(private alertService: AlertService, private engineService: EngineService, private _cookieService: CookieService, public dialogRef: MatDialogRef<EditLeadTypeComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
 

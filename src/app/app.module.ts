@@ -57,8 +57,10 @@ import { EditAuthGuard } from './services/edit-auth-guard.service';
 import { MasterAuthGuard } from './services/master-auth-guard.service';
 import { FileDropModule } from 'ngx-file-drop';
 import { LeadTypeComponent } from './master/lead-type/lead-type.component';
-import { CreateLeadComponent } from './transaction/create-lead/create-lead.component';
 import { CreateLeadTypeComponent } from './master/lead-type/create-lead-type/create-lead-type.component';
+import { EditLeadTypeComponent } from './master/modal/edit-lead-type/edit-lead-type.component';
+import { CreateLeadComponent } from './transaction/create-lead/create-lead.component';
+
 
 @NgModule({
   declarations: [
@@ -115,15 +117,18 @@ import { CreateLeadTypeComponent } from './master/lead-type/create-lead-type/cre
     FileDropModule,
     AlertModule.forRoot({ maxMessages: 5, timeout: 3000 })
   ],
-  // tslint:disable-next-line:max-line-length
-  entryComponents: [EditUserDialogComponent,
+
+  entryComponents: [
+    EditUserDialogComponent,
     EditProjectComponent,
     EditCompanyComponent,
     EditTeamComponent,
     EditLeadTypeComponent,
     AlertComponent,
     MeslogComponent],
+
   schemas: [NO_ERRORS_SCHEMA],
+
   providers: [
     AuthGuard,
     EditAuthGuard,
@@ -143,6 +148,7 @@ import { CreateLeadTypeComponent } from './master/lead-type/create-lead-type/cre
     },
     { provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check' }
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {

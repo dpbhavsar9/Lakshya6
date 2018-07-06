@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { MatDialog } from '@angular/material';
 import { timer } from 'rxjs/internal/observable/timer';
+import { EditLeadTypeComponent } from '../modal/edit-lead-type/edit-lead-type.component';
 
 @Component({
   selector: 'app-lead-type',
