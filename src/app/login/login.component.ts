@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   UserName: string;
   Password: string;
   cryptkey: string;
-  _Url = 'http://192.168.0.168:81/api/Users/PostUserVerified';
+  // _Url = 'http://192.168.0.168:81/api/Users/PostUserVerified';
 
   constructor(
     private alertService: AlertService,

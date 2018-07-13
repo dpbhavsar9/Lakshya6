@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EngineService } from '../../services/engine.service';
 
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { CookieService } from 'ngx-cookie';
 import * as moment from 'moment';
 import { timer } from 'rxjs/internal/observable/timer';
+import { AlertComponent } from '../../master/modal/alert/alert.component';
 
 
 @Component({
@@ -26,48 +27,56 @@ export class MeslogComponent implements OnInit, OnDestroy {
     OperationBy: any,
     OperationDate: any,
     ProjectID: any,
-    TicketID: any,
+    LeadID: any,
     LeadNo: any,
-    TicketStatus: any,
+    LeadStatus: any,
     UserName: any,
     check: any
   }> = [];
+  mesLeadData = {
+    LeadID: '',
+    LeadNo: '',
+    LeadBacklogID: ''
+  };
   message_chat: any;
-  ticketId: any;
-  ticketNo: any;
+  leadId: any;
+  leadNo: any;
   subscribe: any;
-  ticketStatus: string;
-  ticketData: any = [];
+  leadStatus: string;
+  leadData: any = [];
   showAttachment = false;
+  fileToUpload: File = null;
+  files: FileList;
 
   // tslint:disable-next-line:max-line-length
   constructor(private engineService: EngineService,
     public dialogRef: MatDialogRef<MeslogComponent>,
+    public dialog: MatDialog,
     private _cookieService: CookieService, @Inject(MAT_DIALOG_DATA) public data: any) {
 
-    this.ticketData = {
+    this.leadData = {
       'CompanyID': data.CompanyID,
       'ProjectID': data.ProjectID,
-      'TicketID': data.TicketID,
+      'LeadID': data.LeadID,
       'LeadNo': data.LeadNo,
-      'TicketStatus': data.TicketStatus,
+      'LeadStatus': data.LeadStatus,
     };
-    this.ticketStatus = data.TicketStatus.toString();
+    this.leadStatus = data.LeadStatus.toString();
     // console.log(this.ticketStatus);
     // console.log('---------', JSON.stringify(this.ticketData));
   }
 
   ngOnInit() {
 
-    this.ticketId = this.ticketData.TicketID;
-    this.ticketNo = this.ticketData.LeadNo;
-    // console.log('---Ticket Id----', this.ticketId);
-    this.checkMessage(this.ticketId);
+    this.leadId = this.leadData.LeadID;
+    this.leadNo = this.leadData.LeadNo;
+    // console.log('---Lead Id----', this.leadId);
+    this.checkMessage(this.leadId);
 
     const timerVar = timer(10000, 10000);
 
     this.subscribe = timerVar.subscribe(t => {
-      this.checkMessage(this.ticketId);
+      this.checkMessage(this.leadId);
     });
 
     this.chatForm = new FormGroup({
@@ -80,7 +89,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
   }
 
   checkMessage(id) {
-    this.url = 'Ticket/GetTicketMessage/' + this.ticketId;
+    this.url = 'Lead/GetLeadMessage/' + this.leadId;
     this.engineService.getData(this.url).toPromise().then(data => {
       console.log('data in checkMessage', data);
       this.message.length = 0;
@@ -95,9 +104,9 @@ export class MeslogComponent implements OnInit, OnDestroy {
           const ProjectID = data[i].ProjectID;
           const OperationBy = data[i].OperationBy;
           const OperationDate = moment(data[i].OperationDate);
-          const TicketID = data[i].TicketID;
+          const LeadID = data[i].LeadID;
           const LeadNo = data[i].LeadNo;
-          const TicketStatus = data[i].TicketStatus;
+          const LeadStatus = data[i].LeadStatus;
           const UserName = data[i].UserName;
           let check;
           if (this._cookieService.get('Oid') === OperationBy.toString()) {
@@ -124,12 +133,16 @@ export class MeslogComponent implements OnInit, OnDestroy {
             OperationBy: OperationBy,
             OperationDate: OperationDate,
             ProjectID: ProjectID,
-            TicketID: TicketID,
+            LeadID: LeadID,
             LeadNo: LeadNo,
-            TicketStatus: TicketStatus,
+            LeadStatus: LeadStatus,
             UserName: UserName,
             check: check
           });
+
+          this.mesLeadData.LeadID = this.leadData.LeadID;
+          this.mesLeadData.LeadNo = this.leadData.LeadNo;
+          this.mesLeadData.LeadBacklogID = Oid;
 
         } else {
           // console.log('exsdsdfjdslf');
@@ -146,19 +159,19 @@ export class MeslogComponent implements OnInit, OnDestroy {
       AttachmentFlag: false,
       MessageLog: this.chatForm.get('chatmessage').value,
       OperationBy: this._cookieService.get('Oid'),
-      CompanyID: this.ticketData.CompanyID,
-      ProjectID: this.ticketData.ProjectID,
-      TicketID: this.ticketData.TicketID,
-      LeadNo: this.ticketData.LeadNo,
-      TicketStatus: this.ticketData.TicketStatus
+      CompanyID: this.leadData.CompanyID,
+      ProjectID: this.leadData.ProjectID,
+      LeadID: this.leadData.LeadID,
+      LeadNo: this.leadData.LeadNo,
+      LeadStatus: this.leadData.LeadStatus
     };
 
     // console.log('----Ticket data---' + JSON.stringify(data));
 
-    this.url = 'Ticket/PostTicketLog';
+    this.url = 'Lead/PostLeadLog';
     this.engineService.postData(this.url, data).then(res => {
       // console.log('--Success--');
-      this.checkMessage(this.ticketId);
+      this.checkMessage(this.leadId);
     }).catch();
 
     this.chatForm.reset();
@@ -167,6 +180,67 @@ export class MeslogComponent implements OnInit, OnDestroy {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  checkFileAttached(index) {
+    return this.message[index].AttachmentFlag;
+  }
+
+  confirmDownload(message: string) {
+
+    const fileName = message.slice(14);
+    const dialogRef = this.dialog.open(AlertComponent, {
+      height: 'auto',
+      minWidth: '30%',
+      data: 'Download this Attachment ?',
+      panelClass: 'leadDialog',
+      hasBackdrop: true,
+      closeOnNavigation: true
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe(result => {
+
+        if (result.toString() === 'Yes') {
+          window.location.href = 'http://192.168.0.13:8004/api/Upload/UploadFiles/' + fileName;
+          // window.location.href = 'http://192.168.0.13:8002/api/Upload/UploadFiles/'+fileName;
+        } else {
+
+        }
+      });
+  }
+
+  handleFileInput(files: FileList) {
+
+    this.files = files;
+  }
+
+
+  async uploadFileToActivity(filename): Promise<any> {
+
+    await this.engineService.uploadFile(this.fileToUpload, this.mesLeadData, filename).then(res => {
+
+      if (JSON.stringify(res) === '"Success"') {
+      } else if (JSON.stringify(res) === '"Fail"') {
+      }
+
+    }).catch(err => {
+    });
+
+  }
+
+  async handlefile() {
+
+    for (let i = 0; i < this.files.length; i++) {
+      const fileItem = this.files.item(i);
+      this.fileToUpload = fileItem;
+      const filename = fileItem.name;
+
+      const res = await this.uploadFileToActivity(filename);
+    }
+    this.toggleShowAttachment();
+    this.chatForm.reset();
   }
 
   ngOnDestroy() {

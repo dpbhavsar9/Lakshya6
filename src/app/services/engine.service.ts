@@ -7,6 +7,7 @@ import * as crypto from 'crypto-js';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { stringify } from 'querystring';
 
 
 @Injectable()
@@ -16,6 +17,7 @@ export class EngineService implements OnInit {
   // baseUrl = 'http://192.168.0.250:8002/api/';
   // baseUrl = 'http://192.168.0.13:8002/api/';
   baseUrl = 'http://192.168.0.13:8004/api/';
+  // baseUrl = 'http://localhost:3979/api/';
   URL: string;
   users: any;
   excel: any;
@@ -223,6 +225,10 @@ export class EngineService implements OnInit {
     formData.append('LeadBacklogID', data.LeadBacklogID);
     formData.append('FileName', filename);
     formData.append('fileItem', fileItem, filename);
+
+    console.log(fileItem);
+    console.log(JSON.stringify(data));
+    console.log(filename);
 
     return this.httpC.post(url, formData, { headers: header })
       .toPromise();

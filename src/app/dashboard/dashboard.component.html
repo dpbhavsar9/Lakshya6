@@ -12,7 +12,7 @@
       </a>
 
       <ul class="navbar-nav mr-auto" style="display: inline;">
-        <li *ngIf="userRole!=='Administrator'" matTooltip="Tickets for me to
+        <li *ngIf="userRole!=='Administrator'" matTooltip="Leads for me to
           work" class="nav-item btn-group" (click)="updateDashboardState('myleads')" [routerLink]="['/dashboard']">
           <a id="navbar-dynamic-download" class="nav-link waves-effect
             waves-light btn btn-sm" [ngClass]="{
@@ -23,13 +23,13 @@
           </a>
         </li>
 
-        <li *ngIf="userRole!=='Administrator'" matTooltip="Tickets created by
+        <li *ngIf="userRole!=='Administrator'" matTooltip="Leads created by
           me" class="nav-item dropdown btn-group" (click)="updateDashboardState('byme')" [routerLink]="['/dashboard']">
           <span *ngIf="openTicketCounter!=0" class="badge badge-light
-            openTicketCounter">
+            openLeadCounter">
             <!-- data-toggle="modal" data-target="#basicExample"
               (click)="demoBasic.show()" -->
-            <strong>{{openTicketCounter}}</strong>
+            <strong>{{openLeadCounter}}</strong>
           </span>
           <a id="navbar-dynamic-download" class="nav-link waves-effect
             waves-light btn btn-sm" [ngClass]="{

@@ -19,6 +19,7 @@ export class CreateLeadComponent implements OnInit {
   companyList: any[] = [];
   projectList: any[] = [];
   allLeadTypeList: any[] = [];
+  allLeadCategoryList: any[] = [];
   leadTypeList: any[] = [];
   teamList: any[] = [];
   assignToUserList: any[];
@@ -30,7 +31,9 @@ export class CreateLeadComponent implements OnInit {
     LeadNo: '',
     LeadBacklogID: ''
   };
+
   leadSaved = false;
+  selectedIndex: number;
   files: UploadFile[] = [];
 
   // tslint:disable-next-line:max-line-length
@@ -45,24 +48,39 @@ export class CreateLeadComponent implements OnInit {
     this.prepareForm();
 
     this.loadCompany();
-    // this.loadAssignTo();
+    this.loadProjects();
     this.loadLeadType();
-    // this.loadTeams();
+    this.loadLeadCategory();
+    this.loadTeams();
+    this.loadTeamMembers();
   }
 
   prepareForm() {
     this.createLeadForm = new FormGroup({
 
-      CompanyID: new FormControl(null, Validators.required),
-      ProjectID: new FormControl(null, Validators.required),
-      LeadType: new FormControl(null, Validators.required),
-      Priority: new FormControl(null, Validators.required),
+      CompanyID: new FormControl(1, Validators.required),
+      ProjectID: new FormControl(1, Validators.required),
+      LeadType: new FormControl(1, Validators.required),
+      Priority: new FormControl('Medium', Validators.required),
       Subject: new FormControl(null, Validators.required),
       LeadDescription: new FormControl(null, Validators.required),
-      TeamID: new FormControl(null, Validators.required),
+      TeamID: new FormControl(1, Validators.required),
       AssignTo: new FormControl(null),
-      NewBy: new FormControl(this._cookieService.get('Oid'))
+      Oid: new FormControl(Number(this._cookieService.get('Oid'))),
+      CompanyName: new FormControl(null, Validators.required),
+      ContactPerson1: new FormControl(null),
+      ContactNumber1: new FormControl(null),
+      ContactPerson2: new FormControl(null),
+      ContactNumber2: new FormControl(null),
+      ContactPerson3: new FormControl(null),
+      ContactNumber3: new FormControl(null),
+      EmailID: new FormControl(null),
+      LeadCategory: new FormControl(2, Validators.required),
     });
+  }
+
+  selectedIndexChange(val: number) {
+    this.selectedIndex = val;
   }
 
   loadCompany() {
@@ -70,7 +88,7 @@ export class CreateLeadComponent implements OnInit {
     this.url = 'Company/GetAllCompany';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        // console.log(res);
+        console.log(res);
         this.companyList = res;
       })
       .catch(err => {
@@ -82,12 +100,12 @@ export class CreateLeadComponent implements OnInit {
 
   loadProjects() {
     const CompanyID = this.createLeadForm.get('CompanyID').value;
-    // // console.log(CompanyID);
+    // console.log(CompanyID);
     // Company Dropdown - start
     this.url = 'Project/GetProject';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        // console.log(res);
+        console.log(res);
         this.projectList = res.filter(data => data.ProjectCompany === CompanyID);
       })
       .catch(err => {
@@ -102,6 +120,7 @@ export class CreateLeadComponent implements OnInit {
     this.url = 'Team/GetTeamProject/' + ProjectID;
     this.engineService.getData(this.url).toPromise()
       .then(res => {
+        // console.log(res);
         this.teamList = res.filter(data => data.ProjectID === ProjectID);
       })
       .catch(err => {
@@ -109,14 +128,12 @@ export class CreateLeadComponent implements OnInit {
       });
   }
 
-
-
   loadTeamMembers() {
     const TeamID = this.createLeadForm.get('TeamID').value;
     this.url = 'Users/GetTeamMembers/' + TeamID;
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        // console.log(res);
+        // console.log(TeamID, '------', res);
         this.assignToUserList = res;
       })
       .catch(err => {
@@ -131,7 +148,22 @@ export class CreateLeadComponent implements OnInit {
     this.engineService.getData(this.url).toPromise()
       .then(res => {
         // console.log(res);
-        this.allLeadTypeList = res;
+        // this.allLeadTypeList = res;
+        this.leadTypeList = res;
+      })
+      .catch(err => {
+        this.alertService.danger('Server response error!');
+      });
+    // LeadType Dropdown - end
+  }
+
+  loadLeadCategory() {
+    // LeadType Dropdown - start
+    this.url = 'Lead/GetLeadCategory';
+    this.engineService.getData(this.url).toPromise()
+      .then(res => {
+        // console.log(res);
+        this.allLeadCategoryList = res;
       })
       .catch(err => {
         this.alertService.danger('Server response error!');
@@ -180,14 +212,17 @@ export class CreateLeadComponent implements OnInit {
   }
 
   updateLeadType() {
+
     this.leadTypeList = this.allLeadTypeList.filter(x =>
       x.CompanyID === this.createLeadForm.get('CompanyID').value && x.ProjectID === this.createLeadForm.get('ProjectID').value);
+    console.log('updateLeadType', this.leadTypeList);
   }
 
   createLead() {
     this.engineService.validateUser();
     if (this.createLeadForm.status === 'VALID') {
-      // console.log(this.createLeadForm.value);
+      console.log(this.createLeadForm.value);
+      console.log(JSON.stringify(this.createLeadForm.value));
       this.url = 'Lead/PostLead';
       this.engineService.postData(this.url, this.createLeadForm.value).then(response => {
         console.log('--------Response---------', JSON.stringify(response));

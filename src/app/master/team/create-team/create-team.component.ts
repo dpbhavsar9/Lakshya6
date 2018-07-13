@@ -22,7 +22,6 @@ export class CreateTeamComponent implements OnInit {
     { value: 'C', viewValue: 'Inactive' }
   ];
   userRoles = [
-    { value: 'Administrator', viewValue: 'Administrator' },
     { value: 'Manager', viewValue: 'Manager' },
     { value: 'User', viewValue: 'User' }
   ];
@@ -73,12 +72,12 @@ export class CreateTeamComponent implements OnInit {
 
   loadProjects() {
     const company = this.createTeamForm.get('CompanyID').value;
-    // console.log(company);
+    console.log(company);
     // Company Dropdown - start
     this.url = 'Project/GetProject/' + company;
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        // console.log(res);
+        console.log(res);
         this.projectList = res.filter(data => data.ProjectCompany === company);
       })
       .catch(err => {
@@ -91,8 +90,8 @@ export class CreateTeamComponent implements OnInit {
   loadUsers() {
     this.url = 'Users/GetAllUser';
     this.engineService.getData(this.url).toPromise().then((res => {
-      // console.log(res);
-      this.userList = res.filter(x => x.IsClient === false);
+      console.log('------------', res);
+      this.userList = res.filter(x => x.IsClient === false && x.UserRole !== 'Admin');
     })).catch(err => {
       this.alertService.danger('Server response error! @loadUsers');
     });

@@ -16,7 +16,8 @@ import {
   MatCheckboxModule,
   MAT_CHECKBOX_CLICK_ACTION,
   MatSlideToggleModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatCardModule
 } from '@angular/material';
 import { MatMenuModule } from '@angular/material/menu';
 import { AppComponent } from './app.component';
@@ -60,7 +61,7 @@ import { LeadTypeComponent } from './master/lead-type/lead-type.component';
 import { CreateLeadTypeComponent } from './master/lead-type/create-lead-type/create-lead-type.component';
 import { EditLeadTypeComponent } from './master/modal/edit-lead-type/edit-lead-type.component';
 import { CreateLeadComponent } from './transaction/create-lead/create-lead.component';
-
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,7 @@ import { CreateLeadComponent } from './transaction/create-lead/create-lead.compo
     EditLeadTypeComponent,
     MeslogComponent,
     TimeAgoPipe,
-    AlertComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -112,6 +113,8 @@ import { CreateLeadComponent } from './transaction/create-lead/create-lead.compo
     MatInputModule,
     MatMenuModule,
     MatSlideToggleModule,
+    MatTabsModule,
+    MatCardModule,
     MatTooltipModule,
     NgxSpinnerModule,
     FileDropModule,

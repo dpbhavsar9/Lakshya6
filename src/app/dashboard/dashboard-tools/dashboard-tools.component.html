@@ -6,7 +6,7 @@
         <div class="card" style="margin-bottom: 10px;
            cursor: pointer; " (click)="updateleadLogTypeSelector(id)" id="counterCard">
           <div class="card-body text-center" style="background-color: rgba(255,255,255,0.4); ">
-            <div class="h2-responsive" style="color: rgb(3, 0, 34)">
+            <div class="h2-responsive" style="color: rgb(3, 0, 34); font-size: 1.5rem;">
               <strong>{{item.Count}}</strong>
             </div>
             <span class="card-text" style="color: #32375f">
@@ -15,7 +15,7 @@
           </div>
           <div class="" [ngClass]="{
             'badge-default2':item.LeadStatus==='New' ,
-            'badge-primary2':item.LeadStatus==='Pipeline',
+            'badge-primary2':item.LeadStatus==='InProcess',
             'badge-warning2':item.LeadStatus==='Won',
             'badge-success2':item.LeadStatus==='Lost',
             'badge-grey2':item.LeadStatus==='Hold'
@@ -43,20 +43,25 @@
         <mat-select placeholder="Searching In" name="SearchHere" (selectionChange)="updateFilter()" [(ngModel)]="searchIn" ngDefaultControl>
 
           <mat-option value="Multiple">Multiple</mat-option>
-          <mat-option value="LeadNo">LeadNo</mat-option>
-          <mat-option value="Subject">Subject</mat-option>
-          <mat-option value="LeadDescription">Description</mat-option>
-          <mat-option value="TeamName">Team</mat-option>
-          <mat-option value="ProjectName">Project</mat-option>
-          <mat-option value="CompanyName">Company</mat-option>
           <mat-option value="Priority">Priority</mat-option>
+          <mat-option value="Category">Category</mat-option>
+          <mat-option value="Client">Client</mat-option>
+          <mat-option value="Project">Project</mat-option>
+          <mat-option value="Subject">Subject</mat-option>
+          <mat-option value="LeadNo">LeadNo</mat-option>
+          <mat-option value="Description">Description</mat-option>
+          <mat-option value="Team">Team</mat-option>
+          <mat-option value="Company">Company</mat-option>
+          <mat-option value="ContactPerson">Contact Person</mat-option>
+          <mat-option value="ContactNumber">Contact Number</mat-option>
+          <mat-option value="EmailID">EmailID</mat-option>
           <mat-option value="AssignByName">Assign By</mat-option>
           <mat-option value="AssignToName">Assign To</mat-option>
-          <mat-option value="HoldByName">Hold By</mat-option>
-          <mat-option value="LostByName">Lost By</mat-option>
+          <mat-option value="InProcessByName">InProcess By</mat-option>
           <mat-option value="CreatedByName">Created By</mat-option>
+          <mat-option value="HoldByName">Hold By</mat-option>
           <mat-option value="WonByName">Won By</mat-option>
-          <mat-option value="PipelineByName">Pipeline By</mat-option>
+          <mat-option value="LostByName">Lost By</mat-option>
 
         </mat-select>
       </mat-form-field>
@@ -99,7 +104,7 @@
 
         </mat-select>
       </mat-form-field>
-      <mat-checkbox style="margin-right: 5px" color="primary" matTooltip="Grid view of tickets" [(ngModel)]="condensedView">Condensed View</mat-checkbox>
+      <mat-checkbox style="margin-right: 5px" color="primary" matTooltip="Grid view of Leads" [(ngModel)]="condensedView">Condensed View</mat-checkbox>
       <i class="fa fa-bar-chart" style="margin-right: 5px" matTooltip="Click to see Chart" (click)="toggleChart()" style="padding-bottom: 10px"></i>
       <i class="fa fa-refresh" style="margin-right: 5px" matTooltip="Clear and refresh" (click)="clearSerchCriteria()" style="padding-bottom: 10px;"></i>
     </div>
@@ -115,31 +120,194 @@
 
             <div class="row" *ngIf="this.leadLogTypeSelector===src.status">
               <div class="col">
-
                 <div>
-
                   <div class="card-header" style="border-radius: 5px; background-color: white; text-align: center; font-weight: bold; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);">
                     <strong>{{src.status}}</strong>
                   </div>
 
-                  <div class="card" *ngIf="!condensedView">
-                    <div id="cardPanel">
-                      <div class="row ticketBody" *ngIf="src.data.length==0">No data found</div>
-                      <div class="card-body" *ngFor="let data of
-                        src.data; let p= index;" id="lead">
-
-                        <div class="row ticketBody" aria-expanded="true">
-                          <div class="col-2">
-                            <a (click)="demoBasic.show(); updateModal(data);" matTooltip="Lead No" style="color: #32375f">
-                              <strong>#{{data.LeadNo}}</strong>
-                            </a>
+                  <div class="" *ngIf="!condensedView">
+                    <div id="cardPanel" style="display: flex; flex-direction: row; flex-wrap: wrap; margin: 10px; justify-content: center; align-items: center; align-content: flex-start">
+                      <div class="row leadBody" *ngIf="src.data.length==0">No data found</div>
+                      <!-- Start -->
+                      <div class="card" *ngFor="let data of
+                      src.data; let p= index;" style="margin: 5px" [ngClass]="{
+                        'highPriority': data.Priority === 'High',
+                        'mediumPriority': data.Priority === 'Medium',
+                        'lowPriority': data.Priority === 'Low'
+                      }" style="width: 100%; margin-top: 15px">
+                        <div class="card-body">
+                          <div style="font-weight: bold; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between">
+                            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start">
+                              <div [ngClass]="{
+                                  'highPriorityBackground': data.Priority === 'High',
+                                  'mediumPriorityBackground': data.Priority === 'Medium',
+                                  'lowPriorityBackground': data.Priority === 'Low'
+                                }">
+                                {{data.LeadNo}}
+                              </div>
+                              <div [ngClass]="{
+                                'highPriorityBorder': data.Priority === 'High',
+                                'mediumPriorityBorder': data.Priority === 'Medium',
+                                'lowPriorityBorder': data.Priority === 'Low'
+                              }">{{data.Subject}}</div>
+                            </div>
+                            <div class="text-right" matTooltip="Silver" style="float: right;" *ngIf="data.LeadCategory===1">
+                              <i class="fa fa-diamond mr-1 pulse" *ngIf="data.LeadCategory===1"></i>
+                            </div>
+                            <div class="text-right" matTooltip="Gold" style="float: right;" *ngIf="data.LeadCategory===2">
+                              <i class="fa fa-diamond mr-1 pulse"></i>
+                              <i class="fa fa-diamond mr-1 pulse"></i>
+                            </div>
+                            <div class="text-right" matTooltip="Platinum" style="float: right;" *ngIf="data.LeadCategory===3">
+                              <i class="fa fa-diamond mr-1 pulse"></i>
+                              <i class="fa fa-diamond mr-1 pulse"></i>
+                              <i class="fa fa-diamond mr-1 pulse"></i>
+                            </div>
                           </div>
-                          <div class="col-10" data-target="#basicExample">
+
+                          <div class="card-text" style="display: inline;text-align: justify; text-justify: inter-word;  border-radius: 5px ">{{data.LeadDescription}}</div>
+                          <div class="card-text" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; margin-top: 5px;">
+                            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start">
+                              <div matTooltip="Lead assigned to team" (click)="demoBasic.show(); updateModal(data);" [ngClass]="{
+                                  'highPriorityBorder': data.Priority === 'High',
+                                  'mediumPriorityBorder': data.Priority === 'Medium',
+                                  'lowPriorityBorder': data.Priority === 'Low'
+                                }">
+                                Team:
+                                <strong>{{data.TeamName | titlecase}}</strong>
+                              </div>
+                              <div matTooltip="Lead assigned to person" (click)="demoBasic.show(); updateModal(data);" [ngClass]="{
+                                  'highPriorityBorder': data.Priority === 'High',
+                                  'mediumPriorityBorder': data.Priority === 'Medium',
+                                  'lowPriorityBorder': data.Priority === 'Low'
+                                }">
+                                Assign To:
+                                <strong>{{ data.AssignToName | titlecase}}</strong>
+                              </div>
+                              <div matTooltip="Lead created by" (click)="demoBasic.show(); updateModal(data);" [ngClass]="{
+                                  'highPriorityBorder': data.Priority === 'High',
+                                  'mediumPriorityBorder': data.Priority === 'Medium',
+                                  'lowPriorityBorder': data.Priority === 'Low'
+                                }">
+                                Created By:
+                                <strong>{{ data.NewByName | titlecase}}</strong>
+                              </div>
+                              <div *ngIf="data.Message !== null" matTooltip="Last communication" (click)="openLeadMessage(i,p)" [ngClass]="{
+                                  'highPriorityBorder': data.Priority === 'High',
+                                  'mediumPriorityBorder': data.Priority === 'Medium',
+                                  'lowPriorityBorder': data.Priority === 'Low'
+                                }">
+                                {{data.Message.OperationByName | titlecase}}: {{data.Message.MessageLog}} -
+                                <time> {{data.Message.OperationDate | timeAgo }} </time>
+                              </div>
+                              <div matTooltip="Time after creation of Lead" (click)="demoBasic.show(); updateModal(data);" [ngClass]="{
+                                  'highPriorityBorder': data.Priority === 'High',
+                                  'mediumPriorityBorder': data.Priority === 'Medium',
+                                  'lowPriorityBorder': data.Priority === 'Low'
+                                }">
+                                <time>
+                                  <strong>{{ data.NewDate | timeAgo}}</strong>
+                                </time>
+                              </div>
+                            </div>
+                            <div>
+                              <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-end">
+                                <div (click)="openLeadMessage(i,p)" style="background: linear-gradient(40deg,#45cafc,#303f9f)!important; border-radius: 50%; box-shadow: 0px 7px 15px #4f557e; margin-right: 5px">
+                                  <i style="align-self: center; color: white; padding: 10px;" class="fa fa-comment"></i>
+                                </div>
+                                <div style="background: linear-gradient(40deg,#ff6ec4,#7873f5)!important;border-radius: 50%; box-shadow: 0px 7px 15px #4f557e; "
+                                  mat-icon-button [matMenuTriggerFor]="menu">
+                                  <i style="align-self: center; color: white; padding: 10px 15px;" class="fa fa-ellipsis-v"></i>
+                                </div>
+
+                                <mat-menu class="actionsButton" #menu="matMenu">
+
+                                  <button class="actionsButton" mat-menu-item [hidden]="!(src.status=== 'New' && 
+                                          dashboardState==='myleads')" (click)="processLead(data.Oid,2)">
+                                    <span>Take Lead</span>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item [hidden]="!(((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='myleads') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='myleads' && Oid===data.TeamLeader.toString()))"
+                                    (click)="processLead(data.Oid,1)">
+                                    <span>Re-New</span>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item [hidden]="!((src.status==='New' || src.status==='InProcess') && (userRole==='Manager'
+                                          || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString())))"
+                                    (click)="processLead(data.Oid,3)">
+                                    <span>Won</span>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item [hidden]="!((userRole==='Manager' || (src.status==='InProcess' && (dashboardState==='myleads' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold')"
+                                    (click)="processLead(data.Oid,4)">
+                                    <span>Lost</span>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item [hidden]="!(userRole==='Manager' || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.LeadStatus==='New' || src.LeadStatus==='InProcess' || src.LeadStatus==='Won'))"
+                                    (click)="processLead(data.Oid,5)">
+                                    <span>Hold</span>
+                                  </button>
+                                  <mat-divider></mat-divider>
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" [hidden]="(src.status==='Hold' || src.status==='Lost' || dashboardState==='byme') && Oid !== TeamLeader"
+                                    [matMenuTriggerFor]="assignMenu">
+                                    <span style="margin-right: 10px">Assign Lead</span>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" [hidden]="src.status==='Lost' || src.status==='Hold'"
+                                    [matMenuTriggerFor]="priorityMenu">
+                                    <span style="margin-right: 10px">Change Priority</span>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" [hidden]="src.status==='Lost' || src.status==='Hold'"
+                                    [matMenuTriggerFor]="categoryMenu">
+                                    <span style="margin-right: 10px">Change Category</span>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" (click)="NewLeadMessage(i,p)">
+                                    <span style="margin-right: 10px">Message</span>
+                                    <i class="fa fa-comment"></i>
+                                  </button>
+                                </mat-menu>
+                                <mat-menu #priorityMenu="matMenu">
+                                  <button class="actionsButton" mat-menu-item (click)="changePriority(i, p, 'High')">High</button>
+                                  <button class="actionsButton" mat-menu-item (click)="changePriority(i, p, 'Medium')">Medium</button>
+                                  <button class="actionsButton" mat-menu-item (click)="changePriority(i, p, 'Low')">Low</button>
+                                </mat-menu>
+                                <mat-menu #assignMenu="matMenu">
+                                  <button class="actionsButton" mat-menu-item *ngFor="let item of data.TeamMembers; let id= index;" (click)="assignLead(i, p, item.UserID)">{{item.UserName | titlecase}}</button>
+                                </mat-menu>
+                                <mat-menu #categoryMenu="matMenu">
+                                  <button class="actionsButton" mat-menu-item (click)="changeCategory(i, p, 1)">
+                                    <i class="fa fa-diamond mr-1"></i>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item (click)="changeCategory(i, p, 2)">
+                                    <i class="fa fa-diamond mr-1"></i>
+                                    <i class="fa fa-diamond mr-1"></i>
+                                  </button>
+                                  <button class="actionsButton" mat-menu-item (click)="changeCategory(i, p, 3)">
+                                    <i class="fa fa-diamond mr-1"></i>
+                                    <i class="fa fa-diamond mr-1"></i>
+                                    <i class="fa fa-diamond mr-1"></i>
+                                  </button>
+                                </mat-menu>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card-text" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; margin-top: 5px;">
+                            {{data.ClientName}} ♦ {{data.EmailID}}
+                          </div>
+
+                        </div>
+                      </div>
+                      <!-- Stop -->
+                      <div class="" *ngFor="let data of
+                        src.data; let p= index;" id="lead" style="display: none;">
+
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" aria-expanded="true">
+                          <div class="" data-target="#basicExample">
 
                             <div style="padding-left: 10px ;display: flex;flex-direction: row; justify-content: space-between; 
-                                   align-items: center; color: #32375f">
-
-                              <strong (click)="demoBasic.show(); updateModal(data);">{{data.Subject}}</strong>
+                                   align-items: center; color: #32375f; ">
+                              <div class="text-left" style="border-radius: 2px;">
+                                <a (click)="demoBasic.show(); updateModal(data);" matTooltip="Lead No" style="background-color: #32375f; color: white;padding: 2px;">
+                                  <strong>#{{data.LeadNo}}</strong>
+                                </a>
+                                <strong (click)="demoBasic.show(); updateModal(data);" style="color: #32375f; background-color: white; padding: 2px;">{{data.Subject}}</strong>
+                              </div>
                               <div style="display: flex; flex-direction: row; flex-wrap: row">
 
                                 <div class="text-center card-text z-depth-1" style="border-radius: 5px; padding-left: 5px; padding-right: 5px; margin-right: 5px; cursor: pointer;"
@@ -151,47 +319,48 @@
 
                                 <mat-menu class="actionsButton" #menu="matMenu">
 
-                                  <button mat-menu-item [disabled]="!(src.status=== 'New' && 
+                                  <button class="actionsButton" mat-menu-item [hidden]="!(src.status=== 'New' && 
                                           dashboardState==='myleads')" (click)="processLead(data.Oid,2)">
-                                    <span>Take Ticket</span>
+                                    <span>Take Lead</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!(((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='myleads') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='myleads' && Oid===data.TeamLeader.toString()))"
+                                  <button class="actionsButton" mat-menu-item [hidden]="!(((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='myleads') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='myleads' && Oid===data.TeamLeader.toString()))"
                                     (click)="processLead(data.Oid,1)">
                                     <span>Re-New</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!((src.status==='New' || src.status==='Pipeline') && (userRole==='Manager'
+                                  <button class="actionsButton" mat-menu-item [hidden]="!((src.status==='New' || src.status==='InProcess') && (userRole==='Manager'
                                           || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString())))"
                                     (click)="processLead(data.Oid,3)">
                                     <span>Won</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!((userRole==='Manager' || (src.status==='Pipeline' && (dashboardState==='myleads' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold')"
+                                  <button class="actionsButton" mat-menu-item [hidden]="!((userRole==='Manager' || (src.status==='InProcess' && (dashboardState==='myleads' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold')"
                                     (click)="processLead(data.Oid,4)">
                                     <span>Lost</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [disabled]="!(userRole==='Manager' || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='New' || src.TicketStatus==='Pipeline' || src.TicketStatus==='Won'))"
+                                  <button class="actionsButton" mat-menu-item [hidden]="!(userRole==='Manager' || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.LeadStatus==='New' || src.LeadStatus==='InProcess' || src.LeadStatus==='Won'))"
                                     (click)="processLead(data.Oid,5)">
                                     <span>Hold</span>
                                   </button>
                                   <mat-divider></mat-divider>
-                                  <button mat-menu-item style="font-style: oblique" [disabled]="(src.status==='Hold' || src.status==='Lost' || dashboardState==='byme') && Oid !== TeamLeader"
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" [hidden]="(src.status==='Hold' || src.status==='Lost' || dashboardState==='byme') && Oid !== TeamLeader"
                                     [matMenuTriggerFor]="assignMenu">
-                                    <span style="margin-right: 10px">Assign Ticket</span>
+                                    <span style="margin-right: 10px">Assign Lead</span>
                                   </button>
-                                  <button mat-menu-item style="font-style: oblique" [disabled]="src.status==='Lost' || src.status==='Hold'" [matMenuTriggerFor]="priorityMenu">
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" [hidden]="src.status==='Lost' || src.status==='Hold'"
+                                    [matMenuTriggerFor]="priorityMenu">
                                     <span style="margin-right: 10px">Change Priority</span>
                                   </button>
-                                  <button mat-menu-item style="font-style: oblique" (click)="NewTicketMessage(i,p)">
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" (click)="NewLeadMessage(i,p)">
                                     <span style="margin-right: 10px">Message</span>
                                     <i class="fa fa-comment"></i>
                                   </button>
                                 </mat-menu>
                                 <mat-menu #priorityMenu="matMenu">
-                                  <button mat-menu-item (click)="changePriority(i, p, 'High')">High</button>
-                                  <button mat-menu-item (click)="changePriority(i, p, 'Medium')">Medium</button>
-                                  <button mat-menu-item (click)="changePriority(i, p, 'Low')">Low</button>
+                                  <button class="actionsButton" mat-menu-item (click)="changePriority(i, p, 'High')">High</button>
+                                  <button class="actionsButton" mat-menu-item (click)="changePriority(i, p, 'Medium')">Medium</button>
+                                  <button class="actionsButton" mat-menu-item (click)="changePriority(i, p, 'Low')">Low</button>
                                 </mat-menu>
                                 <mat-menu #assignMenu="matMenu">
-                                  <button mat-menu-item *ngFor="let item of data.TeamMembers; let id= index;" (click)="assignTicket(i, p, item.UserID)">{{item.UserName | titlecase}}</button>
+                                  <button class="actionsButton" mat-menu-item *ngFor="let item of data.TeamMembers; let id= index;" (click)="assignLead(i, p, item.UserID)">{{item.UserName | titlecase}}</button>
                                 </mat-menu>
                                 <span *ngIf="data.Priority!==''" class="badge" matTooltip="Priority" [ngClass]="{
                                       'red': data.Priority === 'High',
@@ -207,61 +376,44 @@
                             </div>
 
                             <div class="card-text" style="padding-left: 10px; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; font-size: medium; justify-items: center;">
-                              <div class="badge-light2 mr-1" matTooltip="Time after creation of ticket" (click)="demoBasic.show(); updateModal(data);">
+                              <div class="badge-light2 mr-1" matTooltip="Time after creation of Lead" (click)="demoBasic.show(); updateModal(data);">
                                 <time>
-                                  <strong>{{ data.CreatedDate | timeAgo}}</strong>
+                                  <strong>{{ data.NewDate | timeAgo}}</strong>
                                 </time>
                               </div>
-                              <div class="badge-light2 mr-1" matTooltip="Ticket assigned to team" (click)="demoBasic.show(); updateModal(data);">
-                                Team: {{data.TeamName | titlecase}}
+                              <div class="badge-light2 mr-1" matTooltip="Lead assigned to team" (click)="demoBasic.show(); updateModal(data);">
+                                Team:
+                                <strong> {{data.TeamName | titlecase}} </strong>
                               </div>
-                              <div class="badge-light2 mr-1" matTooltip="Ticket assigned to person" (click)="demoBasic.show(); updateModal(data);">
-                                Assign To: {{ data.AssignToName | titlecase}}
+                              <div class="badge-light2 mr-1" matTooltip="Lead assigned to person" (click)="demoBasic.show(); updateModal(data);">
+                                Assign To:
+                                <strong> {{ data.AssignToName | titlecase}} </strong>
                               </div>
-                              <div class="badge-light2 mr-1" matTooltip="Ticket created by" (click)="demoBasic.show(); updateModal(data);">
-                                Created By: {{ data.CreatedByName | titlecase}}
+                              <div class="badge-light2 mr-1" matTooltip="Lead created by" (click)="demoBasic.show(); updateModal(data);">
+                                Created By:
+                                <strong> {{ data.NewByName | titlecase}} </strong>
                               </div>
-                              <div class="row badge-light2 mr-1" matTooltip="Last communication" (click)="NewTicketMessage(i,p)">
+                              <div class="badge-light2 mr-1" style="padding-left: 10px" *ngIf="data.Message !== null" matTooltip="Last communication" (click)="openLeadMessage(i,p)">
                                 {{data.Message.OperationByName | titlecase}}: {{data.Message.MessageLog}} -
                                 <time> {{data.Message.OperationDate | timeAgo }} </time>
                               </div>
-
                             </div>
-                            <div class="row" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between">
 
-                              <div style="display: flex; flex-direction: row; justify-content: flex-end; flex-wrap: wrap; padding-right: 10px;">
-
-
-                                <!-- <button class="btn btn-sm btn-outline-info" *ngIf="src.status=== 'New' && 
-                                  dashboardState==='myleads'" (click)="processLead(data.Oid,2)">
-                                  <strong>Take Ticket
-                                  </strong>
-                                </button>
-
-                                <button class="btn btn-sm btn-outline-info" *ngIf="((src.status=== 'Won' || src.status==='Lost') && userRole==='Manager') || (src.status==='Won' &&  userRole==='User' && dashboardState==='myleads') || ((src.status=== 'Won' || src.status==='Lost') && userRole==='User' && dashboardState==='myleads' && Oid===data.TeamLeader.toString())"
-                                  (click)="processLead(data.Oid,1)">
-                                  <strong>Re-New</strong>
-                                </button>
-
-                                <button class="btn btn-sm
-                                  btn-outline-warning" *ngIf="(src.status==='New' || src.status==='Pipeline') && (userRole==='Manager'
-                                  || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString()))"
-                                  (click)="processLead(data.Oid,3)">
-                                  <strong>Won</strong>
-                                </button>
-
-                                <button class="btn btn-sm
-                                  btn-outline-success" *ngIf="(userRole==='Manager' || (src.status==='Pipeline' && (dashboardState==='myleads' && userRole==='User'))) && src.status!=='Lost' && src.status!=='Hold'"
-                                  (click)="processLead(data.Oid,4)">
-                                  <strong>Lost</strong>
-                                </button>
-
-                                <button class="btn btn-sm
-                                  btn-outline-danger" *ngIf="userRole==='Manager' || (dashboardState==='myleads' && userRole==='User' && Oid===data.TeamLeader.toString()) && (src.TicketStatus==='New' || src.TicketStatus==='Pipeline' || src.TicketStatus==='Won')"
-                                  (click)="processLead(data.Oid,5)">
-                                  <strong>Hold</strong>
-                                </button> -->
-
+                            <div class="card-text" style="padding-left: 10px; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; font-size: medium; justify-items: center;">
+                              <div class="badge-light2 mr-1" style="padding-left: 10px" *ngIf="data.Message !== null" matTooltip="Last communication" (click)="openLeadMessage(i,p)">
+                                {{data.CompanyName}}
+                              </div>
+                              <div class="badge-light2 mr-1" style="padding-left: 10px" *ngIf="data.ContactPerson1 !== ''" matTooltip="Last communication"
+                                (click)="openLeadMessage(i,p)">
+                                {{data.ContactPerson1}} - {{data.ContactNumber1}}
+                              </div>
+                              <div class="badge-light2 mr-1" style="padding-left: 10px" *ngIf="data.ContactPerson2 !== ''" matTooltip="Last communication"
+                                (click)="openLeadMessage(i,p)">
+                                {{data.ContactPerson2}} - {{data.ContactNumber2}}
+                              </div>
+                              <div class="badge-light2 mr-1" style="padding-left: 10px" *ngIf="data.ContactPerson3 !== ''" matTooltip="Last communication"
+                                (click)="openLeadMessage(i,p)">
+                                {{data.ContactPerson3}} - {{data.ContactNumber3}}
                               </div>
                             </div>
                           </div>
@@ -289,7 +441,7 @@
                           <strong style="color: #32375f">{{value }}</strong>
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Description" prop="TicketDescription" [width]="400"></ngx-datatable-column>
+                      <ngx-datatable-column name="Description" prop="LeadDescription" [width]="400"></ngx-datatable-column>
                       <ngx-datatable-column name="Team" prop="TeamName" [width]="180">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           {{value | titlecase}}
@@ -330,11 +482,11 @@
                         </ng-template>
                       </ngx-datatable-column>
                       <ngx-datatable-column name="Priority" prop="Priority"></ngx-datatable-column>
-                      <ngx-datatable-column name="Last Update By" prop="Message.OperationByName">
+                      <!-- <ngx-datatable-column name="Last Update By" prop="Message.OperationByName">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           {{value | titlecase}}
                         </ng-template>
-                      </ngx-datatable-column>
+                      </ngx-datatable-column> -->
                       <ngx-datatable-column name="Last Update On" prop="Message.OperationDate">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           <time>{{value | timeAgo}}</time>
@@ -366,7 +518,7 @@
                           {{value | titlecase}}
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Pipeline By" prop="PipelineByName">
+                      <ngx-datatable-column name="InProcess By" prop="InProcessByName">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           {{value | titlecase}}
                         </ng-template>
@@ -524,7 +676,7 @@
                 <span [ngClass]="{'space': modalData.AssignByName == ''}">Assign</span>
               </th>
               <th>
-                <span [ngClass]="{'space': modalData.PipelineByName == ''}">Pipeline</span>
+                <span [ngClass]="{'space': modalData.InProcessByName == ''}">InProcess</span>
               </th>
               <th>
                 <span [ngClass]="{'space': modalData.WonByName == ''}">Won</span>
@@ -551,10 +703,10 @@
                 <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignDate | date }}</div>
               </td>
               <td>
-                <div *ngIf="modalData.PipelineByName == ''">
+                <div *ngIf="modalData.InProcessByName == ''">
                   <span class="space"></span>
                 </div>
-                <div *ngIf="modalData.PipelineByName !== ''">{{modalData.PipelineDate | date }}</div>
+                <div *ngIf="modalData.InProcessByName !== ''">{{modalData.InProcessDate | date }}</div>
               </td>
               <td>
                 <div *ngIf="modalData.WonByName == ''">
@@ -589,10 +741,10 @@
                 <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignDate | date: 'shortTime'}}</div>
               </td>
               <td>
-                <div *ngIf="modalData.PipelineByName == ''">
+                <div *ngIf="modalData.InProcessByName == ''">
                   <span class="space"></span>
                 </div>
-                <div *ngIf="modalData.PipelineByName !== ''">{{modalData.PipelineDate | date: 'shortTime'}}</div>
+                <div *ngIf="modalData.InProcessByName !== ''">{{modalData.InProcessDate | date: 'shortTime'}}</div>
               </td>
               <td>
                 <div *ngIf="modalData.WonByName == ''">
@@ -627,10 +779,10 @@
                 <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignByName | titlecase}}</div>
               </td>
               <td>
-                <div *ngIf="modalData.PipelineByName == ''">
+                <div *ngIf="modalData.InProcessByName == ''">
                   <span class="space"></span>
                 </div>
-                <div *ngIf="modalData.PipelineByName !== ''">{{modalData.PipelineByName | titlecase}}</div>
+                <div *ngIf="modalData.InProcessByName !== ''">{{modalData.InProcessByName | titlecase}}</div>
               </td>
               <td>
                 <div *ngIf="modalData.WonByName == ''">

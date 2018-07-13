@@ -1,243 +1,272 @@
-<--<div class="container-fluid mt-5 pt-5 animated zoomIn">
+<div class="container-fluid mt-5 pt-3 animated zoomIn" style="background-color: white;">
 
-  <div class="row d-flex justify-content-center">
+  <div class="mainContainer">
 
-    <div class="col-lg-9 col-md-11 col-xs-12">
+    <div>
 
-      <div>
+      <!--Contact Form-->
+      <form [formGroup]="createLeadForm" (ngSubmit)="createLead()" class="custom-form-field" autocomplete="off">
 
-        <!--Contact Form-->
-        <form [formGroup]="createLeadForm" (ngSubmit)="createLead()" class="custom-form-field">
-          <div class="customHeader z-depth-2">
-            <h4 class="card-title">
-              <i class="fa fa-ticket" aria-hidden="true"></i>
-              <strong>Create Lead</strong>
-            </h4>
+        <div class="row h4-responsive">
+          <div class="card-title">
+            <i class="fa fa-ticket" aria-hidden="true" style="padding-right: 10px"></i>
+            <strong>Create Lead</strong>
           </div>
-          <hr>
-          <div class="row">
-            <div class="custom-form-field col-6">
-              <div class="card">
-                <div class="card-header">Please select company</div>
-                <div class="card-body">
-                  <mat-select placeholder="Company" name="CompanyID" formControlName="CompanyID" (selectionChange)="loadProjects()" ngDefaultControl>
+        </div>
+
+        <hr>
+
+        <div>
+
+          <mat-tab-group (selectedIndexChange)="selectedIndexChange($event)" [selectedIndex]="selectedIndex">
+
+            <mat-tab label="Header">
+              <br>
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Company</mat-label>
+                  <mat-select name="CompanyID" formControlName="CompanyID" (selectionChange)="loadProjects()" autofocus="true">
                     <mat-option *ngFor="let company of companyList" [value]="company.Oid">
                       {{company.CompanyName}}
                     </mat-option>
                   </mat-select>
-                </div>
-              </div>
-            </div>
-            <!-- </div>
-            <div class="row"> -->
-            <div class="custom-form-field col-6">
-              <div [hidden]="allLeadTypeList.get('CompanyID').value== null">
-                <div class="card animated fadeIn">
-                  <div class="card-header">Please select project</div>
-                  <div class="card-body">
-                    <mat-select placeholder="Project" name="ProjectID" formControlName="ProjectID" (selectionChange)="updateLeadType();loadTeams()">
-                      <mat-option *ngFor="let item of projectList" [value]="item.Oid">
-                        {{item.ProjectName}}
-                      </mat-option>
-                    </mat-select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="custom-form-field col-md-6">
-              <div [hidden]="allLeadTypeList.get('ProjectID').value== null">
-                <div class="card animated fadeIn">
-                  <div class="card-header">Please select lead type</div>
-                  <div class="card-body">
-                    <mat-select placeholder="LeadType" name="LeadType" formControlName="LeadType" ngDefaultControl>
-                      <mat-option *ngFor="let item of LeadTypeList" [value]="item.Oid">
-                        {{item.TypeName}}
-                      </mat-option>
-                    </mat-select>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="custom-form-field col-md-6">
-              <div [hidden]="allLeadTypeList.get('LeadType').value== null">
-                <div class="card animated fadeIn">
-                  <div class="card-header">Please provide priority</div>
-                  <div class="card-body">
-                    <mat-select placeholder="Priority" name="Priority" formControlName="Priority" ngDefaultControl>
-                      <mat-option *ngFor="let item of priorityList" [value]="item.value">
-                        {{item.viewValue}}
-                      </mat-option>
-                    </mat-select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                </mat-form-field>
 
-          <div class="row">
-            <div class="custom-form-field col-12">
-              <div [hidden]="allLeadTypeList.get('Priority').value== null">
-                <div class="card animated fadeIn">
-                  <div class="card-header">Please add subject line</div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col">
-                        <mat-form-field style="width: 100%">
-                          <input matInput formControlName="Subject" autofocus="true" autocomplete="off">
-                        </mat-form-field>
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Project</mat-label>
+                  <mat-select placeholder="Project" name="ProjectID" formControlName="ProjectID" (selectionChange)="updateLeadType();loadTeams()">
+                    <mat-option *ngFor="let item of projectList" [value]="item.Oid">
+                      {{item.ProjectName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Type</mat-label>
+                  <mat-select placeholder="LeadType" name="LeadType" formControlName="LeadType">
+                    <mat-option *ngFor="let item of leadTypeList" [value]="item.Oid">
+                      {{item.TypeName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Priority</mat-label>
+                  <mat-select placeholder="Priority" name="Priority" formControlName="Priority">
+                    <mat-option *ngFor="let item of priorityList" [value]="item.value">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Category</mat-label>
+                  <mat-select placeholder="LeadCategory" name="LeadCategory" formControlName="LeadCategory">
+                    <mat-option *ngFor="let item of allLeadCategoryList" [value]="item.Oid">
+                      <div *ngIf="item.CategoryName==='1 Diamond'">
+                        <i class="fa fa-diamond mr-1"></i> {{item.CategoryName}}
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="custom-form-field col-12">
-              <div [hidden]="allLeadTypeList.get('Subject').value== null">
-                <div class="card animated fadeIn">
-                  <div class="card-header">Description</div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col">
-                        <mat-form-field style="width: 100%">
-                          <textarea matInput rows="3" formControlName="LeadDescription"></textarea>
-                        </mat-form-field>
+                      <div *ngIf="item.CategoryName==='2 Diamond'">
+                        <i class="fa fa-diamond mr-1"></i>
+                        <i class="fa fa-diamond mr-1"></i> {{item.CategoryName}}
                       </div>
-                    </div>
+                      <div *ngIf="item.CategoryName==='3 Diamond'">
+                        <i class="fa fa-diamond mr-1"></i>
+                        <i class="fa fa-diamond mr-1"></i>
+                        <i class="fa fa-diamond mr-1"></i> {{item.CategoryName}}
+                      </div>
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Team</mat-label>
+                  <mat-select placeholder="Team" name="TeamID" formControlName="TeamID" (selectionChange)="loadTeamMembers()">
+                    <mat-option *ngFor="let item of teamList" [value]="item.Oid">
+                      {{item.TeamName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Assign To</mat-label>
+                  <mat-select placeholder="AssignUser" name="AssignTo" formControlName="AssignTo">
+                    <mat-option *ngFor="let item of assignToUserList" [value]="item.Oid">
+                      {{item.UserName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <button class="btn btn-primary float-right" type="button" (click)="selectedIndexChange(1)">Next</button>
+                </div>
+              </div>
+
+            </mat-tab>
+
+            <mat-tab label="Item">
+              <br>
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Subject</mat-label>
+                  <input matInput formControlName="Subject" placeholder="Subject" autofocus="true" autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Description</mat-label>
+                  <textarea matInput rows="2" formControlName="LeadDescription" placeholder="Description"></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Prospect Company</mat-label>
+                  <input matInput formControlName="CompanyName" placeholder="Company">
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Contact Person 1</mat-label>
+                  <input matInput formControlName="ContactPerson1" placeholder="Contact Person">
+                </mat-form-field>
+
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Number 1</mat-label>
+                  <input matInput type="number" formControlName="ContactNumber1" placeholder="Contact Person">
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Contact Person 2</mat-label>
+                  <input matInput formControlName="ContactPerson2" placeholder="Contact Person">
+                </mat-form-field>
+
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Number 2</mat-label>
+                  <input matInput type="number" formControlName="ContactNumber2" placeholder="Contact Person">
+                </mat-form-field>
+              </div>
+
+
+
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Contact Person 3</mat-label>
+                  <input matInput formControlName="ContactPerson3" placeholder="Company">
+                </mat-form-field>
+
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Number 3</mat-label>
+                  <input matInput type="number" formControlName="ContactNumber3" placeholder="Contact Person">
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <mat-form-field class="col" appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput type="email" formControlName="EmailID" placeholder="Email">
+                </mat-form-field>
+              </div>
+
+              <hr>
+              <div class="text-right animated zoomIn" *ngIf="leadSaved">
+                <input mdbInputDirective type="file" id="file" (change)="handleFileInput($event.target.files);" multiple>
+                <div class="center">
+                  <file-drop headertext="Drop files here" (onFileDrop)="dropped($event)">
+                    <span>optional content (don't set headertext then)</span>
+                  </file-drop>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col" style="vertical-align: baseline">
+                  <div class="float-left">
+                    <button class="btn btn-primary" type="button" (click)="selectedIndexChange(0)">Previous</button>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="float-right">
+                    <button class="btn indigo waves-light" type="submit" *ngIf="!leadSaved" mdbWavesEffect [disabled]="!createLeadForm.valid"
+                      (click)="style.show()">
+                      Save
+                    </button>
+                    <button type="button" class="btn btn-danger waves-light" routerLink="../" mdbWavesEffect>
+                      Close
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </mat-tab>
 
+          </mat-tab-group>
 
-          <div class="row">
-            <div class="custom-form-field col-md-6">
-              <div [hidden]="allLeadTypeList.get('LeadDescription').value==
-                  null">
-                <div class="card animated fadeIn">
-                  <div class="card-header">Please select team</div>
-                  <div class="card-body">
-                    <mat-select placeholder="Team" name="TeamID" formControlName="TeamID" (selectionChange)="loadTeamMembers()" ngDefaultControl>
-                      <mat-option *ngFor="let item of teamList" [value]="item.Oid">
-                        {{item.TeamName}}
-                      </mat-option>
-                    </mat-select>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="custom-form-field col-md-6">
-              <div [hidden]="allLeadTypeList.get('TeamID').value== null">
-                <div class="card animated fadeIn">
-                  <div class="card-header">Assign lead to</div>
-                  <div class="card-body">
-                    <mat-select placeholder="AssignUser" name="AssignTo" formControlName="AssignTo" ngDefaultControl>
-                      <mat-option *ngFor="let item of assignToUserList" [value]="item.Oid">
-                        {{item.UserName}}
-                      </mat-option>
-                    </mat-select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        </div>
 
-          <!-- <div class="custom-form-field text-right animated fadeIn"
-              [hidden]="allLeadTypeList.get('TeamID').value== null">
-            <mat-form-field>
-              <input matInput type="url" id="file"
-                (change)="handleFileInput($event.target.files);">
-            </mat-form-field>
-            <button class="btn indigo waves-light" type="submit" mdbWavesEffect
-              [disabled]="!allLeadTypeList.valid">
-              Save
-            </button>
-            <button type="button" class="btn btn-danger waves-light"
-              routerLink="../" mdbWavesEffect>
-              Close
-            </button>
-          </div> -->
-
-          <div class="text-right animated zoomIn" *ngIf="leadSaved">
-            <input mdbInputDirective type="file" id="file" (change)="handleFileInput($event.target.files);" multiple>
-            <div class="center">
-              <file-drop headertext="Drop files here" (onFileDrop)="dropped($event)">
-                <span>optional content (don't set headertext then)</span>
-              </file-drop>
-
-            </div>
-          </div>
-          <button class="btn indigo waves-light" type="submit" *ngIf="!leadSaved" mdbWavesEffect [disabled]="!allLeadTypeList.valid"
-            (click)="style.show()">
-            Save
-          </button>
-          <button type="button" class="btn btn-danger waves-light" routerLink="../" mdbWavesEffect>
-            Close
-          </button>
-
-        </form>
-        <!--Contact Form-->
-
-
-      </div>
+      </form>
 
     </div>
 
   </div>
 
-  </div>
+</div>
 
-  <div mdbModal #style="mdb-modal" class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-notify modal-success" role="document" *ngIf="leadSaved">
-      <div class="modal-content">
-        <div class="modal-header">
-          <p class="heading lead">Lead Successfully created</p>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="style.hide()">
-            <span aria-hidden="true" class="white-text">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="text-center">
-            <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
-            <div class="card-text">
-              <strong>Lead No: {{data.LeadNo}}</strong>
-            </div>
+<div mdbModal #style="mdb-modal" class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-success" role="document" *ngIf="leadSaved">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p class="heading lead">Lead Successfully created</p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="style.hide()">
+          <span aria-hidden="true" class="white-text">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <i class="fa fa-check fa-4x mb-3 animated rotateIn"></i>
+          <div class="card-text">
+            <strong>Lead No: {{data.LeadNo}}</strong>
           </div>
-        </div>
-        <div class="modal-footer justify-content-center">
-          <a type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="style.hide()" mdbWavesEffect>OK</a>
         </div>
       </div>
-    </div>
-    <div class="modal-dialog modal-notify modal-info" role="document" *ngIf="!leadSaved">
-      <div class="modal-content">
-        <div class="modal-header">
-          <p class="heading lead">Lead creation in progress</p>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="style.hide()">
-            <span aria-hidden="true" class="white-text">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="text-center">
-            <i class="fa fa-refresh fa-4x mb-3 animated rotateIn"></i>
-            <div class="card-text">
-              <strong>Processing...</strong>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer justify-content-center">
-          <a type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="style.hide()" mdbWavesEffect>OK</a>
-        </div>
+      <div class="modal-footer justify-content-center">
+        <a type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="style.hide()" mdbWavesEffect>OK</a>
       </div>
     </div>
   </div>
+  <div class="modal-dialog modal-notify modal-info" role="document" *ngIf="!leadSaved">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p class="heading lead">Lead creation in progress</p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="style.hide()">
+          <span aria-hidden="true" class="white-text">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <i class="fa fa-refresh fa-4x mb-3 animated rotateIn"></i>
+          <div class="card-text">
+            <strong>Processing...</strong>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <a type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="style.hide()" mdbWavesEffect>OK</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <!--
+<!--
   <div>
   <label>PDF src</label>
   <input mdbInputDirective type="text" placeholder="PDF src"

@@ -21,19 +21,19 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
 
   url: string;
   selected = 'New';
-  leadLogTypeSelector = 'Pipeline';
-  data: any[] = [{ 'TicketStatus': 'New', 'Count': 0 },
-  { 'TicketStatus': 'Pipeline', 'Count': 0 },
-  { 'TicketStatus': 'Won', 'Count': 0 },
-  { 'TicketStatus': 'Lost', 'Count': 0 },
-  { 'TicketStatus': 'Hold', 'Count': 0 }
+  leadLogTypeSelector = 'In Process';
+  data: any[] = [{ 'LeadStatus': 'New', 'Count': 0 },
+  { 'LeadStatus': 'In Process', 'Count': 0 },
+  { 'LeadStatus': 'Won', 'Count': 0 },
+  { 'LeadStatus': 'Lost', 'Count': 0 },
+  { 'LeadStatus': 'Hold', 'Count': 0 }
   ];
   manualUpdateFlag = false;
   source: any[] = [{
     'status': 'New',
     'data': []
   }, {
-    'status': 'Pipeline',
+    'status': 'In Process',
     'data': []
   }, {
     'status': 'Won',
@@ -72,7 +72,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     { data: [0, 0, 0], label: 'Status comparison' }
   ];
 
-  public chartLabels: Array<any> = ['New', 'Pipeline', 'Won'];
+  public chartLabels: Array<any> = ['New', 'In Process', 'Won'];
 
   public chartColors: Array<any> = [
     {
@@ -126,6 +126,8 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     const userName = this.userName;
     const allocationType = this.allocationType;
     const val = this.val.toLocaleLowerCase();
+    console.log(val);
+    console.log(this.searchIn);
     const searchIn = this.searchIn;
     let res = this.temp;
 
@@ -147,7 +149,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
           return true;
         } else if (d.LeadNo.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
-        } else if (d.TicketDescription.toLowerCase().indexOf(val) !== -1 || !val) {
+        } else if (d.LeadDescription.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else if (d.TeamName.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
@@ -161,15 +163,15 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
           return true;
         } else if (d.AssignToName.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
-        } else if (d.CancelByName.toLowerCase().indexOf(val) !== -1 || !val) {
-          return true;
-        } else if (d.CloseByName.toLowerCase().indexOf(val) !== -1 || !val) {
-          return true;
-        } else if (d.CreatedByName.toLowerCase().indexOf(val) !== -1 || !val) {
+        } else if (d.LostByName.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else if (d.HoldByName.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
-        } else if (d.WIPByName.toLowerCase().indexOf(val) !== -1 || !val) {
+        } else if (d.NewByName.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else if (d.InProcessByName.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else if (d.WonByName.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else {
           return false;
@@ -180,25 +182,31 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
         } else {
           return false;
         }
-      } else if (searchIn === 'TicketDescription') {
+      } else if (searchIn === 'Category') {
+        if (d.LeadCategory.toString().toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (searchIn === 'Description') {
         if (d.TicketDescription.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else {
           return false;
         }
-      } else if (searchIn === 'TeamName') {
+      } else if (searchIn === 'Team') {
         if (d.TeamName.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else {
           return false;
         }
-      } else if (searchIn === 'ProjectName') {
+      } else if (searchIn === 'Project') {
         if (d.ProjectName.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else {
           return false;
         }
-      } else if (searchIn === 'CompanyName') {
+      } else if (searchIn === 'Company') {
         if (d.CompanyName.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else {
@@ -206,6 +214,12 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
         }
       } else if (searchIn === 'Priority') {
         if (d.Priority.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (searchIn === 'Subject') {
+        if (d.Subject.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else {
           return false;
@@ -223,31 +237,63 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
           return false;
         }
       } else if (searchIn === 'HoldByName') {
-        if (d.CancelByName.toLowerCase().indexOf(val) !== -1 || !val) {
-          return true;
-        } else {
-          return false;
-        }
-      } else if (searchIn === 'LostByName') {
-        if (d.CloseByName.toLowerCase().indexOf(val) !== -1 || !val) {
-          return true;
-        } else {
-          return false;
-        }
-      } else if (searchIn === 'NewByName') {
-        if (d.CreatedByName.toLowerCase().indexOf(val) !== -1 || !val) {
-          return true;
-        } else {
-          return false;
-        }
-      } else if (searchIn === 'WonByName') {
         if (d.HoldByName.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else {
           return false;
         }
-      } else if (searchIn === 'PipelineByName') {
-        if (d.WIPByName.toLowerCase().indexOf(val) !== -1 || !val) {
+      } else if (searchIn === 'LostByName') {
+        if (d.LostByName.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (searchIn === 'NewByName') {
+        if (d.NewByName.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (searchIn === 'WonByName') {
+        if (d.WonByName.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (searchIn === 'InProcessByName') {
+        if (d.InProcessByName.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (searchIn === 'Client') {
+        if (d.ClientName.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (searchIn === 'Email') {
+        if (d.EmailID.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (searchIn === 'ContactPerson') {
+        if (d.ContactPerson1.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else if (d.ContactPerson2.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else if (d.ContactPerson3.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (searchIn === 'ContactNumber') {
+        if (d.ContactNumber1.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else if (d.ContactNumber2.toLowerCase().indexOf(val) !== -1 || !val) {
+          return true;
+        } else if (d.ContactNumber3.toLowerCase().indexOf(val) !== -1 || !val) {
           return true;
         } else {
           return false;
@@ -381,7 +427,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     ];
   }
 
-  updateTickets(tickets: any) {
+  updateLeads(tickets: any) {
     // console.log(tickets);
     this.rows = tickets;
     this.temp = tickets;
@@ -399,7 +445,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   }
 
   updateleadLogTypeSelector(id: number) {
-    this.leadLogTypeSelector = this.data[id].TicketStatus;
+    this.leadLogTypeSelector = this.data[id].LeadStatus;
   }
 
   ngOnInit() {
@@ -435,7 +481,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     this.engineService.getData(this.url).toPromise()
       .then(res => {
         console.log(res);
-        this.updateTickets(res);
+        this.updateLeads(res);
         this.updateFilter();
         if (!this.manualUpdateFlag) {
           this.subscribeToData();
@@ -460,16 +506,16 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     this.updateFilter();
   }
 
-  private openTicketMessage(index, pindex) {
+  private openLeadMessage(index, pindex) {
     this.engineService.validateUser();
     const row = this.source[index].data[pindex];
 
     const data = {
       'CompanyID': row['CompanyID'],
       'ProjectID': row['ProjectID'],
-      'TicketID': row['Oid'],
+      'LeadID': row['Oid'],
       'LeadNo': row['LeadNo'],
-      'TicketStatus': row['LeadStatus'],
+      'LeadStatus': row['LeadStatus'],
     };
 
     const dialogRef = this
@@ -502,6 +548,20 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     });
   }
 
+  changeCategory(i, p, LeadCategory) {
+    // console.log(i, '----', p, '---------', LeadCategory, typeof (LeadCategory));
+    this.engineService.validateUser();
+    const row = this.source[i].data[p];
+    const Oid = row['Oid'];
+    const by = this._cookieService.get('Oid');
+    const data = { Oid: Oid, LeadCategory: LeadCategory, By: by };
+    this.url = 'Lead/ChangeCategory';
+    this.engineService.updateData(this.url, data).then(result => {
+      this.manualUpdateFlag = true;
+      this.refreshData();
+    });
+  }
+
   assignLead(i, p, assignTo) {
     this.engineService.validateUser();
     const row = this.source[i].data[p];
@@ -515,7 +575,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     });
   }
 
-  processTicket(id, status) {
+  processLead(id, status) {
     this.engineService.validateUser();
     let data;
     let message;
@@ -523,27 +583,27 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     switch (status) {
 
       case 1: {
-        data = { Oid: id, TicketStatus: status, By: by };
+        data = { Oid: id, LeadStatus: status, By: by };
         message = 'Re-open lead?';
         break;
       }
       case 2: {
-        data = { Oid: id, TicketStatus: status, By: by };
-        message = 'Put this lead in Pipeline?';
+        data = { Oid: id, LeadStatus: status, By: by };
+        message = 'Put this lead in In Process?';
         break;
       }
       case 3: {
-        data = { Oid: id, TicketStatus: status, By: by };
+        data = { Oid: id, LeadStatus: status, By: by };
         message = 'Won this lead?';
         break;
       }
       case 4: {
-        data = { Oid: id, TicketStatus: status, By: by };
+        data = { Oid: id, LeadStatus: status, By: by };
         message = 'Lost this lead?';
         break;
       }
       case 5: {
-        data = { Oid: id, TicketStatus: status, By: by };
+        data = { Oid: id, LeadStatus: status, By: by };
         message = 'Hold this lead?';
         break;
       }

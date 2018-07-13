@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EngineService } from '../../services/engine.service';
 import { Router } from '@angular/router';
@@ -115,7 +115,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:max-line-length
   constructor(private engineService: EngineService, private alertService: AlertService, private router: Router, public dialog: MatDialog) { }
 
-   ngOnInit() {
+  ngOnInit() {
     this.refreshData();
     this.userRole = this.engineService.userRole;
   }
@@ -167,7 +167,7 @@ export class TeamComponent implements OnInit, OnDestroy {
     this.url = 'Team/GetTeamsForView';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        // console.log(JSON.stringify(res));
+        console.log(JSON.stringify(res));
         this.updateTeam(res);
         this.subscribeToData();
         this.updateFilter();
