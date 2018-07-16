@@ -66,6 +66,8 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   modalData: any = {};
   chartVisible = false;
   public chartType = 'bar';
+  attachment: Array<any> = [];
+  loadingIndicator = false;
 
   public chartDatasets: Array<any> = [
     // tslint:disable-next-line:max-line-length
@@ -123,6 +125,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   }
 
   public updateFilter() {
+    this.loadingIndicator = true;
     const userName = this.userName;
     const allocationType = this.allocationType;
     const val = this.val.toLocaleLowerCase();
@@ -425,6 +428,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
       // tslint:disable-next-line:max-line-length
       { data: [this.data[0].Count, this.data[1].Count, this.data[2].Count], label: 'Status comparison' }
     ];
+    this.loadingIndicator = false;
   }
 
   updateLeads(tickets: any) {
@@ -465,14 +469,14 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToData(): void {
-    const timerVar = timer(2 * 60 * 1000);
+    const timerVar = timer(5 * 60 * 1000);
     this.timerSubscription = timerVar.subscribe(() => {
       this.refreshData();
     });
   }
 
   private refreshData(): void {
-
+    this.loadingIndicator = true;
     if (this.dashboardState === 'byme') {
       this.url = 'Lead/GetMyLeads/' + this._cookieService.get('Oid');
     } else if (this.dashboardState === 'myleads') {
@@ -480,7 +484,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     }
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.updateLeads(res);
         this.updateFilter();
         if (!this.manualUpdateFlag) {
@@ -490,6 +494,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
       }).catch(err => {
         this.alertService.danger('Server response error @refreshData');
       });
+    this.loadingIndicator = false;
   }
 
   private selectRow(row) {
@@ -638,8 +643,16 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   }
 
   public updateModal(data) {
+
+    this.attachment.length = 0;
+    // this.url = "http://192.168.0.250:8002/api/Ticket/GetAttachment/"+data.TicketNo;
+    this.url = 'Ticket/GetAttachment/' + data.TicketNo;
+    this.engineService.getData(this.url).subscribe(res => {
+      this.attachment = res;
+    });
     // console.log(data);
     this.modalData = data;
+
   }
 
   ngOnDestroy() {

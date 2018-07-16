@@ -62,6 +62,7 @@ import { CreateLeadTypeComponent } from './master/lead-type/create-lead-type/cre
 import { EditLeadTypeComponent } from './master/modal/edit-lead-type/edit-lead-type.component';
 import { CreateLeadComponent } from './transaction/create-lead/create-lead.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTabsModule,
     MatCardModule,
     MatTooltipModule,
+    MatProgressBarModule,
     NgxSpinnerModule,
     FileDropModule,
     AlertModule.forRoot({ maxMessages: 5, timeout: 3000 })

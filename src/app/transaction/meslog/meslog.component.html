@@ -47,6 +47,7 @@
 
 <div class="scroll2">
   <mat-dialog-content>
+    <mat-progress-bar mode="indeterminate" *ngIf="loadingIndicator" color="primary" class="z-depth-1" style="height: 3px;"></mat-progress-bar>
     <ol class="discussion">
       <li *ngFor="let mes of message;let i= index;" [ngClass]="{'self':
         mes.check== 'other', 'other': mes.check== 'self'}">
@@ -71,7 +72,7 @@
 
           <div class="messageFooter">
             {{mes.UserName | titlecase}} •
-            <time>{{ mes.OperationDate | timeAgo}}</time>
+            <time>{{ mes.OperationDate | date: 'medium'}}</time>
           </div>
         </div>
       </li>

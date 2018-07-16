@@ -16,7 +16,7 @@ export class EngineService implements OnInit {
   options: RequestOptions;
   // baseUrl = 'http://192.168.0.250:8002/api/';
   // baseUrl = 'http://192.168.0.13:8002/api/';
-  baseUrl = 'http://192.168.0.13:8004/api/';
+  baseUrl = 'http://lakshyawebapi.rlmc.in/api/';
   // baseUrl = 'http://localhost:3979/api/';
   URL: string;
   users: any;
@@ -175,12 +175,6 @@ export class EngineService implements OnInit {
 
   }
 
-  // getKanbanSource() {
-  //   this.URL = this.baseUrl + 'Lead/GetLeadStatus';
-  //   return this.http.get(this.URL, this.options).map(res => res.json());
-  // }
-
-
   postData(url: any, data: any): Promise<any> {
     this.URL = this.baseUrl + url;
     const body = JSON.stringify(data);
@@ -224,11 +218,12 @@ export class EngineService implements OnInit {
     formData.append('LeadNo', data.LeadNo);
     formData.append('LeadBacklogID', data.LeadBacklogID);
     formData.append('FileName', filename);
+    formData.append('By', this._cookieService.get('Oid'));
     formData.append('fileItem', fileItem, filename);
 
-    console.log(fileItem);
-    console.log(JSON.stringify(data));
-    console.log(filename);
+    // console.log(fileItem);
+    // console.log(JSON.stringify(formData));
+    // console.log(filename);
 
     return this.httpC.post(url, formData, { headers: header })
       .toPromise();

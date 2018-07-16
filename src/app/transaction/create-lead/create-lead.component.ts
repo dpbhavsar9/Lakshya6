@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import { AlertService } from 'ngx-alerts';
 import { Router } from '@angular/router';
 import { EngineService } from '../../services/engine.service';
@@ -35,6 +35,11 @@ export class CreateLeadComponent implements OnInit {
   leadSaved = false;
   selectedIndex: number;
   files: UploadFile[] = [];
+  selectedDiamond = 1;
+  defaultValue = {
+    Company: { Oid: 1, CompanyName: 'Raj Barcode Systems Pvt Ltd' },
+    Project: { Oid: 1, ProjectName: 'RBSPL Projects' },
+  };
 
   // tslint:disable-next-line:max-line-length
   constructor(private alertService: AlertService,
@@ -75,8 +80,14 @@ export class CreateLeadComponent implements OnInit {
       ContactPerson3: new FormControl(null),
       ContactNumber3: new FormControl(null),
       EmailID: new FormControl(null),
-      LeadCategory: new FormControl(2, Validators.required),
+      LeadCategory: new FormControl(this.selectedDiamond, Validators.required),
     });
+  }
+
+  diamondHover(i) {
+    // console.log(i);
+    this.selectedDiamond = i;
+    this.createLeadForm.patchValue({ LeadCategory: i });
   }
 
   selectedIndexChange(val: number) {
@@ -88,7 +99,7 @@ export class CreateLeadComponent implements OnInit {
     this.url = 'Company/GetAllCompany';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.companyList = res;
       })
       .catch(err => {
@@ -105,7 +116,7 @@ export class CreateLeadComponent implements OnInit {
     this.url = 'Project/GetProject';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.projectList = res.filter(data => data.ProjectCompany === CompanyID);
       })
       .catch(err => {
@@ -205,9 +216,9 @@ export class CreateLeadComponent implements OnInit {
   uploadFileToActivity(filename) {
 
     this.engineService.uploadFile(this.fileToUpload, this.data, filename).then(res => {
-      console.log('----- File Upload -----' + JSON.stringify(res._body));
+      // console.log('----- File Upload -----' + JSON.stringify(res._body));
     }).catch(err => {
-      console.log('----- Error UploadingFile -----' + JSON.stringify(err));
+      // console.log('----- Error UploadingFile -----' + JSON.stringify(err));
     });
   }
 
@@ -215,20 +226,20 @@ export class CreateLeadComponent implements OnInit {
 
     this.leadTypeList = this.allLeadTypeList.filter(x =>
       x.CompanyID === this.createLeadForm.get('CompanyID').value && x.ProjectID === this.createLeadForm.get('ProjectID').value);
-    console.log('updateLeadType', this.leadTypeList);
+    // console.log('updateLeadType', this.leadTypeList);
   }
 
   createLead() {
     this.engineService.validateUser();
     if (this.createLeadForm.status === 'VALID') {
-      console.log(this.createLeadForm.value);
-      console.log(JSON.stringify(this.createLeadForm.value));
+      // console.log(this.createLeadForm.value);
+      // console.log(JSON.stringify(this.createLeadForm.value));
       this.url = 'Lead/PostLead';
       this.engineService.postData(this.url, this.createLeadForm.value).then(response => {
-        console.log('--------Response---------', JSON.stringify(response));
+        // console.log('--------Response---------', JSON.stringify(response));
         const res = response.json();
         const res2 = JSON.parse(res);
-        console.log('--------Response---------', JSON.stringify(res2));
+        // console.log('--------Response---------', JSON.stringify(res2));
         this.data.LeadID = res2.LeadID;
         this.data.LeadNo = res2.LeadNo;
         this.data.LeadBacklogID = res2.LeadBacklogID;

@@ -2,7 +2,7 @@
   transition: 0.3s;
   position: relative;
   transform: scale(1.05);
-  border-bottom: 3px inset #33b5e5;
+  border-top: 3px inset #33b5e5;
   -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 0 40px rgba(0, 0, 0, 0.1) inset;
   -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 0 40px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 0 40px rgba(0, 0, 0, 0.1) inset;
@@ -20,7 +20,7 @@
 }
 
 #counterCard {
-  border-bottom: 3px inset transparent;
+  border-top: 3px inset transparent;
   transition: linear 0.1s;
 }
 
@@ -55,12 +55,6 @@ hr {
 
 .fontclass {
   font-family: Calibri; //font-family: '../../../assets/fonts/Adamina-Regular.ttf';
-  font-size: 20px;
-}
-
-.big {
-  font-family: Calibri;
-  font-weight: bold;
   font-size: 20px;
 }
 
@@ -270,27 +264,33 @@ th {
 }
 
 .highPriority {
-  border-top: 2px solid rgb(253, 85, 85);
+  border-top: 2px solid rgb(0, 13, 189);
 }
 
 .mediumPriority {
-  border-top: 2px solid rgb(252, 175, 98);
+  border-top: 2px solid rgb(87, 72, 219);
 }
 
 .lowPriority {
-  border-top: 2px solid rgb(62, 206, 122);
+  border-top: 2px solid rgb(134, 126, 243);
 }
 
 .highPriorityBorder {
-  border: 1px solid rgb(253, 85, 85);
+  // border: 1px solid rgb(253, 85, 85);
+  border: 1px solid #3700B3;
   border-radius: 5px;
   padding: 5px;
   margin-right: 5px;
   margin-bottom: 5px;
 }
 
+.div {
+  cursor: default;
+}
+
 .mediumPriorityBorder {
-  border: 1px solid rgb(252, 175, 98);
+  // border: 1px solid rgb(252, 175, 98);
+  border: 1px solid #6200EE;
   border-radius: 5px;
   padding: 5px;
   margin-right: 5px;
@@ -298,7 +298,8 @@ th {
 }
 
 .lowPriorityBorder {
-  border: 1px solid rgb(62, 206, 122);
+  // border: 1px solid rgb(62, 206, 122);
+  border: 1px solid #893ff0;
   border-radius: 5px;
   padding: 5px;
   margin-right: 5px;
@@ -306,7 +307,8 @@ th {
 }
 
 .highPriorityBackground {
-  background-color: rgb(253, 85, 85);
+  // background-color: rgb(253, 85, 85);
+  background-color: #3700B3;
   border-radius: 5px;
   padding: 5px;
   margin-right: 5px;
@@ -315,7 +317,8 @@ th {
 }
 
 .mediumPriorityBackground {
-  background-color: rgb(252, 175, 98);
+  // background-color: rgb(252, 175, 98);
+  background-color: #6200EE;
   border-radius: 5px;
   padding: 5px;
   margin-right: 5px;
@@ -324,7 +327,8 @@ th {
 }
 
 .lowPriorityBackground {
-  background-color: rgb(62, 206, 122);
+  // background-color: rgb(62, 206, 122);
+  background-color: #893ff0;
   border-radius: 5px;
   padding: 5px;
   margin-right: 5px;
@@ -340,9 +344,34 @@ span {
   font-size: 0.9rem;
 }
 
-.fa-diamond {
+div>.fa-diamond {
   color: crimson;
   text-shadow: 0px 2px 5px pink;
+}
+
+button>.fa-diamond {
+  color: crimson;
+  text-shadow: 0px 2px 5px pink;
+}
+
+.numberCircle {
+  border-radius: 50%; //behavior: url(PIE.htc);
+  padding: 0px 5px;
+  height: 25px;
+  background: teal; //border: 2px solid teal;
+  color: snow !important;
+  text-align: center; //@warnfont: 20px Arial, sans-serif;
+}
+
+.attachmentstyle {
+  height: auto;
+  overflow: scroll;
+  margin-left: 10px;
+  font-size: 0.8rem;
+  font-family: Calibri;
+  color: rgb(74, 85, 90);
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .pulse {

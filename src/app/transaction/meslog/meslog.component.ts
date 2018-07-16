@@ -47,6 +47,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
   showAttachment = false;
   fileToUpload: File = null;
   files: FileList;
+  loadingIndicator = false;
 
   // tslint:disable-next-line:max-line-length
   constructor(private engineService: EngineService,
@@ -73,7 +74,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
     // console.log('---Lead Id----', this.leadId);
     this.checkMessage(this.leadId);
 
-    const timerVar = timer(10000, 10000);
+    const timerVar = timer(30 * 1000);
 
     this.subscribe = timerVar.subscribe(t => {
       this.checkMessage(this.leadId);
@@ -89,6 +90,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
   }
 
   checkMessage(id) {
+    this.loadingIndicator = true;
     this.url = 'Lead/GetLeadMessage/' + this.leadId;
     this.engineService.getData(this.url).toPromise().then(data => {
       console.log('data in checkMessage', data);
@@ -148,6 +150,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
           // console.log('exsdsdfjdslf');
         }
       }
+      this.loadingIndicator = false;
     }).catch(err => {
       // console.log('-------' + err);
     });
