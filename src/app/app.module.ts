@@ -17,7 +17,8 @@ import {
   MAT_CHECKBOX_CLICK_ACTION,
   MatSlideToggleModule,
   MatTooltipModule,
-  MatCardModule
+  MatCardModule,
+  MatAutocompleteModule
 } from '@angular/material';
 import { MatMenuModule } from '@angular/material/menu';
 import { AppComponent } from './app.component';
@@ -48,7 +49,7 @@ import { EditUserDialogComponent } from './master/modal/edit-user-dialog/edit-us
 import { EditProjectComponent } from './master/modal/edit-project/edit-project.component';
 import { EditCompanyComponent } from './master/modal/edit-company/edit-company.component';
 import { EditTeamComponent } from './master/modal/edit-team/edit-team.component';
-
+import { CalendarComponent } from './transaction/calendar/calendar.component';
 
 import { MeslogComponent } from './transaction/meslog/meslog.component';
 import { TimeAgoPipe } from 'time-ago-pipe';
@@ -63,6 +64,10 @@ import { EditLeadTypeComponent } from './master/modal/edit-lead-type/edit-lead-t
 import { CreateLeadComponent } from './transaction/create-lead/create-lead.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CalendarModule } from 'angular-calendar';
+import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { FlatpickrModule } from 'angularx-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
 
 @NgModule({
   declarations: [
@@ -94,7 +99,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     EditLeadTypeComponent,
     MeslogComponent,
     TimeAgoPipe,
-    AlertComponent
+    AlertComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -118,8 +124,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatCardModule,
     MatTooltipModule,
     MatProgressBarModule,
+    MatAutocompleteModule,
     NgxSpinnerModule,
     FileDropModule,
+    CalendarModule.forRoot(),
+    NgbModule.forRoot(),
+    NgbModalModule.forRoot(),
+    FlatpickrModule.forRoot(),
+    CalendarModule.forRoot(),
     AlertModule.forRoot({ maxMessages: 5, timeout: 3000 })
   ],
 

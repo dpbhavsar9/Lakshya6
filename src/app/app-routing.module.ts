@@ -21,6 +21,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { EditAuthGuard } from './services/edit-auth-guard.service';
 import { MasterAuthGuard } from './services/master-auth-guard.service';
 import { CreateLeadComponent } from './transaction/create-lead/create-lead.component';
+import { CalendarComponent } from './transaction/calendar/calendar.component';
 
 const appRoutes: Routes = [
   {
@@ -36,6 +37,7 @@ const appRoutes: Routes = [
     canDeactivate: [CanDeactivateGuard],
     children: [
       { path: '', component: DashboardToolsComponent },
+      { path: 'calendar', component: CalendarComponent },
       { path: 'company', component: CompanyComponent, canActivate: [MasterAuthGuard] },
       { path: 'company/create-company', component: CreateCompanyComponent, canActivate: [EditAuthGuard] },
       { path: 'project', component: ProjectComponent, canActivate: [MasterAuthGuard] },

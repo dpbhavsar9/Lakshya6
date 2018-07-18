@@ -15,8 +15,8 @@ export class EngineService implements OnInit {
   headers: Headers;
   options: RequestOptions;
   // baseUrl = 'http://192.168.0.250:8002/api/';
-  // baseUrl = 'http://192.168.0.13:8002/api/';
-  baseUrl = 'http://lakshyawebapi.rlmc.in/api/';
+  baseUrl = 'http://192.168.0.13:8004/api/';
+  // baseUrl = 'http://lakshyawebapi.rlmc.in/api/';
   // baseUrl = 'http://localhost:3979/api/';
   URL: string;
   users: any;
@@ -158,7 +158,7 @@ export class EngineService implements OnInit {
   }
 
   getToken(): Promise<any> {
-    this.URL = 'http://192.168.0.168:81/token';
+    this.URL = this.baseUrl + '/token';
     const body = {
       'username': 'user',
       'password': 'user',

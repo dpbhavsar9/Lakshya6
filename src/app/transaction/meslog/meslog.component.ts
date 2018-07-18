@@ -206,8 +206,9 @@ export class MeslogComponent implements OnInit, OnDestroy {
       .subscribe(result => {
 
         if (result.toString() === 'Yes') {
-          window.location.href = 'http://192.168.0.13:8004/api/Upload/UploadFiles/' + fileName;
-          // window.location.href = 'http://192.168.0.13:8002/api/Upload/UploadFiles/'+fileName;
+
+          window.location.href = 'http://lakshyawebapi.rlmc.in/api//Upload/UploadFiles/' + fileName;
+          // window.location.href = 'http://192.168.0.13:8004/api/Upload/UploadFiles/' + fileName;
         } else {
 
         }

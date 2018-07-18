@@ -10,6 +10,16 @@ import { Subscription } from 'rxjs/internal/Subscription';
 import { timer } from 'rxjs/internal/observable/timer';
 import { Observable } from 'rxjs/internal/Observable';
 import { MeslogComponent } from '../../transaction/meslog/meslog.component';
+import {
+  startOfDay,
+  endOfDay,
+  subDays,
+  addDays,
+  endOfMonth,
+  isSameDay,
+  isSameMonth,
+  addHours
+} from 'date-fns';
 
 
 @Component({
@@ -68,6 +78,17 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   public chartType = 'bar';
   attachment: Array<any> = [];
   loadingIndicator = false;
+  event = {
+    LeadID: '',
+    LeadNo: '',
+    OperationBy: '',
+    OperationDate: '',
+    Remarks: '',
+    ProjectID: 0,
+    CompanyID: 0,
+    AlertDate: '',
+    Subject: ''
+  };
 
   public chartDatasets: Array<any> = [
     // tslint:disable-next-line:max-line-length
@@ -129,8 +150,8 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     const userName = this.userName;
     const allocationType = this.allocationType;
     const val = this.val.toLocaleLowerCase();
-    console.log(val);
-    console.log(this.searchIn);
+    // console.log(val);
+    // console.log(this.searchIn);
     const searchIn = this.searchIn;
     let res = this.temp;
 
@@ -540,6 +561,39 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
       });
   }
 
+  updateAlertModal(i, p) {
+    this.engineService.validateUser();
+    const row = this.source[i].data[p];
+    const Oid = row['Oid'];
+    const LeadNo = row['LeadNo'];
+    const Subject = row['Subject'];
+    const ProjectID = row['ProjectID'];
+    const CompanyID = row['CompanyID'];
+    const OperationBy = this._cookieService.get('Oid');
+    this.event = {
+      LeadID: Oid,
+      LeadNo: LeadNo,
+      OperationBy: OperationBy,
+      ProjectID: ProjectID,
+      CompanyID: CompanyID,
+      Subject: Subject,
+      OperationDate: '',
+      Remarks: '',
+      AlertDate: ''
+    };
+    // console.log(this.event);
+  }
+
+  createAlert() {
+    this.url = 'Lead/PostAlert';
+    // console.log(this.event);
+    this.engineService.postData(this.url, this.event).then(result => {
+      // console.log(result);
+    }).catch(err => {
+      // console.log(err);
+    });
+  }
+
   changePriority(i, p, priority) {
     this.engineService.validateUser();
     const row = this.source[i].data[p];
@@ -550,6 +604,18 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     this.engineService.updateData(this.url, data).then(result => {
       this.manualUpdateFlag = true;
       this.refreshData();
+    });
+  }
+
+  markasRead(i, p) {
+    this.url = 'Lead/PutNotificationFlag';
+    this.engineService.validateUser();
+    const row = this.source[i].data[p];
+    const Oid = row['Oid'];
+    const by = this._cookieService.get('Oid');
+    const data = { UserID: by, LeadID: Oid };
+    this.engineService.updateData(this.url, data).then(result => {
+      this.source[i].data[p].read = 1;
     });
   }
 

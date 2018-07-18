@@ -106,12 +106,18 @@
           <mat-option value="ExceptMe">Team but Except Me</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-checkbox style="margin-right: 5px" color="primary" matTooltip="Grid
+      <div class="condesed_style">
+        <mat-checkbox color="primary" matTooltip="Grid
         view of Leads" [(ngModel)]="condensedView">Condensed View</mat-checkbox>
-      <i class="fa fa-bar-chart" style="margin-right: 5px" matTooltip="Click to
-        see Chart" (click)="toggleChart()" style="padding-bottom: 10px"></i>
-      <i class="fa fa-refresh" style="margin-right: 5px" matTooltip="Clear and
-        refresh" (click)="clearSerchCriteria()" style="padding-bottom: 10px;"></i>
+        <span style="margin-left: 10px !important; display: inline;">
+          <i class="fa fa-bar-chart" matTooltip="Click to
+            see Chart" (click)="toggleChart()" style="margin-left: 10px !important;"></i>
+
+          <i class="fa fa-refresh" matTooltip="Clear and
+          refresh" (click)="clearSerchCriteria()" style="margin-left: 10px !important;"></i>
+        </span>
+      </div>
+
     </div>
 
 
@@ -131,7 +137,8 @@
                     bold; box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px
                     10px 0 rgba(0, 0, 0, 0.12);">
                     <strong>{{src.status}}</strong>
-                    <mat-progress-bar mode="indeterminate" *ngIf="loadingIndicator" color="primary" class="z-depth-1" style="height: 3px; position: absolute; top: 0; right: 0;"></mat-progress-bar>
+                    <mat-progress-bar mode="indeterminate" *ngIf="loadingIndicator" color="primary" class="z-depth-1" style="height: 3px; position: absolute; top: 0; right:
+                      0;"></mat-progress-bar>
                   </div>
 
                   <div class="" *ngIf="!condensedView">
@@ -168,17 +175,19 @@
                                 'lowPriorityBorder': data.Priority === 'Low'
                                 }">{{data.Subject}}</div>
                             </div>
-                            <div class="text-right" matTooltip="Category" style="float: right;" *ngIf="data.LeadCategory===1">
-                              <i class="fa fa-diamond mr-1 pulse" *ngIf="data.LeadCategory===1"></i>
-                            </div>
-                            <div class="text-right" matTooltip="Category" style="float: right;" *ngIf="data.LeadCategory===2">
-                              <i class="fa fa-diamond mr-1 pulse"></i>
-                              <i class="fa fa-diamond mr-1 pulse"></i>
-                            </div>
-                            <div class="text-right" matTooltip="Category" style="float: right;" *ngIf="data.LeadCategory===3">
-                              <i class="fa fa-diamond mr-1 pulse"></i>
-                              <i class="fa fa-diamond mr-1 pulse"></i>
-                              <i class="fa fa-diamond mr-1 pulse"></i>
+                            <div style="position: absolute; top: 0;right: 0;margin: 0.5rem 0.5rem!important;">
+                              <div class="text-right" matTooltip="Category" style="float: right;" *ngIf="data.LeadCategory===1">
+                                <i class="fa fa-diamond mr-1 pulse" *ngIf="data.LeadCategory===1"></i>
+                              </div>
+                              <div class="text-right" matTooltip="Category" style="float: right;" *ngIf="data.LeadCategory===2">
+                                <i class="fa fa-diamond mr-1 pulse"></i>
+                                <i class="fa fa-diamond mr-1 pulse"></i>
+                              </div>
+                              <div class="text-right" matTooltip="Category" style="float: right;" *ngIf="data.LeadCategory===3">
+                                <i class="fa fa-diamond mr-1 pulse"></i>
+                                <i class="fa fa-diamond mr-1 pulse"></i>
+                                <i class="fa fa-diamond mr-1 pulse"></i>
+                              </div>
                             </div>
                           </div>
 
@@ -219,9 +228,10 @@
                               </div>
                               <div *ngIf="data.Message !== null" matTooltip="Last communication" (click)="openLeadMessage(i,p)" [ngClass]="{
                                 'highPriorityBorder': data.Priority === 'High',
-                                'mediumPriorityBorder': data.Priority === 'Medium',
+                                'mediumPriorityBorder': data.Priority ===
+                                'Medium',
                                 'lowPriorityBorder': data.Priority === 'Low'
-                              }">
+                                }">
                                 {{data.Message.OperationByName | titlecase}}: {{data.Message.MessageLog}} -
                                 <time> {{data.Message.OperationDate | date : 'medium' }} </time>
                               </div>
@@ -271,10 +281,10 @@
                                     Oid===data.TeamLeader.toString()))" (click)="processLead(data.Oid,1)">
                                     <span>Re-New</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [hidden]="!((src.status==='New' ||
+                                  <button class="actionsButton" mat-menu-item [hidden]="!( (src.status==='New' ||
                                     src.status==='InProcess') &&
-                                    (userRole==='Manager'
-                                    || (dashboardState==='myleads' &&
+                                    (userRole==='Manager' ||
+                                    (dashboardState==='myleads' &&
                                     userRole==='User' &&
                                     Oid===data.TeamLeader.toString())))" (click)="processLead(data.Oid,3)">
                                     <span>Won</span>
@@ -312,6 +322,12 @@
                                     <span style="margin-right: 10px">Change Category
                                     </span>
                                   </button>
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique; color: blue" (click)="updateAlertModal(i, p);
+                                    alertModal.show()">
+                                    <span style="margin-right: 10px">Add Reminder
+                                    </span>
+                                    <i class="fa fa-bell" aria-hidden="true"></i>
+                                  </button>
                                   <button class="actionsButton" mat-menu-item style="font-style: oblique" (click)="NewLeadMessage(i,p)">
                                     <span style="margin-right: 10px">Message</span>
                                     <i class="fa fa-comment"></i>
@@ -345,12 +361,18 @@
                             </div>
                           </div>
 
-                          <div class="card-text" style="display: flex;
+                          <div class="card-text" style="display: inline;
                             flex-direction: row; flex-wrap: wrap;
-                            justify-content: space-between; margin-top: 5px;
+                            justify-content: space-between; 
                             margin-right: 50px; cursor: default;">
-                            {{data.Priority}} ♦ {{data.ClientName}} ♦ {{data.EmailID}}
+                            <span style="font-weight: bold" [ngClass]="{
+                            'highPriorityText': data.Priority === 'High',
+                            'mediumPriorityText': data.Priority === 'Medium',
+                            'lowPriorityText': data.Priority === 'Low'
+                          }">{{data.Priority}}</span> ♦ {{data.ClientName}} ♦ {{data.EmailID}} ♦ {{data.ContactPerson1}} ♦
+                            {{data.ContactNumber1}}
                           </div>
+
 
                         </div>
                       </div>
@@ -382,7 +404,7 @@
                           {{value | titlecase}}
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Created By" prop="CreatedByName">
+                      <ngx-datatable-column name="Created By" prop="NewByName">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           <div class="text-center" style="border: 1px solid
                             rgba(255, 255, 255, 0); border-radius: 5px;
@@ -391,7 +413,7 @@
                           </div>
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Created On" prop="CreatedDate">
+                      <ngx-datatable-column name="Created On" prop="NewDate">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           <time>{{value | timeAgo}}</time>
                         </ng-template>
@@ -403,6 +425,11 @@
                             background-color: beige">
                             {{value | titlecase}}
                           </div>
+                        </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Assign By" prop="AssignByName">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                          {{value | titlecase}}
                         </ng-template>
                       </ngx-datatable-column>
                       <ngx-datatable-column name="Assign On" prop="AssignDate">
@@ -432,14 +459,14 @@
                         </ng-template>
                       </ngx-datatable-column>
                       <ngx-datatable-column [width]="150" name="Last Update" prop="Message.MessageLog"></ngx-datatable-column>
-                      <ngx-datatable-column name="Assign By" prop="AssignByName">
+                      <ngx-datatable-column name="InProcess By" prop="InProcessByName">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           {{value | titlecase}}
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Hold By" prop="HoldByName">
+                      <ngx-datatable-column name="InProcess On" prop="InProcessDate">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                          {{value | titlecase}}
+                          {{value | timeAgo}}
                         </ng-template>
                       </ngx-datatable-column>
                       <ngx-datatable-column name="Lost By" prop="LostByName">
@@ -447,9 +474,9 @@
                           {{value | titlecase}}
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Created By" prop="NewByName">
+                      <ngx-datatable-column name="Lost On" prop="LostDate">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-                          {{value | titlecase}}
+                          {{value | timeAgo}}
                         </ng-template>
                       </ngx-datatable-column>
                       <ngx-datatable-column name="Won By" prop="WonByName">
@@ -457,9 +484,19 @@
                           {{value | titlecase}}
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="InProcess By" prop="InProcessByName">
+                      <ngx-datatable-column name="Won On" prop="WonDate">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                          {{value | timeAgo}}
+                        </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Hold By" prop="HoldByName">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
                           {{value | titlecase}}
+                        </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Hold On" prop="HoldDate">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                          {{value | timeAgo}}
                         </ng-template>
                       </ngx-datatable-column>
                     </ngx-datatable>
@@ -575,6 +612,36 @@
   </div>
 </div>
 
+<!-- <button type="button" class="btn btn-primary relative waves-light"  mdbWavesEffect>Launch demo modal</button> -->
+<div mdbModal #alertModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myalertModalLabel"
+  aria-hidden="true" style="overflow: auto">
+  <div class="modal-dialog modal-side modal-top-right modal-notify modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="alertModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title text-white w-100" id="myModalLabel">Create Alert: {{event.LeadNo}}
+        </h4>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fa fa-4x fa-bell text-info animated swing pb-1"></i>
+        <br>
+        <p class="card-text">
+          {{event.Subject}}
+        </p>
+        <input type="text" class="form-control" placeholder="Add Information" [(ngModel)]="event.Remarks" autofocus="true">
+        <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.AlertDate" [altInput]="true" [convertModelValue]="true"
+          [enableTime]="true" dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Click to set date-time">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info waves-light" aria-label="Close" (click)="alertModal.hide()" mdbWavesEffect>Close</button>
+        <button type="button" class="btn btn-info relative waves-light" (click)="createAlert(); alertModal.hide()" mdbWavesEffect>Create Alert</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div mdbModal #demoBasic="mdb-modal" class="modal fade" id="basicExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true" style="overflow: auto">
@@ -604,210 +671,215 @@
           <br>
           <span *ngIf="modalData.AssignToName !== ''">Assignto&nbsp;:&nbsp;&nbsp;{{ modalData.AssignToName | titlecase}}</span>
         </div>
+        <br>
+        <mat-tab-group>
 
-        <!-- <div class="non-semantic-protector">
-        <h1 class="ribbon">
-          <strong class="ribbon-content">Contact Details:</strong>
-        </h1></div>-->
-        <div class="card" style="margin: 5px;border: 0.5px solid teal;">
-          <div class="card-header" style="color: teal;font-weight: bold;">
-            <i class="fa fa-address-card"></i>&nbsp;Contact Details
-            <span style="float: right">
-              <a href="mailto:{{modalData.EmailID}}?Subject={{modalData.LeadNo}}%20{{modalData.Subject}}" target="_top">{{modalData.EmailID}}</a>
-            </span>
-          </div>
-          <div class="card-body">
+          <mat-tab label="Ticket Details">
+            <div class="card-body" style="margin: 10px 5px 5px;border: 0.5px solid
+                snow;">
+              <table class="table table-sm table-responsive">
 
-            <div class="row">
+                <thead style="background-color: #d0f1fd;">
+                  <tr class="fontclass">
+                    <th></th>
+                    <th>
+                      <span class="space">Create</span>
+                    </th>
+                    <th>
+                      <span [ngClass]="{'space': modalData.AssignByName == ''}">Assign</span>
+                    </th>
+                    <th>
+                      <span [ngClass]="{'space': modalData.InProcessByName == ''}">InProcess</span>
+                    </th>
+                    <th>
+                      <span [ngClass]="{'space': modalData.WonByName == ''}">Won</span>
+                    </th>
+                    <th>
+                      <span [ngClass]="{'space': modalData.LostByName == ''}">Lost</span>
+                    </th>
+                    <th>
+                      <span [ngClass]="{'space': modalData.HoldByName == ''}">Hold</span>
+                    </th>
+                  </tr>
+                </thead>
 
-              <div class="card-text col" *ngIf="modalData.ContactPerson1!== ''
-                && modalData.ContactNumber1 !== 0">
-                <span class="numberCircle">1</span>
-                <span class="font-weight-bold">&nbsp;{{modalData.ContactPerson1}}</span>
-                <br> &nbsp;{{modalData.ContactNumber1}}
-                <br>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div>Date&nbsp;:&nbsp;</div>
+                    </td>
+                    <td>
+                      <div>{{modalData.NewDate | date }}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.AssignByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignDate | date }}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.InProcessByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.InProcessByName !== ''">{{modalData.InProcessDate | date }}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.WonByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.WonByName !== ''">{{modalData.WonDate | date }}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.LostByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.LostByName !== ''">{{modalData.LostDate | date }}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.HoldByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.HoldByName !== ''">{{modalData.HoldDate | date }}</div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div>Time&nbsp;:&nbsp;</div>
+                    </td>
+                    <td>
+                      <div>{{modalData.NewDate | date: 'shortTime'}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.AssignByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignDate | date: 'shortTime'}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.InProcessByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.InProcessByName !== ''">{{modalData.InProcessDate | date: 'shortTime'}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.WonByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.WonByName !== ''">{{modalData.WonDate | date: 'shortTime'}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.LostByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.LostByName !== ''">{{modalData.LostDate | date: 'shortTime'}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.HoldByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.HoldByName !== ''">{{modalData.HoldDate | date: 'shortTime'}}</div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div>By&nbsp;:&nbsp;</div>
+                    </td>
+                    <td>
+                      <div>{{modalData.NewByName | titlecase}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.AssignByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignByName | titlecase}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.InProcessByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.InProcessByName !== ''">{{modalData.InProcessByName | titlecase}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.WonByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.WonByName !== ''">{{modalData.WonByName | titlecase}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.LostByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.LostByName !== ''">{{modalData.LostByName | titlecase}}</div>
+                    </td>
+                    <td>
+                      <div *ngIf="modalData.HoldByName == ''">
+                        <span class="space"></span>
+                      </div>
+                      <div *ngIf="modalData.HoldByName !== ''">{{modalData.HoldByName | titlecase}}</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div *ngIf="attachment.length>0" class="attachmentstyle">
+                <strong class="font-weight-bold">Attachments&nbsp;:</strong>
+                <div style="display: inline;margin-left: 10px;" *ngFor="let item of attachment;">
+                  <a href="http://lakshyawebapi.rlmc.in/api/Upload/UploadFiles/{{item.ta.AttchmentName}}">
+                    <u>{{item.ta.AttchmentName}}</u>
+                  </a>
+                </div>
               </div>
-              <div class="card-text col" *ngIf="modalData.ContactPerson2!== ''
-                && modalData.ContactNumber2 !== 0">
-                <span class="numberCircle">2</span>
-                <span class="font-weight-bold">&nbsp;{{modalData.ContactPerson2}}</span>
-                <br> &nbsp;{{modalData.ContactNumber2}}
-                <br>
+
+            </div>
+
+          </mat-tab>
+
+          <mat-tab label="Contact Details">
+            <div class="card" style="margin: 5px;border: 0.5px solid teal;">
+              <div class="card-header" style="color: teal;font-weight: bold;">
+                <i class="fa fa-address-card"></i>&nbsp;Contact Details
+                <span style="float: right">
+                  <a href="mailto:{{modalData.EmailID}}?Subject={{modalData.LeadNo}}%20{{modalData.Subject}}" target="_top">{{modalData.EmailID}}</a>
+                </span>
               </div>
-              <div class="card-text col" *ngIf="modalData.ContactPerson3!== ''
-                && modalData.ContactNumber3 !== 0">
-                <span class="numberCircle">3</span>
-                <span class="font-weight-bold">&nbsp;{{modalData.ContactPerson3}}</span>
-                <br> &nbsp;{{modalData.ContactNumber3}}
-                <br>
+              <div class="card-body">
+
+                <div class="row">
+
+                  <div class="card-text col" *ngIf="modalData.ContactPerson1!== ''
+                          && modalData.ContactNumber1 !== 0">
+                    <span class="numberCircle">1</span>
+                    <span class="font-weight-bold">&nbsp;{{modalData.ContactPerson1}}</span>
+                    <br> &nbsp;{{modalData.ContactNumber1}}
+                    <br>
+                  </div>
+                  <div class="card-text col" *ngIf="modalData.ContactPerson2!== ''
+                          && modalData.ContactNumber2 !== 0">
+                    <span class="numberCircle">2</span>
+                    <span class="font-weight-bold">&nbsp;{{modalData.ContactPerson2}}</span>
+                    <br> &nbsp;{{modalData.ContactNumber2}}
+                    <br>
+                  </div>
+                  <div class="card-text col" *ngIf="modalData.ContactPerson3!== ''
+                          && modalData.ContactNumber3 !== 0">
+                    <span class="numberCircle">3</span>
+                    <span class="font-weight-bold">&nbsp;{{modalData.ContactPerson3}}</span>
+                    <br> &nbsp;{{modalData.ContactNumber3}}
+                    <br>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </mat-tab>
 
-        <div class="card-body" style="margin: 10px 5px 5px;border: 0.5px solid
-          snow;">
-          <table class="table table-sm table-responsive">
+          <mat-tab label="Address">
+            <!-- <iframe  height="100%" width="100%" [src]="mapurl"></iframe> -->
+          </mat-tab>
 
-            <thead style="background-color: #d0f1fd;">
-              <tr class="fontclass">
-                <th></th>
-                <th>
-                  <span class="space">Create</span>
-                </th>
-                <th>
-                  <span [ngClass]="{'space': modalData.AssignByName == ''}">Assign</span>
-                </th>
-                <th>
-                  <span [ngClass]="{'space': modalData.InProcessByName == ''}">InProcess</span>
-                </th>
-                <th>
-                  <span [ngClass]="{'space': modalData.WonByName == ''}">Won</span>
-                </th>
-                <th>
-                  <span [ngClass]="{'space': modalData.LostByName == ''}">Lost</span>
-                </th>
-                <th>
-                  <span [ngClass]="{'space': modalData.HoldByName == ''}">Hold</span>
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>
-                  <div>Date&nbsp;:&nbsp;</div>
-                </td>
-                <td>
-                  <div>{{modalData.NewDate | date }}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.AssignByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignDate | date }}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.InProcessByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.InProcessByName !== ''">{{modalData.InProcessDate | date }}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.WonByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.WonByName !== ''">{{modalData.WonDate | date }}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.LostByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.LostByName !== ''">{{modalData.LostDate | date }}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.HoldByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.HoldByName !== ''">{{modalData.HoldDate | date }}</div>
-                </td>
-              </tr>
-
-
-              <tr>
-                <td>
-                  <div>Time&nbsp;:&nbsp;</div>
-                </td>
-                <td>
-                  <div>{{modalData.NewDate | date: 'shortTime'}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.AssignByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignDate | date: 'shortTime'}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.InProcessByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.InProcessByName !== ''">{{modalData.InProcessDate | date: 'shortTime'}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.WonByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.WonByName !== ''">{{modalData.WonDate | date: 'shortTime'}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.LostByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.LostByName !== ''">{{modalData.LostDate | date: 'shortTime'}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.HoldByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.HoldByName !== ''">{{modalData.HoldDate | date: 'shortTime'}}</div>
-                </td>
-              </tr>
-
-
-              <tr>
-                <td>
-                  <div>By&nbsp;:&nbsp;</div>
-                </td>
-                <td>
-                  <div>{{modalData.NewByName | titlecase}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.AssignByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.AssignByName !== ''">{{modalData.AssignByName | titlecase}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.InProcessByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.InProcessByName !== ''">{{modalData.InProcessByName | titlecase}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.WonByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.WonByName !== ''">{{modalData.WonByName | titlecase}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.LostByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.LostByName !== ''">{{modalData.LostByName | titlecase}}</div>
-                </td>
-                <td>
-                  <div *ngIf="modalData.HoldByName == ''">
-                    <span class="space"></span>
-                  </div>
-                  <div *ngIf="modalData.HoldByName !== ''">{{modalData.HoldByName | titlecase}}</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div *ngIf="attachment.length>0" class="attachmentstyle">
-            <strong class="font-weight-bold">Attachments&nbsp;:</strong>
-            <div style="display: inline;margin-left: 10px;" *ngFor="let item of attachment;">
-              <a href="http://lakshyawebapi.rlmc.in/api/Upload/UploadFiles/{{item.ta.AttchmentName}}">
-                <u>{{item.ta.AttchmentName}}</u>
-              </a>
-            </div>
-          </div>
-
-        </div>
-
+        </mat-tab-group>
       </div>
-
     </div>
   </div>
 </div>
