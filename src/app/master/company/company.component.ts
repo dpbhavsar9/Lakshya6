@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertService } from 'ngx-alerts';
 import { EngineService } from '../../services/engine.service';
-import { Subscription ,  Observable } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditCompanyComponent } from '../modal/edit-company/edit-company.component';
 import { timer } from 'rxjs/internal/observable/timer';
@@ -128,7 +128,7 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
     // filter our rows
     const temp = this.temp.filter(function (d) {
-      if (d.CompanyName.toLowerCase().indexOf(val) !== -1 || !val) {
+      if (d.CompanyName !== null && d.CompanyName.toLowerCase().indexOf(val) !== -1 || !val) {
         return true;
       } else {
         return false;

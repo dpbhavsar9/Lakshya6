@@ -68,6 +68,7 @@ import { CalendarModule } from 'angular-calendar';
 import { NgbModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
+import { TeamSelectionComponent } from './transaction/team-selection/team-selection.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,8 @@ import 'flatpickr/dist/flatpickr.css';
     MeslogComponent,
     TimeAgoPipe,
     AlertComponent,
-    CalendarComponent
+    CalendarComponent,
+    TeamSelectionComponent
   ],
   imports: [
     BrowserModule,

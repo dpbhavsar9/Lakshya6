@@ -20,6 +20,7 @@ import {
   isSameMonth,
   addHours
 } from 'date-fns';
+import { Router } from '../../../../node_modules/@angular/router';
 
 
 @Component({
@@ -134,6 +135,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   public chartHovered(e: any): void { }
 
   constructor(private engineService: EngineService,
+    private router: Router,
     // tslint:disable-next-line:max-line-length
     private _cookieService: CookieService, private alertService: AlertService, public dialog: MatDialog, private dashboardComponent: DashboardComponent) {
     const cookieData = crypto.AES.decrypt(this._cookieService.get('response'), this._cookieService.get('Oid') + 'India');
@@ -474,6 +476,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.dashboardComponent.cloneDashboardState = this.dashboardState;
     this.Oid = this._cookieService.get('Oid');
     const Decrypt = crypto.AES.decrypt(this._cookieService.get('response').toString(), this.Oid + 'India');
@@ -481,6 +484,10 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     this.userRole = JSON.parse(decryptData).UserRole;
     this.userName = JSON.parse(decryptData).UserName;
     if (this.userRole !== 'Administrator') {
+      if (this._cookieService.get('TeamID') === undefined) {
+        // this.alertService.info('Please select team');
+        this.router.navigate(['/dashboard']);
+      }
       this.refreshData();
       this.subscription = this.engineService.getDashboardState().subscribe(dashboardState => {
         this.dashboardState = dashboardState.dashboardState.toString();
@@ -496,17 +503,19 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private refreshData(): void {
+  public refreshData(): void {
     this.loadingIndicator = true;
     if (this.dashboardState === 'byme') {
       this.url = 'Lead/GetMyLeads/' + this._cookieService.get('Oid');
+      this.allocationType = 'Team';
     } else if (this.dashboardState === 'myleads') {
       this.url = 'Lead/GetTeamLeads/' + this._cookieService.get('Oid');
     }
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        // console.log(res);
+        console.log(res);
         this.updateLeads(res);
+        // res = res.filter(x => x.Team.toString() === this._cookieService.get('TeamID'));
         this.updateFilter();
         if (!this.manualUpdateFlag) {
           this.subscribeToData();

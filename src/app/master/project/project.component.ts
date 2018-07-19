@@ -102,7 +102,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     // filter our rows
     const temp = this.temp.filter(function (d) {
-      if (d.ProjectName.toLowerCase().indexOf(val) !== -1 || !val) {
+      if (d.ProjectName !== null && d.ProjectName.toLowerCase().indexOf(val) !== -1 || !val) {
         return true;
       } else {
         return false;

@@ -4,16 +4,15 @@
 
     <logo>
 
-      <img src="assets/images/rsupport.png" style="max-width: 35px;
+      <img src="assets/images/rsupport.png" [routerLink]="['/dashboard']" style="max-width: 35px;
         padding-bottom: 2px; max-height: 35px; vertical-align: middle;">
-      <a class="logo navbar-brand" style="text-decoration: underlinetomato;
-        color: red; font-weight: bold">
+      <a class="logo navbar-brand" [routerLink]="['/dashboard']" style="color: red; font-weight: bold">
         <strong style="border-bottom: 2px solid tomato">Lakshya </strong>
       </a>
 
       <ul class="navbar-nav mr-auto" style="display: inline;">
-        <li *ngIf="userRole!=='Administrator'" matTooltip="Leads for me to
-          work" class="nav-item btn-group" (click)="updateDashboardState('myleads')" [routerLink]="['/dashboard']">
+        <li *ngIf="userRole!=='Administrator'" [hidden]=" teamSelectionState == true" matTooltip="Leads for me to
+          work" class="nav-item btn-group" (click)="updateDashboardState('myleads')" [routerLink]="['/dashboard/mydashboard']">
           <a id="navbar-dynamic-download" class="nav-link waves-effect
             waves-light btn btn-sm" [ngClass]="{
             'badge-dashboard' : cloneDashboardState==='myleads'
@@ -23,8 +22,8 @@
           </a>
         </li>
 
-        <li *ngIf="userRole!=='Administrator'" matTooltip="Leads created by
-          me" class="nav-item dropdown btn-group" (click)="updateDashboardState('byme')" [routerLink]="['/dashboard']">
+        <li *ngIf="userRole!=='Administrator'" [hidden]=" teamSelectionState == true" matTooltip="Leads created by
+          me" class="nav-item dropdown btn-group" (click)="updateDashboardState('byme')" [routerLink]="['/dashboard/mydashboard']">
           <span *ngIf="openTicketCounter!=0" class="badge badge-light
             openLeadCounter">
             <!-- data-toggle="modal" data-target="#basicExample"
@@ -49,7 +48,7 @@
           </a>
         </li>
 
-        <li *ngIf="userRole!=='Administrator'" class="nav-item dropdown
+        <li *ngIf="userRole!=='Administrator'" [hidden]=" teamSelectionState == true" class="nav-item dropdown
           btn-group" [routerLink]="['create-lead']">
           <a id="navbar-dynamic-download" class="nav-link waves-effect
             waves-light btn btn-sm">

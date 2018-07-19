@@ -7,7 +7,6 @@ import * as crypto from 'crypto-js';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { stringify } from 'querystring';
 
 
 @Injectable()
@@ -38,7 +37,9 @@ export class EngineService implements OnInit {
   isClient: string;
   currentRoute: string;
 
-  private subject = new Subject<any>();
+  private teamSelection = new Subject<any>();
+  private dashboardState = new Subject<any>();
+
   constructor(private http: Http, private httpC: HttpClient, private _cookieService: CookieService, private router: Router) {
     this.setHeaders();
   }
@@ -123,11 +124,19 @@ export class EngineService implements OnInit {
   }
 
   updateDashboardState(dashboardState: string) {
-    this.subject.next({ dashboardState: dashboardState });
+    this.dashboardState.next({ dashboardState: dashboardState });
   }
 
   getDashboardState(): Observable<any> {
-    return this.subject.asObservable();
+    return this.dashboardState.asObservable();
+  }
+
+  updateTeamSelectionState(teamSelectionState: boolean) {
+    this.teamSelection.next({ teamSelectionState: teamSelectionState });
+  }
+
+  getTeamSelectionState(): Observable<any> {
+    return this.teamSelection.asObservable();
   }
 
   setHeaders() {

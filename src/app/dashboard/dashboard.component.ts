@@ -28,7 +28,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   UserCustomer: string;
   dashboardState = 'myleads';
   cloneDashboardState = this.dashboardState;
-  subscription: Subscription;
+  dashboardStateSubscription: Subscription;
+  teamSelectionState = true;
+  teamSelectionSubscription: Subscription;
   url: string;
   Oid: string;
   typeVar = 'password';
@@ -47,7 +49,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.passForm = new FormGroup({
       currPass: new FormControl(null, [
         Validators.required,
@@ -57,6 +58,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       ])
     });
 
+    this.engineService.updateTeamSelectionState(true);
     this.spinner.show();
     const cookieData = crypto.AES.decrypt(this._cookieService.get('response'), this._cookieService.get('Oid') + 'India');
     this.Oid = JSON.parse(cookieData.toString(crypto.enc.Utf8)).Oid;
@@ -78,10 +80,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }).length;
       this.spinner.hide();
 
-      this.subscription = this.engineService.getDashboardState().subscribe(dashboardState => {
+      this.dashboardStateSubscription = this.engineService.getDashboardState().subscribe(dashboardState => {
         this.dashboardState = dashboardState.dashboardState;
         this.cloneDashboardState = dashboardState.dashboardState;
       });
+      this.teamSelectionSubscription = this.engineService.getTeamSelectionState().subscribe(teamSelectionState => {
+        this.teamSelectionState = teamSelectionState.teamSelectionState;
+      });
+      // console.log(this.teamSelectionState);
       this.engineService.getCookieData();
     }).catch();
   }
@@ -178,7 +184,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.dashboardStateSubscription.unsubscribe();
   }
 
 }

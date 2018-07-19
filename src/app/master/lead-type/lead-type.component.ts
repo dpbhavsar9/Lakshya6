@@ -91,7 +91,7 @@ export class LeadTypeComponent implements OnInit, OnDestroy {
 
     // filter our rows
     const temp = this.temp.filter(function (d) {
-      if (d.TypeName.toLowerCase().indexOf(val) !== -1 || !val) {
+      if (d.TypeName !== null && d.TypeName.toLowerCase().indexOf(val) !== -1 || !val) {
         return true;
       } else {
         return false;

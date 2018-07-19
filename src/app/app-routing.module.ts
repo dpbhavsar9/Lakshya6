@@ -22,6 +22,7 @@ import { EditAuthGuard } from './services/edit-auth-guard.service';
 import { MasterAuthGuard } from './services/master-auth-guard.service';
 import { CreateLeadComponent } from './transaction/create-lead/create-lead.component';
 import { CalendarComponent } from './transaction/calendar/calendar.component';
+import { TeamSelectionComponent } from './transaction/team-selection/team-selection.component';
 
 const appRoutes: Routes = [
   {
@@ -36,7 +37,8 @@ const appRoutes: Routes = [
     canActivateChild: [AuthGuard],
     canDeactivate: [CanDeactivateGuard],
     children: [
-      { path: '', component: DashboardToolsComponent },
+      { path: '', component: TeamSelectionComponent },
+      { path: 'mydashboard', component: DashboardToolsComponent },
       { path: 'calendar', component: CalendarComponent },
       { path: 'company', component: CompanyComponent, canActivate: [MasterAuthGuard] },
       { path: 'company/create-company', component: CreateCompanyComponent, canActivate: [EditAuthGuard] },

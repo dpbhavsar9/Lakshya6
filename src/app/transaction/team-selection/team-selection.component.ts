@@ -1,18 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { MatDialog } from '@angular/material/dialog';
-import { EngineService } from '../../services/engine.service';
 import { Router } from '@angular/router';
 import { AlertService } from 'ngx-alerts';
-import { EditTeamComponent } from '../modal/edit-team/edit-team.component';
 import { timer } from 'rxjs/internal/observable/timer';
+import { EngineService } from '../../services/engine.service';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { CookieService } from '../../../../node_modules/ngx-cookie';
+import { DashboardComponent } from '../../dashboard/dashboard.component';
 
 @Component({
-  selector: 'app-team',
-  templateUrl: './team.component.html',
-  styleUrls: ['./team.component.scss']
+  selector: 'app-team-selection',
+  templateUrl: './team-selection.component.html',
+  styleUrls: ['./team-selection.component.scss']
 })
-export class TeamComponent implements OnInit, OnDestroy {
+export class TeamSelectionComponent implements OnInit, OnDestroy {
   private timerSubscription: Subscription;
   url: any;
   hoveredRow: any[] = [];
@@ -52,6 +55,7 @@ export class TeamComponent implements OnInit, OnDestroy {
   updatedLength = 0;
   rows: any[];
   loadingIndicator = true;
+  image: string;
   columns = [
     {
       prop: 'CompanyID',
@@ -113,11 +117,34 @@ export class TeamComponent implements OnInit, OnDestroy {
   userRole: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private engineService: EngineService, private alertService: AlertService, private router: Router, public dialog: MatDialog) { }
+  constructor(private _http: HttpClient, private dashboard: DashboardComponent, private _cookieService: CookieService, private engineService: EngineService, private alertService: AlertService, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit() {
+    this._cookieService.remove('TeamID');
+    this._randomImageUrls();
     this.refreshData();
     this.userRole = this.engineService.userRole;
+    this.engineService.updateTeamSelectionState(true);
+  }
+  private _randomImageUrls() {
+    // const randomId = Math.floor(Math.random() * 1083) + 1;
+    this.image = 'url(https://picsum.photos/900/500?random)';
+  }
+
+  getImage() {
+    // console.log('getImage-', this.image);
+    return this.image;
+  }
+
+  selectTeam(row) {
+    // console.log(row.Oid);
+    this.dashboard.updateDashboardState('myleads');
+    this._cookieService.put('TeamID', row.Oid);
+  }
+
+  updateDashboardState(state: boolean) {
+    this.engineService.validateUser();
+    this.engineService.updateTeamSelectionState(state);
   }
 
   public exportExcel(): void {
@@ -137,7 +164,7 @@ export class TeamComponent implements OnInit, OnDestroy {
 
     // filter our rows
     const temp = this.temp.filter(function (d) {
-      if (d.TeamName !== null && d.TeamName.toLowerCase().indexOf(val) !== -1 || !val) {
+      if (d.TeamName.toLowerCase().indexOf(val) !== -1 || !val) {
         return true;
       } else {
         return false;
@@ -198,30 +225,10 @@ export class TeamComponent implements OnInit, OnDestroy {
     // console.log(selected);
   }
 
-  public editRow(row) {
-    // // console.log(row);
-    const dialogRef = this
-      .dialog
-      .open(EditTeamComponent, {
-        minWidth: '60%',
-        maxWidth: '95%',
-        panelClass: 'editDialog',
-        data: row,
-        hasBackdrop: true,
-        closeOnNavigation: true
-      });
-
-    dialogRef
-      .afterClosed()
-      .subscribe(result => {
-        // // console.log('The dialog was closed');
-        this.refreshData();
-      });
-  }
-
   ngOnDestroy() {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
+    this.engineService.updateTeamSelectionState(false);
   }
 }

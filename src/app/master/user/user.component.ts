@@ -75,9 +75,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
 
   private refreshData(): void {
-    // console.log('user master refreshed');
-    // this.userMasterSubscription =
-    // setTimeout(() => {
+
     this.url = 'Users/GetUsers';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
@@ -85,10 +83,8 @@ export class UserComponent implements OnInit, OnDestroy {
         this.subscribeToData();
         this.updateFilter();
       }).catch(err => {
-        // console.log(err);
         this.alertService.danger('Server response error @refreshData');
       });
-    // }, 0);
   }
 
   private onClear(): void {
@@ -101,19 +97,19 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   public updateFilter() {
-
+    console.log(this.temp);
     const val = this.val.toLocaleLowerCase().trim();
     // filter our data
     const temp = this.temp.filter(function (d) {
-      if (d.UserName.toLowerCase().indexOf(val) !== -1 || !val) {
+      if (d.UserName !== null && d.UserName.toLowerCase().indexOf(val) !== -1 || !val) {
         return true;
-      } else if (d.MobileNo.toLowerCase().indexOf(val) !== -1 || !val) {
+      } else if (d.MobileNo !== null && d.MobileNo.toLowerCase().indexOf(val) !== -1 || !val) {
         return true;
-      } else if (d.Email.toLowerCase().indexOf(val) !== -1 || !val) {
+      } else if (d.Email !== null && d.Email.toLowerCase().indexOf(val) !== -1 || !val) {
         return true;
-      } else if (d.Department.toLowerCase().indexOf(val) !== -1 || !val) {
+      } else if (d.Department !== null && d.Department.toLowerCase().indexOf(val) !== -1 || !val) {
         return true;
-      } else if (d.Designation.toLowerCase().indexOf(val) !== -1 || !val) {
+      } else if (d.Designation !== null && d.Designation.toLowerCase().indexOf(val) !== -1 || !val) {
         return true;
       } else {
         return false;
