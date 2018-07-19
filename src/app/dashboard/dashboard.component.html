@@ -7,8 +7,10 @@
       <img src="assets/images/rsupport.png" [routerLink]="['/dashboard']" style="max-width: 35px;
         padding-bottom: 2px; max-height: 35px; vertical-align: middle;">
       <a class="logo navbar-brand" [routerLink]="['/dashboard']" style="color: red; font-weight: bold">
-        <strong style="border-bottom: 2px solid tomato">Lakshya </strong>
+        <strong style="border-bottom: 2px solid tomato">Lakshya</strong>
+        <sub style="font-weight: lighter; padding-left: 5px; font-size: 0.7rem; position: relative; left: -2px; top: 5px;">1.0</sub>
       </a>
+
 
       <ul class="navbar-nav mr-auto" style="display: inline;">
         <li *ngIf="userRole!=='Administrator'" [hidden]=" teamSelectionState == true" matTooltip="Leads for me to
@@ -40,7 +42,7 @@
         </li>
 
         <li *ngIf="userRole==='Administrator'" class="nav-item dropdown
-          btn-group" [routerLink]="['/dashboard']">
+          btn-group" [routerLink]="['/dashboard/mydashboard']">
           <a id="navbar-dynamic-download" matTooltip="Dashboard Screen" class="nav-link waves-effect waves-light btn btn-sm
             badge-dashboard">
             <i class="fa fa-cog" aria-hidden="true"></i>

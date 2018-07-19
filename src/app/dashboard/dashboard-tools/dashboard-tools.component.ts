@@ -515,7 +515,13 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
       .then(res => {
         console.log(res);
         this.updateLeads(res);
-        // res = res.filter(x => x.Team.toString() === this._cookieService.get('TeamID'));
+
+        // if (this.dashboardState === 'byme') {
+        //   res = res.filter(x => x.TeamID.toString() === this._cookieService.get('TeamID'));
+        // } else if (this.dashboardState === 'myleads') {
+        //   res = res.filter(x => x.TeamID.toString() === this._cookieService.get('TeamID'));
+        // }
+
         this.updateFilter();
         if (!this.manualUpdateFlag) {
           this.subscribeToData();

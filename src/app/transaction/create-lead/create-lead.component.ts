@@ -44,8 +44,9 @@ export class CreateLeadComponent implements OnInit {
   files: UploadFile[] = [];
   selectedDiamond = 1;
   defaultValue = {
-    Company: { Oid: 1, CompanyName: 'Raj Barcode Systems Pvt Ltd' },
-    Project: { Oid: 1, ProjectName: 'RBSPL Projects' },
+    Company: { Oid: this._cookieService.get('CompanyID'), CompanyName: 'Raj Barcode Systems Pvt Ltd' },
+    Project: { Oid: this._cookieService.get('ProjectID'), ProjectName: 'RBSPL Projects' },
+    Team: { Oid: this._cookieService.get('TeamID'), TeamName: 'RBSPL Projects' },
   };
 
   // tslint:disable-next-line:max-line-length

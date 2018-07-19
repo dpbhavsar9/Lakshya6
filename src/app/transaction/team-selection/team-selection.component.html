@@ -41,12 +41,12 @@
                       rows">
 
         <!-- Card -->
-        <div class="card hoverable" (click)="selectTeam(row)" [routerLink]="['mydashboard']" data-toggle="modal" data-target="#basicExample">
+        <div class="card hoverable" data-toggle="modal" data-target="#basicExample">
 
           <!-- Title -->
           <div class="card-body">
             <div class="row">
-              <div class="col-8">
+              <div class="col-8" (click)="selectTeam(row)">
                 <div class="">
                   <i class="fa fa-group" aria-hidden="true" style="color: darkblue;"></i>
                   <strong style="margin-left: 5px">{{row.TeamName | titlecase}}</strong>
@@ -59,7 +59,7 @@
           </div>
 
           <!-- Card content -->
-          <div class="card-body">
+          <div class="card-body" (click)="selectTeam(row)">
             <!-- Text -->
             <div class="clearfix">
               <div class="row">
@@ -148,15 +148,6 @@
         <ngx-datatable-column name="ProjectName" prop="ProjectName">
         </ngx-datatable-column>
         <ngx-datatable-column name="Status" prop="Status"></ngx-datatable-column>
-        <ngx-datatable-column name="" [width]="60" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false"
-          *ngIf="userRole==='Manager' || userRole==='Administrator'">
-          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-
-            <a class="fa fa-pencil" (click)="editRow(row)"></a>&nbsp;
-
-          </ng-template>
-
-        </ngx-datatable-column>
 
       </ngx-datatable>
     </div>
@@ -249,9 +240,7 @@
 
       </div>
       <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-primary waves-light" data-dismiss="modal" (click)="editRow(selected);fluid.hide()" mdbWavesEffect>Edit</button>
         <button type="button" class="btn btn-danger waves-light" data-dismiss="modal" (click)="fluid.hide()" mdbWavesEffect>Close</button>
-
       </div>
     </div>
   </div>

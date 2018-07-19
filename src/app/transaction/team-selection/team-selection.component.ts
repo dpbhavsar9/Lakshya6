@@ -6,7 +6,7 @@ import { AlertService } from 'ngx-alerts';
 import { timer } from 'rxjs/internal/observable/timer';
 import { EngineService } from '../../services/engine.service';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import * as crypto from 'crypto-js';
 import { CookieService } from '../../../../node_modules/ngx-cookie';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 
@@ -16,8 +16,10 @@ import { DashboardComponent } from '../../dashboard/dashboard.component';
   styleUrls: ['./team-selection.component.scss']
 })
 export class TeamSelectionComponent implements OnInit, OnDestroy {
+
   private timerSubscription: Subscription;
   url: any;
+  Oid: string;
   hoveredRow: any[] = [];
   selected: any = {
     '$id': '1',
@@ -121,6 +123,13 @@ export class TeamSelectionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._cookieService.remove('TeamID');
+    this.Oid = this._cookieService.get('Oid');
+    const Decrypt = crypto.AES.decrypt(this._cookieService.get('response').toString(), this.Oid + 'India');
+    const decryptData = Decrypt.toString(crypto.enc.Utf8);
+    this.userRole = JSON.parse(decryptData).UserRole;
+    if (this.userRole === 'Administrator') {
+      this.router.navigate(['/dashboard/mydashboard']);
+    }
     this._randomImageUrls();
     this.refreshData();
     this.userRole = this.engineService.userRole;
@@ -137,9 +146,12 @@ export class TeamSelectionComponent implements OnInit, OnDestroy {
   }
 
   selectTeam(row) {
-    // console.log(row.Oid);
     this.dashboard.updateDashboardState('myleads');
     this._cookieService.put('TeamID', row.Oid);
+    this._cookieService.put('ProjectID', row.ProjectID);
+    this._cookieService.put('CompanyID', row.CompanyID);
+    // console.log(row);
+    this.router.navigate(['/dashboard/mydashboard']);
   }
 
   updateDashboardState(state: boolean) {
@@ -205,7 +217,7 @@ export class TeamSelectionComponent implements OnInit, OnDestroy {
   }
 
   private getDataForModal(row) {
-    // console.log(row);
+    console.log(row);
     this.selected = row;
     // tslint:disable-next-line:max-line-length
     this.chartData = [this.selected.Open, this.selected.WIP, this.selected.Hold, this.selected.Close, this.selected.Cancel, this.selected.Dump];
