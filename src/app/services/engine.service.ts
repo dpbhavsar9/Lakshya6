@@ -14,8 +14,8 @@ export class EngineService implements OnInit {
   headers: Headers;
   options: RequestOptions;
   // baseUrl = 'http://192.168.0.250:8002/api/';
-  baseUrl = 'http://192.168.0.13:8004/api/';
-  // baseUrl = 'http://lakshyawebapi.rlmc.in/api/';
+  // baseUrl = 'http://192.168.0.13:8004/api/';
+  baseUrl = 'http://lakshyawebapi.rlmc.in/api/';
   // baseUrl = 'http://localhost:3979/api/';
   URL: string;
   users: any;
@@ -39,6 +39,10 @@ export class EngineService implements OnInit {
 
   private teamSelection = new Subject<any>();
   private dashboardState = new Subject<any>();
+  private byMeLeadCounter = new Subject<any>();
+  private forMeLeadCounter = new Subject<any>();
+  private closeMod = new Subject<any>();
+
 
   constructor(private http: Http, private httpC: HttpClient, private _cookieService: CookieService, private router: Router) {
     this.setHeaders();
@@ -137,6 +141,28 @@ export class EngineService implements OnInit {
 
   getTeamSelectionState(): Observable<any> {
     return this.teamSelection.asObservable();
+  }
+
+  updateByMeLeadCounter(count: number) {
+    this.byMeLeadCounter.next({ byMeLeadCounter: count });
+  }
+
+  getByMeLeadsCounter(): Observable<any> {
+    return this.byMeLeadCounter.asObservable();
+  }
+  updateForMeLeadCounter(count: number) {
+    this.forMeLeadCounter.next({ forMeLeadCounter: count });
+  }
+
+  getForMeLeadsCounter(): Observable<any> {
+    return this.forMeLeadCounter.asObservable();
+  }
+
+  closeModal() {
+    this.closeMod.next(1);
+  }
+  getCloseModal() {
+    return this.closeMod.asObservable();
   }
 
   setHeaders() {

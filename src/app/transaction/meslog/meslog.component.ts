@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie';
 import * as moment from 'moment';
 import { timer } from 'rxjs/internal/observable/timer';
 import { AlertComponent } from '../../master/modal/alert/alert.component';
+import { Subscription } from '../../../../node_modules/rxjs';
 
 
 @Component({
@@ -60,18 +61,15 @@ export class MeslogComponent implements OnInit, OnDestroy {
       'ProjectID': data.ProjectID,
       'LeadID': data.LeadID,
       'LeadNo': data.LeadNo,
-      'LeadStatus': data.LeadStatus,
+      'LeadStatus': data.LeadStatus
     };
     this.leadStatus = data.LeadStatus.toString();
-    // console.log(this.ticketStatus);
-    // console.log('---------', JSON.stringify(this.ticketData));
   }
 
   ngOnInit() {
 
     this.leadId = this.leadData.LeadID;
     this.leadNo = this.leadData.LeadNo;
-    // console.log('---Lead Id----', this.leadId);
     this.checkMessage(this.leadId);
 
     const timerVar = timer(30 * 1000);
@@ -93,7 +91,7 @@ export class MeslogComponent implements OnInit, OnDestroy {
     this.loadingIndicator = true;
     this.url = 'Lead/GetLeadMessage/' + this.leadId;
     this.engineService.getData(this.url).toPromise().then(data => {
-      console.log('data in checkMessage', data);
+
       this.message.length = 0;
       for (const i in data) {
         if (data[i].hasOwnProperty('Oid')) {
@@ -112,19 +110,10 @@ export class MeslogComponent implements OnInit, OnDestroy {
           const UserName = data[i].UserName;
           let check;
           if (this._cookieService.get('Oid') === OperationBy.toString()) {
-            // console.log('------Self------------------------------------');
             check = 'self';
           } else {
-            // console.log('------other------------------------------------');
             check = 'other';
           }
-
-          const startTime = moment(new Date());
-          const endTime = moment(OperationDate);
-          const duration = moment.duration(endTime.diff(startTime));
-          const hours = duration.asHours();
-          const minutes = (duration.asMinutes()) % 60;
-          // console.log('====Duration=====-----' + hours + '-----' + minutes + '----------');
 
           this.message.push({
             Oid: id,
@@ -146,13 +135,26 @@ export class MeslogComponent implements OnInit, OnDestroy {
           this.mesLeadData.LeadNo = this.leadData.LeadNo;
           this.mesLeadData.LeadBacklogID = Oid;
 
-        } else {
-          // console.log('exsdsdfjdslf');
         }
       }
       this.loadingIndicator = false;
     }).catch(err => {
-      // console.log('-------' + err);
+    });
+
+    setTimeout(() => {
+      this.updateNotificationFlag();
+    }, 1000);
+  }
+
+  updateNotificationFlag() {
+
+    const data = {
+      UserID: this._cookieService.get('Oid'),
+      LeadID: this.mesLeadData.LeadID.toString()
+    };
+    this.url = 'Lead/PutNotificationUpdate';
+    this.engineService.updateData(this.url, data).then(res => {
+    }).catch(err => {
     });
   }
 
@@ -169,11 +171,8 @@ export class MeslogComponent implements OnInit, OnDestroy {
       LeadStatus: this.leadData.LeadStatus
     };
 
-    // console.log('----Ticket data---' + JSON.stringify(data));
-
     this.url = 'Lead/PostLeadLog';
     this.engineService.postData(this.url, data).then(res => {
-      // console.log('--Success--');
       this.checkMessage(this.leadId);
     }).catch();
 
@@ -208,15 +207,12 @@ export class MeslogComponent implements OnInit, OnDestroy {
         if (result.toString() === 'Yes') {
 
           window.location.href = 'http://lakshyawebapi.rlmc.in/api//Upload/UploadFiles/' + fileName;
-          // window.location.href = 'http://192.168.0.13:8004/api/Upload/UploadFiles/' + fileName;
         } else {
-
         }
       });
   }
 
   handleFileInput(files: FileList) {
-
     this.files = files;
   }
 
@@ -248,7 +244,9 @@ export class MeslogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscribe.unsubscribe();
+    if (this.subscribe) {
+      this.subscribe.unsubscribe();
+    }
   }
 
 }

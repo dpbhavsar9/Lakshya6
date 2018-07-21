@@ -38,7 +38,7 @@
 
             <div class="card-body">
               <mat-form-field>
-                <mat-select placeholder="Company" (selectionChange)="loadProjects()" formControlName="CompanyID">
+                <mat-select placeholder="Company" (selectionChange)="loadChangeProjects()" formControlName="CompanyID">
                   <mat-option *ngFor="let item of companyList" [value]="item.Oid">
                     {{item.CompanyName}}
                   </mat-option>
@@ -72,10 +72,9 @@
 
             <div class="card-body">
               <mat-form-field>
-                <mat-select placeholder="Users" formControlName="Users" [hidden]="updateTeamForm.get('ProjectID').value== null" [(ngModel)]="selectedUsers"
-                  [compareWith]="compareFnForSelectedUser" (selectionChange)="onUserSelected()" multiple>
-                  <mat-option *ngFor="let item of userList" [value]="{Oid:
-                      item.Oid, UserName: item.UserName, UserRole: ''}">
+                <mat-select placeholder="Users" formControlName="Users" [hidden]="updateTeamForm.get('ProjectID').value== null" [compareWith]="compareFnForSelectedUser"
+                  (selectionChange)="onUserSelected()" multiple>
+                  <mat-option *ngFor="let item of userList" [value]="{UserID: item.UserID, UserName: item.UserName, UserRole: ''}">
                     {{item.UserName}}
                   </mat-option>
                 </mat-select>
@@ -86,7 +85,7 @@
       </div>
 
       <!-- Assign User Role -->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col">
           <div class="card animated zoomIn">
 
@@ -118,7 +117,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>-->
 
 
       <!-- Select Team Leader -->
@@ -129,7 +128,7 @@
             <div class="card-body">
               <mat-form-field>
                 <mat-select placeholder="TeamLeader" formControlName="TeamLeader">
-                  <mat-option *ngFor="let item of finalUsersList" [value]="item.UserID">
+                  <mat-option *ngFor="let item of selectedUsers" [value]="item.UserID">
                     {{item.UserName}}
                   </mat-option>
                 </mat-select>

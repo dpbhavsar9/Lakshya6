@@ -140,14 +140,14 @@ div>a:hover {
   font-family: Calibri;
 }
 
-.openLeadCounter {
+.leadCounter {
   position: absolute;
   top: 0;
   right: 0;
   margin-top: -5px !important;
   margin-right: -5px !important;
   z-index: 3;
-  background-color: white;
-  color: darkblue;
+  background-color: red;
+  color: white;
   border-radius: 5px;
 }

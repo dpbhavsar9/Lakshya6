@@ -16,7 +16,12 @@ export class EditTeamComponent implements OnInit {
   updateTeamForm: FormGroup;
   companyList: any[] = [];
   projectList: any[] = [];
-  userList: any[] = [];
+  // userList: any[] = [];
+  userList: Array<{
+    'UserID': any,
+    'UserRole': any,
+    'UserName': any
+  }> = [];
   statusList = [
     { value: 'A', viewValue: 'Active' },
     { value: 'C', viewValue: 'Inactive' }
@@ -26,8 +31,8 @@ export class EditTeamComponent implements OnInit {
     { value: 'Manager', viewValue: 'Manager' },
     { value: 'User', viewValue: 'User' }
   ];
-  selectedUsers: Array<{ Oid: string, UserName: string, UserRole: string }> = [];
-  finalUsersList: Array<{ UserID: string, UserName: string, UserRole: string }> = [];
+  selectedUsers: Array<{ UserID: any, UserName: any, UserRole: any }> = [];
+  // finalUsersList: Array<{ UserID: string, UserName: string, UserRole: string }> = [];
 
   // tslint:disable-next-line:max-line-length
   constructor(private alertService: AlertService,
@@ -42,11 +47,11 @@ export class EditTeamComponent implements OnInit {
     // selectedUser => {Oid:item.Oid, UserName: item.UserName, UserRole: "Administrator"}
     // finalUsersList => {UserID: 9, UserName: "DARSHAN", UserRole: "Administrator"}
     for (let i = 0; i < this.data.TeamMembers.length; i++) {
-      const Oid = this.data.TeamMembers[i].UserID;
+      const UserID = this.data.TeamMembers[i].UserID;
       const UserName = this.data.TeamMembers[i].UserName;
       const UserRole = this.data.TeamMembers[i].UserRole;
-      this.selectedUsers.push({ 'Oid': Oid, 'UserName': UserName, 'UserRole': UserRole });
-      this.finalUsersList.push({ 'UserID': Oid, 'UserName': UserName, 'UserRole': UserRole });
+      this.selectedUsers.push({ 'UserID': UserID, 'UserName': UserName, 'UserRole': UserRole });
+      // this.finalUsersList.push({ 'UserID': Oid, 'UserName': UserName, 'UserRole': UserRole });
     }
     this.prepareForm();
     this.loadCompanies();
@@ -55,7 +60,7 @@ export class EditTeamComponent implements OnInit {
   }
 
   compareFnForSelectedUser(user1: any, user2: any) {
-    return user1 && user2 ? user1.Oid === user2.Oid : user1 === user2;
+    return user1 && user2 ? user1.UserID === user2.UserID : user1 === user2;
   }
 
   compareFnForAssignRole(val1: any, val2: any) {
@@ -76,8 +81,7 @@ export class EditTeamComponent implements OnInit {
       CompanyID: new FormControl(this.data.CompanyID, Validators.required),
       ProjectID: new FormControl(this.data.ProjectID, Validators.required),
       TeamLeader: new FormControl(this.data.TeamLeader, Validators.required),
-      Users: new FormControl(null, Validators.required),
-      UsersForTeamWithRoles: new FormControl(null),
+      Users: new FormControl(this.selectedUsers, Validators.required),
       TeamMemberList: new FormControl(this.data.TeamMembers),
       Status: new FormControl(this.data.Status, Validators.required),
       UpdatedBy: new FormControl(this._cookieService.get('Oid'))
@@ -85,57 +89,48 @@ export class EditTeamComponent implements OnInit {
   }
 
   loadCompanies() {
-    // Company Dropdown - start
+    this.userList.length = 0;
     this.url = 'Company/GetAllCompany';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        // // console.log(res);
         this.companyList = res;
       })
       .catch(err => {
-        // // console.log(err);
         this.alertService.danger('Server response error! @loadCompany');
       });
-    // Company Dropdown - end
   }
 
   loadProjects() {
-
+    this.userList.length = 0;
     const company = this.updateTeamForm.get('CompanyID').value;
-    // console.log('---- Load Project ----', company);
-    // Company Dropdown - start
+
     this.url = 'Project/GetProject/' + company;
     this.engineService.getData(this.url).toPromise()
       .then(res => {
         this.projectList = res.filter(data => data.ProjectCompany === company);
       })
       .catch(err => {
-        // // console.log(err);
         this.alertService.danger('Server response error!');
       });
-    // Company Dropdown - end
-
   }
 
   loadUsers() {
-    this.url = 'Users/GetAllUser';
+    this.userList.length = 0;
+    const company = this.updateTeamForm.get('CompanyID').value;
+    this.url = 'Users/GetAllUser/' + company;
     this.engineService.getData(this.url).toPromise().then((res => {
-      this.userList = res;
+      // this.userList = res;
+      res.forEach(x => {
+        this.userList.push({ UserID: x.Oid, UserName: x.UserName, UserRole: 'User' });
+      });
     })).catch(err => {
       this.alertService.danger('Server response error! @loadUsers');
     });
-    // // console.log('loadUsers - this.finalUsersList', this.finalUsersList);
   }
 
   updateTeam() {
     this.engineService.validateUser();
     if (this.updateTeamForm.status === 'VALID') {
-
-      for (let i = 0; i < this.finalUsersList.length; i++) {
-        if (this.finalUsersList[i].UserRole === null) {
-          return this.alertService.danger('Please select user role');
-        }
-      }
 
       this.url = 'Team/PutTeam';
       this.engineService.updateData(this.url, this.updateTeamForm.value).then(response => {
@@ -146,7 +141,6 @@ export class EditTeamComponent implements OnInit {
             .close();
         }
       }).catch(error => {
-        // console.log(this.updateTeamForm.value);
         this.alertService.danger('Team creation failed!');
       });
     }
@@ -158,59 +152,38 @@ export class EditTeamComponent implements OnInit {
       .close();
   }
 
+  loadChangeProjects() {
+    this.selectedUsers.length = 0;
+    this.loadProjects();
+  }
+
 
   onUserSelected() {
-    // console.log('2--------------onUserSelected - selectedUsers  ', this.selectedUsers);
-    // console.log('2--------------onUserSelected - finalUsersList  ', this.finalUsersList);
 
     this.selectedUsers = this.updateTeamForm.get('Users').value;
+    this.updateTeamForm.patchValue({
+      TeamMemberList: this.selectedUsers
+    });
 
-    for (let i = 0; i < this.finalUsersList.length; i++) {
-      const e1 = this.finalUsersList[i].UserID;
-      let toDelete = true;
-      for (let j = 0; j < this.selectedUsers.length; j++) {
-        const e2 = this.selectedUsers[j].Oid;
-        if (e2 === e1) {
-          toDelete = false;
-          // break;
-        }
-      }
-      if (toDelete === true) {
-        this.finalUsersList.splice(i, 1);
-      }
-    }
+    /* for (let i = 0; i < this.finalUsersList.length; i++) {
+       const e1 = this.finalUsersList[i].UserID;
+       let toDelete = true;
+       for (let j = 0; j < this.selectedUsers.length; j++) {
+         const e2 = this.selectedUsers[j].Oid;
+         if (e2 === e1) {
+           toDelete = false;
+           // break;
+         }
+       }
+       if (toDelete === true) {
+         this.finalUsersList.splice(i, 1);
+       }
+     }*/
 
-    // // console.log('onUserSelected - selectedUser', this.selectedUsers);
-    // console.log('2--------------onUserSelected - selectedUsers  ', this.selectedUsers);
-    // console.log('2--------------onUserSelected - finalUsersList  ', this.finalUsersList);
+
   }
 
   onUserRoleSelected(Oid) {
-    // console.log('3--------------onUserRoleSelected - selectedUsers  ', this.selectedUsers);
-    // console.log('3--------------onUserRoleSelected - finalUsersList  ', this.finalUsersList);
-    // // console.log(this.finalUsersList);
-
-    let addFlag = true;
-
-    for (let i = 0; i < this.finalUsersList.length; i++) {
-
-      if (Oid === this.finalUsersList[i].UserID) {
-        addFlag = false;
-        this.finalUsersList.splice(i, 1);
-        this.finalUsersList.push(this.updateTeamForm.get('UsersForTeamWithRoles').value);
-      }
-    }
-
-    if (addFlag === true) {
-      this.finalUsersList.push(this.updateTeamForm.get('UsersForTeamWithRoles').value);
-    }
-
-    this.updateTeamForm.patchValue({
-      TeamMemberList: this.finalUsersList
-    });
-
-    // console.log('onUserRoleSelected - selectedUsers  ', this.selectedUsers);
-    // // console.log('onUserRoleSelected - finalUsersList  ', this.finalUsersList);
   }
 
 }

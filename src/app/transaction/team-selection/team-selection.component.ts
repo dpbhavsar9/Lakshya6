@@ -148,6 +148,7 @@ export class TeamSelectionComponent implements OnInit, OnDestroy {
   selectTeam(row) {
     this.dashboard.updateDashboardState('myleads');
     this._cookieService.put('TeamID', row.Oid);
+    this._cookieService.put('TeamName', row.TeamName);
     this._cookieService.put('ProjectID', row.ProjectID);
     this._cookieService.put('CompanyID', row.CompanyID);
     // console.log(row);
@@ -203,7 +204,7 @@ export class TeamSelectionComponent implements OnInit, OnDestroy {
 
   private refreshData(): void {
     // console.log('user master refreshed');
-    this.url = 'Team/GetTeamsForView';
+    this.url = 'Team/GetTeamsForView/' + this._cookieService.get('Oid');
     this.engineService.getData(this.url).toPromise()
       .then(res => {
         // console.log(JSON.stringify(res));

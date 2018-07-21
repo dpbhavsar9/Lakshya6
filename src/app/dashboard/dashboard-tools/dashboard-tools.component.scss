@@ -452,3 +452,67 @@ div.condensedview {
 .lowPriorityText {
   color: #893ff0;
 }
+
+//-------Animation for Notification Badge------------
+.badge-num {
+  box-sizing: border-box;
+  font-family: 'Trebuchet MS', sans-serif;
+  background: #33b5e5;
+  cursor: default;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: bold;
+  font-size: .9rem;
+  height: 2rem; //letter-spacing:-.1rem;
+  line-height: 1.5rem;
+  margin-top: -1rem;
+  margin-left: .1rem;
+  border: .2rem solid #fff;
+  text-align: center;
+  display: inline-block;
+  width: 2rem;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, .2);
+  animation: pulseJump 1.5s infinite;
+}
+
+.badge-num:after {
+  content: '';
+  position: absolute; //top:-.1rem;
+  left: 1px;
+  right: 1px;
+  border: 3px solid rgb(94, 237, 247);
+  opacity: 0;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  animation: sonar 1.5s infinite;
+}
+
+@keyframes sonar {
+  0% {
+    transform: scale(.9);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseJump {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(.9);
+  }
+  80% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

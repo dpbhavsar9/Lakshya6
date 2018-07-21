@@ -67,7 +67,8 @@ export class EditProjectComponent implements OnInit {
 
   getServerData() {
     // User Dropdown - start
-    this.url = 'Users/GetAllUser';
+    this.url = 'Users/GetAllUser/' + this.editProjectForm.get('ProjectCompany').value;
+    // this.url = 'Users/GetAllUser';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
         this.allUsers = res;

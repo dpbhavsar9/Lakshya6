@@ -38,7 +38,7 @@
           <div class="row">
 
             <div class="custom-form-field col-lg-6 col-md-6 col-sm-12 col-xs-12">
-              <div [hidden]="createTeamForm.get('TeamName').value== null">
+              <div>
                 <div class="card animated zoomIn">
 
                   <div class="card-body">
@@ -56,7 +56,7 @@
 
             <!-- Project Selection -->
             <div class="custom-form-field col-lg-6 col-md-6 col-sm-12 col-xs-12">
-              <div [hidden]="createTeamForm.get('CompanyID').value== null">
+              <div>
                 <div class="card animated zoomIn">
 
                   <div class="card-body">
@@ -71,8 +71,29 @@
                 </div>
               </div>
             </div>
-
           </div>
+
+          <!-- Users Selection -->
+          <div class="row">
+            <div class="custom-form-field col">
+              <div>
+                <div class="card animated zoomIn">
+                  <div class="card-body">
+                    <mat-form-field>
+                      <mat-select placeholder="Users" name="Users" formControlName="Users" (selectionChange)="onUserSelected()" multiple>
+                        <mat-option *ngFor="let item of userList" [value]="{ UserID: item.UserID,
+                                                                               UserRole: item.UserRole, 
+                                                                               UserName: item.UserName}">
+                          {{item.UserName}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
           <!-- Users List multiple -->
           <!-- <div class="row">
@@ -94,33 +115,14 @@
               </div>
             </div>
           </div> -->
-          <div class="row">
-            <div class="custom-form-field col">
-              <div [hidden]="createTeamForm.get('ProjectID').value== null">
-                <div class="card animated zoomIn">
-                  <div class="card-body">
-                    <mat-form-field>
-                      <mat-select placeholder="Users" name="Users" formControlName="Users" [hidden]="createTeamForm.get('ProjectID').value== null"
-                        (selectionChange)="onUserSelected()" multiple>
-                        <mat-option *ngFor="let item of userList" [value]="{Oid:
-                      item.Oid, UserName: item.UserName}">
-                          {{item.UserName}}
-                        </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           <!-- Assign User Role -->
-          <div class="row">
+          <!-- <div class="row">
             <div class="custom-form-field col">
               <div [hidden]="createTeamForm.get('Users').value== null">
                 <div class="card animated zoomIn">
                   <div class="card-header">
-                    <strong>Assign Roles to Users {{createTeamForm.get('TeamName').value}}
+                    <strong>Assign Roles to Users 
                     </strong>
                   </div>
                   <div class="card-body">
@@ -130,10 +132,13 @@
                       </div>
                       <div class="col">
                         <mat-form-field>
-                          <mat-select placeholder="UserRole" name="UserRole" formControlName="UsersForTeamWithRoles" [hidden]="createTeamForm.get('ProjectID').value== null"
-                            (selectionChange)="onUserRoleSelected()" ngDefaultControl>
-                            <mat-option *ngFor="let childItem of userRoles" [value]="{UserID: item.Oid, UserName: item.UserName,
-                            UserRole: childItem.value}">
+                          <mat-select placeholder="UserRole" name="UserRole" 
+                                     formControlName="UsersForTeamWithRoles" 
+                                     [hidden]="createTeamForm.get('ProjectID').value== null"
+                                     (selectionChange)="onUserRoleSelected()" ngDefaultControl>
+                            <mat-option *ngFor="let childItem of userRoles" 
+                                        [value]="{UserID: item.Oid, UserName: item.UserName,
+                                                 UserRole: childItem.value}">
                               {{childItem.viewValue}}
                             </mat-option>
                           </mat-select>
@@ -144,20 +149,19 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
 
           <!-- Select Team Leader -->
           <div class="row" style="margin-top: 30px;">
             <div class="custom-form-field col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
-              <div class="card animated zoomIn" [hidden]="createTeamForm.get('UsersForTeamWithRoles').value==
-                  null">
+              <div class="card animated zoomIn">
 
                 <div class="card-body">
                   <mat-form-field>
                     <mat-select placeholder="TeamLeader" name="TeamLeader" formControlName="TeamLeader" ngDefaultControl>
-                      <mat-option *ngFor="let item of finalUsersList" [value]="item.UserID">
+                      <mat-option *ngFor="let item of selectedUsers" [value]="item.UserID">
                         {{item.UserName}}
                       </mat-option>
                     </mat-select>
@@ -168,7 +172,7 @@
 
             </div>
 
-            <div class="custom-form-field col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <!-- <div class="custom-form-field col-lg-6 col-md-6 col-sm-12 col-xs-12">
               <div [hidden]="createTeamForm.get('TeamLeader').value== null">
                 <div class="card animated zoomIn">
                   <div class="card-body">
@@ -182,7 +186,8 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
+
           </div>
 
           <div class="text-right">

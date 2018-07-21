@@ -16,22 +16,39 @@ export class CreateTeamComponent implements OnInit {
   createTeamForm: FormGroup;
   companyList: any[] = [];
   projectList: any[] = [];
-  userList: any[] = [];
   statusList = [
     { value: 'A', viewValue: 'Active' },
     { value: 'C', viewValue: 'Inactive' }
   ];
+  // userList: any[] = [];
+
+  userList: Array<{
+    'UserID': any,
+    'UserRole': any,
+    'UserName': any
+  }> = [];
+  selectedUsers: Array<{
+    'Oid': any,
+    'UserName': any
+  }> = [];
+  TeamMemberList: Array<{
+    'UserID': any,
+    'UserRole': any
+  }> = [];
+
+
   userRoles = [
+
     { value: 'Manager', viewValue: 'Manager' },
     { value: 'User', viewValue: 'User' }
   ];
   usersDataSource = [];
-  selectedUsers = [];
+
   finalUsersList = [];
 
 
-  // tslint:disable-next-line:max-line-length
-  constructor(private alertService: AlertService, private router: Router, private engineService: EngineService, private _cookieService: CookieService) { }
+  constructor(private alertService: AlertService, private router: Router,
+    private engineService: EngineService, private _cookieService: CookieService) { }
 
   ngOnInit() {
 
@@ -42,56 +59,54 @@ export class CreateTeamComponent implements OnInit {
   }
 
   prepareForm() {
+
     this.createTeamForm = new FormGroup({
       TeamName: new FormControl(null, Validators.required),
       CompanyID: new FormControl(null, Validators.required),
       ProjectID: new FormControl(null, Validators.required),
       TeamLeader: new FormControl(null, Validators.required),
       Users: new FormControl(null, Validators.required),
-      UsersForTeamWithRoles: new FormControl(null, Validators.required),
       TeamMemberList: new FormControl(null),
-      Status: new FormControl(null, Validators.required),
+      Status: new FormControl('A', Validators.required),
       CreatedBy: new FormControl(this._cookieService.get('Oid'))
     });
+
   }
 
   loadCompanies() {
-    // Company Dropdown - start
     this.url = 'Company/GetAllCompany';
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        // console.log(res);
         this.companyList = res;
       })
       .catch(err => {
-        // // console.log(err);
         this.alertService.danger('Server response error! @loadCompany');
       });
-    // Company Dropdown - end
   }
 
   loadProjects() {
+    this.userList.length = 0;
+    this.selectedUsers.length = 0;
+
     const company = this.createTeamForm.get('CompanyID').value;
-    console.log(company);
-    // Company Dropdown - start
     this.url = 'Project/GetProject/' + company;
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        console.log(res);
         this.projectList = res.filter(data => data.ProjectCompany === company);
       })
       .catch(err => {
-        // // console.log(err);
         this.alertService.danger('Server response error! @loadProjects');
       });
-    // Company Dropdown - end
   }
 
   loadUsers() {
-    this.url = 'Users/GetAllUser';
+    const company = this.createTeamForm.get('CompanyID').value;
+    this.url = 'Users/GetAllUser/' + company;
     this.engineService.getData(this.url).toPromise().then((res => {
-      console.log('------------', res);
-      this.userList = res.filter(x => x.IsClient === false && x.UserRole !== 'Admin');
+      // this.userList = res.filter(x => x.IsClient === false);
+      res.forEach(x => {
+        this.userList.push({ UserID: x.Oid, UserName: x.UserName, UserRole: 'User' });
+      });
     })).catch(err => {
       this.alertService.danger('Server response error! @loadUsers');
     });
@@ -100,7 +115,8 @@ export class CreateTeamComponent implements OnInit {
   createTeam() {
     this.engineService.validateUser();
     if (this.createTeamForm.status === 'VALID') {
-
+      console.log(this.createTeamForm.value);
+      console.log(JSON.stringify(this.createTeamForm.value));
       this.url = 'Team/PostTeam';
       this.engineService.postData(this.url, this.createTeamForm.value).then(response => {
         if (response.status === 201) {
@@ -108,7 +124,6 @@ export class CreateTeamComponent implements OnInit {
           this.router.navigate(['dashboard']);
         }
       }).catch(error => {
-        // console.log(this.createTeamForm.value);
         this.alertService.danger('Team creation failed!');
       });
     }
@@ -119,52 +134,15 @@ export class CreateTeamComponent implements OnInit {
   }
 
   removeUser(index) {
-    // console.log(index);
     this.usersDataSource.splice(index, 1);
-    // console.log(this.usersDataSource);
   }
 
   onUserSelected() {
 
     this.selectedUsers = this.createTeamForm.get('Users').value;
-
-    for (let i = 0; i < this.finalUsersList.length; i++) {
-      const e1 = this.finalUsersList[i].Oid;
-      let toDelete = true;
-      for (let j = 0; j < this.selectedUsers.length; j++) {
-        const e2 = this.selectedUsers[j].Oid;
-        if (e2 === e1) {
-          toDelete = false;
-          // break;
-        }
-      }
-      if (toDelete === true) {
-        this.finalUsersList.splice(i, 1);
-      }
-    }
-    // // console.log('onUserSelected - selectedUsers', this.selectedUsers);
-    // // console.log('onUserSelected - finalUsersList', this.finalUsersList);
-  }
-
-  onUserRoleSelected() {
-
-    let addFlag = true;
-    for (let i = 0; i < this.finalUsersList.length; i++) {
-      const element = this.finalUsersList[i].UserID;
-      if (element === this.createTeamForm.get('UsersForTeamWithRoles').value.Oid) {
-        addFlag = false;
-        this.finalUsersList.splice(i, 1);
-        this.finalUsersList.push(this.createTeamForm.get('UsersForTeamWithRoles').value);
-      }
-    }
-    if (addFlag === true) {
-      this.finalUsersList.push(this.createTeamForm.get('UsersForTeamWithRoles').value);
-    }
     this.createTeamForm.patchValue({
-      TeamMemberList: this.finalUsersList
+      TeamMemberList: this.selectedUsers
     });
-    // // console.log('onUserRoleSelected - selectedUsers', this.selectedUsers);
-    // // console.log('onUserRoleSelected - finalUsersList', this.finalUsersList);
 
   }
 

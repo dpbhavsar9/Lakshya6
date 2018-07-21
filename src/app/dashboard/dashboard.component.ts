@@ -31,6 +31,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dashboardStateSubscription: Subscription;
   teamSelectionState = true;
   teamSelectionSubscription: Subscription;
+  byMeLeadCounterSubscription: Subscription;
+  byMeLeadCounter = 0;
+  forMeLeadCounterSubscription: Subscription;
+  forMeLeadCounter = 0;
   url: string;
   Oid: string;
   typeVar = 'password';
@@ -87,7 +91,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.teamSelectionSubscription = this.engineService.getTeamSelectionState().subscribe(teamSelectionState => {
         this.teamSelectionState = teamSelectionState.teamSelectionState;
       });
-      // console.log(this.teamSelectionState);
+      this.byMeLeadCounterSubscription = this.engineService.getByMeLeadsCounter().subscribe(byMeLeadCounter => {
+        this.byMeLeadCounter = Number(byMeLeadCounter.byMeLeadCounter);
+      });
+      this.forMeLeadCounterSubscription = this.engineService.getForMeLeadsCounter().subscribe(forMeLeadCounter => {
+        this.forMeLeadCounter = Number(forMeLeadCounter.forMeLeadCounter);
+      });
+
       this.engineService.getCookieData();
     }).catch();
   }
@@ -183,8 +193,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.checkPassword = false;
   }
 
+  onClick() {
+    this.engineService.closeModal();
+  }
+
   ngOnDestroy(): void {
-    this.dashboardStateSubscription.unsubscribe();
+    if (this.dashboardStateSubscription) { this.dashboardStateSubscription.unsubscribe(); }
+    if (this.teamSelectionSubscription) { this.teamSelectionSubscription.unsubscribe(); }
+    if (this.byMeLeadCounterSubscription) { this.byMeLeadCounterSubscription.unsubscribe(); }
+    if (this.forMeLeadCounterSubscription) { this.forMeLeadCounterSubscription.unsubscribe(); }
   }
 
 }

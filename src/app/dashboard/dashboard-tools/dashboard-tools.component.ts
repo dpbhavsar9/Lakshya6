@@ -60,6 +60,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   collpaseArray: any[] = [];
   isCollapsed = true;
   private timerSubscription: Subscription;
+  closeModal: Subscription;
   subscription: Subscription;
   private toggle = 'none';
   dashboardState: string = this.dashboardComponent.dashboardState;
@@ -90,6 +91,9 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     AlertDate: '',
     Subject: ''
   };
+  teamName = '';
+  // byMeLeadCounterSubscription: Subscription;
+  // forMeLeadCounterSubscription: Subscription;
 
   public chartDatasets: Array<any> = [
     // tslint:disable-next-line:max-line-length
@@ -141,6 +145,10 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     const cookieData = crypto.AES.decrypt(this._cookieService.get('response'), this._cookieService.get('Oid') + 'India');
     this.Oid = JSON.parse(cookieData.toString(crypto.enc.Utf8)).Oid;
     this.userName = JSON.parse(cookieData.toString(crypto.enc.Utf8)).UserName;
+
+    this.closeModal = this.engineService.getCloseModal().subscribe(res => {
+      this.dialog.closeAll();
+    });
   }
 
   toggleChart() {
@@ -152,8 +160,6 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     const userName = this.userName;
     const allocationType = this.allocationType;
     const val = this.val.toLocaleLowerCase();
-    // console.log(val);
-    // console.log(this.searchIn);
     const searchIn = this.searchIn;
     let res = this.temp;
 
@@ -447,6 +453,17 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     this.data[2].Count = this.source[2].data.length;
     this.data[3].Count = this.source[3].data.length;
     this.data[4].Count = this.source[4].data.length;
+    for (let i = 0; i <= 4; i++) {
+      this.source[i].data = this.source[i].data.sort((a, b) => {
+        if (a.Count < b.Count) {
+          return 1;
+        } else if (a.Count > b.Count) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    }
     this.chartDatasets = [
       // tslint:disable-next-line:max-line-length
       { data: [this.data[0].Count, this.data[1].Count, this.data[2].Count], label: 'Status comparison' }
@@ -468,7 +485,6 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     this.data[1].Count = this.source[1].data.length;
     this.data[2].Count = this.source[2].data.length;
     this.data[3].Count = this.source[3].data.length;
-    this.data[4].Count = this.source[4].data.length;
   }
 
   updateleadLogTypeSelector(id: number) {
@@ -488,6 +504,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
         // this.alertService.info('Please select team');
         this.router.navigate(['/dashboard']);
       }
+      this.teamName = this._cookieService.get('TeamName');
       this.refreshData();
       this.subscription = this.engineService.getDashboardState().subscribe(dashboardState => {
         this.dashboardState = dashboardState.dashboardState.toString();
@@ -513,15 +530,22 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     }
     this.engineService.getData(this.url).toPromise()
       .then(res => {
-        console.log(res);
+        let count = 0;
+        if (this.dashboardState === 'byme') {
+          res = res.filter(x => x.TeamID.toString() === this._cookieService.get('TeamID').toString());
+          res.forEach(element => {
+            count = count + element.Count;
+          });
+          this.engineService.updateByMeLeadCounter(count);
+        } else if (this.dashboardState === 'myleads') {
+          res = res.filter(x => x.TeamID.toString() === this._cookieService.get('TeamID').toString());
+          res.forEach(element => {
+            count = count + element.Count;
+          });
+          this.engineService.updateForMeLeadCounter(count);
+        }
+
         this.updateLeads(res);
-
-        // if (this.dashboardState === 'byme') {
-        //   res = res.filter(x => x.TeamID.toString() === this._cookieService.get('TeamID'));
-        // } else if (this.dashboardState === 'myleads') {
-        //   res = res.filter(x => x.TeamID.toString() === this._cookieService.get('TeamID'));
-        // }
-
         this.updateFilter();
         if (!this.manualUpdateFlag) {
           this.subscribeToData();
@@ -550,13 +574,32 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   private openLeadMessage(index, pindex) {
     this.engineService.validateUser();
     const row = this.source[index].data[pindex];
+    // let x = 0;
+    // if (this.dashboardState === 'myleads') {
 
+    //   this.forMeLeadCounterSubscription = this.engineService.getForMeLeadsCounter().subscribe(forMeLeadCounter => {
+    //     x = Number(forMeLeadCounter.forMeLeadCounter);
+    //     console.log('myleads: ', x);
+    //   });
+    //   const y = x - Number(row['Count']);
+    //   this.engineService.updateForMeLeadCounter(y);
+    // } else if (this.dashboardState === 'byme') {
+    //   console.log('byme');
+    //   this.byMeLeadCounterSubscription = this.engineService.getByMeLeadsCounter().subscribe(byMeLeadCounter => {
+    //     x = Number(byMeLeadCounter.byMeLeadCounter);
+    //     console.log('myleads: ', x);
+    //   });
+    //   const y = x - Number(row['Count']);
+    //   this.engineService.updateByMeLeadCounter(y);
+    // }
+
+    row['Count'] = 0;
     const data = {
       'CompanyID': row['CompanyID'],
       'ProjectID': row['ProjectID'],
       'LeadID': row['Oid'],
       'LeadNo': row['LeadNo'],
-      'LeadStatus': row['LeadStatus'],
+      'LeadStatus': row['LeadStatus']
     };
 
     const dialogRef = this
@@ -596,16 +639,12 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
       Remarks: '',
       AlertDate: ''
     };
-    // console.log(this.event);
   }
 
   createAlert() {
     this.url = 'Lead/PostAlert';
-    // console.log(this.event);
     this.engineService.postData(this.url, this.event).then(result => {
-      // console.log(result);
     }).catch(err => {
-      // console.log(err);
     });
   }
 
@@ -635,7 +674,6 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   }
 
   changeCategory(i, p, LeadCategory) {
-    // console.log(i, '----', p, '---------', LeadCategory, typeof (LeadCategory));
     this.engineService.validateUser();
     const row = this.source[i].data[p];
     const Oid = row['Oid'];
@@ -726,12 +764,10 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
   public updateModal(data) {
 
     this.attachment.length = 0;
-    // this.url = "http://192.168.0.250:8002/api/Ticket/GetAttachment/"+data.TicketNo;
-    this.url = 'Ticket/GetAttachment/' + data.TicketNo;
+    this.url = 'Lead/GetAttachment/' + data.LeadNo;
     this.engineService.getData(this.url).subscribe(res => {
       this.attachment = res;
     });
-    // console.log(data);
     this.modalData = data;
 
   }
@@ -742,7 +778,14 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
         this.timerSubscription.unsubscribe();
       }
       this.subscription.unsubscribe();
+      this.closeModal.unsubscribe();
     }
     this.dashboardComponent.cloneDashboardState = 'none';
+    // if (this.byMeLeadCounterSubscription) {
+    //   this.byMeLeadCounterSubscription.unsubscribe();
+    // }
+    // if (this.forMeLeadCounterSubscription) {
+    //   this.forMeLeadCounterSubscription.unsubscribe();
+    // }
   }
 }
