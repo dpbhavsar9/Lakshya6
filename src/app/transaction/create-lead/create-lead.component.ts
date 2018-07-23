@@ -98,8 +98,8 @@ export class CreateLeadComponent implements OnInit {
       ContactNumber3: new FormControl(null),
       Designation3: new FormControl(null),
       EmailID: new FormControl(null),
-      Address: new FormControl(null, Validators.required),
-      Location: new FormControl(null, Validators.required),
+      Address: new FormControl(null),
+      Location: new FormControl(null),
       LeadCategory: new FormControl(this.selectedDiamond, Validators.required),
     });
   }

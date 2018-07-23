@@ -92,6 +92,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     Subject: ''
   };
   teamName = '';
+  leadStatusMessageCounter: any[] = [];
   // byMeLeadCounterSubscription: Subscription;
   // forMeLeadCounterSubscription: Subscription;
 
@@ -617,6 +618,8 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     dialogRef
       .afterClosed()
       .subscribe(result => {
+        this.manualUpdateFlag = true;
+        this.refreshData();
       });
   }
 
