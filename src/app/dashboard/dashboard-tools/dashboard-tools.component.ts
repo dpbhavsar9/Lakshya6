@@ -530,6 +530,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     }
     this.engineService.getData(this.url).toPromise()
       .then(res => {
+        console.log(res);
         let count = 0;
         if (this.dashboardState === 'byme') {
           res = res.filter(x => x.TeamID.toString() === this._cookieService.get('TeamID').toString());

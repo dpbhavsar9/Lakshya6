@@ -278,32 +278,30 @@
                                 </div>
 
                                 <mat-menu class="actionsButton" #menu="matMenu">
-                                  <button class="actionsButton" mat-menu-item [hidden]="!(src.status=== 'New')" (click)="processLead(data.Oid,2)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="data.LeadStatus==='1'" (click)="processLead(data.Oid,2)">
                                     <span>Take Lead</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [hidden]="!(src.status=== 'Won' || src.status==='Lost')" (click)="processLead(data.Oid,1)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="data.LeadStatus!=='1'" (click)="processLead(data.Oid,1)">
                                     <span>Re-New</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [hidden]="!(src.status==='In Process')" (click)="processLead(data.Oid,3)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="(data.LeadStatus!=='1' && data.LeadStatus!=='3')" (click)="processLead(data.Oid,3)">
                                     <span>Won</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [hidden]="!(src.status==='InProcess')" (click)="processLead(data.Oid,4)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="(data.LeadStatus!=='1' && data.LeadStatus!=='4')" (click)="processLead(data.Oid,4)">
                                     <span>Lost</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item [hidden]="!(src.LeadStatus==='New' || src.LeadStatus==='InProcess')" (click)="processLead(data.Oid,5)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="data.LeadStatus!=='5'" (click)="processLead(data.Oid,5)">
                                     <span>Hold</span>
                                   </button>
                                   <mat-divider></mat-divider>
                                   <button class="actionsButton" mat-menu-item style="font-style: oblique" [matMenuTriggerFor]="assignMenu">
                                     <span style="margin-right: 10px">Assign Lead</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" [hidden]="src.status==='Lost' || src.status==='Hold' || src.status==='Won'"
-                                    [matMenuTriggerFor]="priorityMenu">
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" [matMenuTriggerFor]="priorityMenu">
                                     <span style="margin-right: 10px">Change Priority
                                     </span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" [hidden]="src.status==='Lost' || src.status==='Won' || src.status==='Hold'"
-                                    [matMenuTriggerFor]="categoryMenu">
+                                  <button class="actionsButton" mat-menu-item style="font-style: oblique" [matMenuTriggerFor]="categoryMenu">
                                     <span style="margin-right: 10px">Change Category
                                     </span>
                                   </button>

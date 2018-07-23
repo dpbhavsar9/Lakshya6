@@ -44,9 +44,9 @@ export class CreateLeadComponent implements OnInit {
   files: UploadFile[] = [];
   selectedDiamond = 1;
   defaultValue = {
-    Company: { Oid: this._cookieService.get('CompanyID'), CompanyName: 'Raj Barcode Systems Pvt Ltd' },
-    Project: { Oid: this._cookieService.get('ProjectID'), ProjectName: 'RBSPL Projects' },
-    Team: { Oid: this._cookieService.get('TeamID'), TeamName: 'RBSPL Projects' },
+    Company: { Oid: this._cookieService.get('CompanyID'), CompanyName: this._cookieService.get('CompanyName') },
+    Project: { Oid: this._cookieService.get('ProjectID'), ProjectName: this._cookieService.get('ProjectName') },
+    Team: { Oid: this._cookieService.get('TeamID'), TeamName: this._cookieService.get('TeamName') },
   };
 
   // tslint:disable-next-line:max-line-length
@@ -78,13 +78,13 @@ export class CreateLeadComponent implements OnInit {
   prepareForm() {
     this.createLeadForm = new FormGroup({
 
-      CompanyID: new FormControl(1, Validators.required),
-      ProjectID: new FormControl(1, Validators.required),
+      CompanyID: new FormControl(this.defaultValue.Company.Oid, Validators.required),
+      ProjectID: new FormControl(this.defaultValue.Project.Oid, Validators.required),
       LeadType: new FormControl(1, Validators.required),
       Priority: new FormControl('Medium', Validators.required),
       Subject: new FormControl(null, Validators.required),
       LeadDescription: new FormControl(null, Validators.required),
-      TeamID: new FormControl(1, Validators.required),
+      TeamID: new FormControl(this.defaultValue.Team.Oid, Validators.required),
       AssignTo: new FormControl(null),
       Oid: new FormControl(Number(this._cookieService.get('Oid'))),
       CompanyName: new FormControl(null, Validators.required),

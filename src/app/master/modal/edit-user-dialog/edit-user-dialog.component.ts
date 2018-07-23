@@ -15,6 +15,11 @@ export class EditUserDialogComponent implements OnInit {
     { value: 'A', viewValue: 'Active' },
     { value: 'C', viewValue: 'Inactive' }
   ];
+  userRoles = [
+    { value: 'Administrator', viewValue: 'Administrator' },
+    { value: 'Manager', viewValue: 'Manager' },
+    { value: 'User', viewValue: 'User' }
+  ];
   companies = [];
   // tslint:disable-next-line:max-line-length
   constructor(
@@ -46,6 +51,7 @@ export class EditUserDialogComponent implements OnInit {
       Department: new FormControl(this.data.Department),
       UserCompany: new FormControl(this.data.UserCompany),
       UserCompanyName: new FormControl(this.data.UserCompanyName),
+      UserRole: new FormControl(this.data.UserRole, Validators.required),
       Designation: new FormControl(this.data.Designation),
       Status: new FormControl(this.data.Status),
       UpdatedBy: new FormControl(this._cookieService.get('Oid'))

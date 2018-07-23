@@ -30,7 +30,7 @@
               <div class="card">
                 <div class="card-body">
                   <mat-form-field>
-                    <mat-select placeholder="Company" name="UserCompany" formControlName="UserCompany" >
+                    <mat-select placeholder="Company" name="UserCompany" formControlName="UserCompany">
                       <mat-option *ngFor="let cmp of companies" [value]="cmp.value">
                         {{cmp.viewValue}}
                       </mat-option>
@@ -86,11 +86,25 @@
         </div>
       </div>
       <div class="row">
+        <div class="custom-form-field col-6">
+          <div class="card animated zoomIn">
+            <div class="card-body">
+              <mat-form-field>
+                <mat-select placeholder="User Role" name="UserRole" formControlName="UserRole" ngDefaultControl>
+                  <mat-option *ngFor="let role of userRoles" [value]="role.value">
+                    {{role.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
         <div class="custom-form-field col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <div class="card animated zoomIn">
             <div class="card-body">
               <mat-form-field>
-                <mat-select placeholder="Status" name="Status" formControlName="Status" >
+                <mat-select placeholder="Status" name="Status" formControlName="Status">
                   <mat-option *ngFor="let item of statusList" [value]="item.value">
                     {{item.viewValue}}
                   </mat-option>
@@ -99,6 +113,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </mat-dialog-content>
 

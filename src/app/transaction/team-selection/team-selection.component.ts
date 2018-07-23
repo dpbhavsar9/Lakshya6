@@ -150,7 +150,9 @@ export class TeamSelectionComponent implements OnInit, OnDestroy {
     this._cookieService.put('TeamID', row.Oid);
     this._cookieService.put('TeamName', row.TeamName);
     this._cookieService.put('ProjectID', row.ProjectID);
+    this._cookieService.put('ProjectName', row.ProjectName);
     this._cookieService.put('CompanyID', row.CompanyID);
+    this._cookieService.put('CompanyName', row.CompanyName);
     // console.log(row);
     this.router.navigate(['/dashboard/mydashboard']);
   }

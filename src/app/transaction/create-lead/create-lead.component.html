@@ -25,22 +25,12 @@
               <div class="row">
                 <mat-form-field class="col" appearance="outline">
                   <mat-label>Company</mat-label>
-                  <span>{{defaultValue.Company.CompanyName}}</span>
-                  <mat-select [hidden]="true" name="CompanyID" formControlName="CompanyID" (selectionChange)="loadProjects()">
-                    <mat-option *ngFor="let company of companyList" [value]="company.Oid">
-                      {{company.CompanyName}}
-                    </mat-option>
-                  </mat-select>
+                  <input matInput value="{{defaultValue.Company.CompanyName}}" readonly>
                 </mat-form-field>
 
                 <mat-form-field class="col" appearance="outline">
                   <mat-label>Project</mat-label>
-                  <span>{{defaultValue.Project.ProjectName}}</span>
-                  <mat-select [hidden]="true" placeholder="Project" name="ProjectID" formControlName="ProjectID" (selectionChange)="updateLeadType();loadTeams()">
-                    <mat-option *ngFor="let item of projectList" [value]="item.Oid">
-                      {{item.ProjectName}}
-                    </mat-option>
-                  </mat-select>
+                  <input matInput value="{{defaultValue.Project.ProjectName}}" readonly>
                 </mat-form-field>
               </div>
 
@@ -75,11 +65,7 @@
               <div class="row">
                 <mat-form-field class="col" appearance="outline">
                   <mat-label>Team</mat-label>
-                  <mat-select placeholder="Team" name="TeamID" formControlName="TeamID" (selectionChange)="loadTeamMembers()">
-                    <mat-option *ngFor="let item of teamList" [value]="item.Oid">
-                      {{item.TeamName}}
-                    </mat-option>
-                  </mat-select>
+                  <input matInput value="{{defaultValue.Team.TeamName}}" readonly>
                 </mat-form-field>
 
                 <mat-form-field class="col" appearance="outline">
