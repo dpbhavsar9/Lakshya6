@@ -110,11 +110,12 @@
       <div class="condesed_style">
         <mat-checkbox color="primary" matTooltip="Grid
           view of Leads" [(ngModel)]="condensedView">Condensed View</mat-checkbox>
-        <span style="margin-left: 10px !important; display: inline; cursor: pointer;">
+        <span style="margin-left: 10px !important; display: inline; cursor:
+          pointer;">
           <i class="fa fa-bar-chart" matTooltip="Click to
             see Chart" (click)="toggleChart()" style="margin-left: 10px
             !important;"></i>
-
+          <i class="fa fa-download" matTooltip="Download Excel with search and filter processing" (click)="exportExcel()" style="margin-left: 10px !important;"></i>
           <i class="fa fa-refresh" matTooltip="Clear and
             refresh" (click)="clearSerchCriteria()" style="margin-left: 10px
             !important;"></i>
@@ -200,6 +201,9 @@
                                 <i class="fa fa-diamond mr-1 pulse"></i>
                                 <i class="fa fa-diamond mr-1 pulse"></i>
                               </div>
+                              <div class="text-right" matTooltip="Alert Created" style="float: right;" *ngIf="data.AlertCount!==0">
+                                <i class="fa fa-bell mr-1" style="color: blue"></i>
+                              </div>
                             </div>
                           </div>
 
@@ -278,19 +282,21 @@
                                 </div>
 
                                 <mat-menu class="actionsButton" #menu="matMenu">
-                                  <button class="actionsButton" mat-menu-item *ngIf="data.LeadStatus==='1'" (click)="processLead(data.Oid,2)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="src.status==='New'" (click)="processLead(data.Oid,2)">
                                     <span>Take Lead</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item *ngIf="data.LeadStatus!=='1'" (click)="processLead(data.Oid,1)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="src.status!=='New'" (click)="processLead(data.Oid,1)">
                                     <span>Re-New</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item *ngIf="(data.LeadStatus!=='1' && data.LeadStatus!=='3')" (click)="processLead(data.Oid,3)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="(src.status!=='New' &&
+                                    src.status!=='Won')" (click)="processLead(data.Oid,3)">
                                     <span>Won</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item *ngIf="(data.LeadStatus!=='1' && data.LeadStatus!=='4')" (click)="processLead(data.Oid,4)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="(src.status!=='New' &&
+                                    src.status!=='Lost')" (click)="processLead(data.Oid,4)">
                                     <span>Lost</span>
                                   </button>
-                                  <button class="actionsButton" mat-menu-item *ngIf="data.LeadStatus!=='5'" (click)="processLead(data.Oid,5)">
+                                  <button class="actionsButton" mat-menu-item *ngIf="src.status!=='Hold'" (click)="processLead(data.Oid,5)">
                                     <span>Hold</span>
                                   </button>
                                   <mat-divider></mat-divider>
@@ -349,8 +355,10 @@
                               'mediumPriorityText': data.Priority === 'Medium',
                               'lowPriorityText': data.Priority === 'Low'
                               }" matTooltip="Priority">{{data.Priority}}</span>
-                            <span *ngIf="data.ClientName!=''" matTooltip="Prospect Client"> ♦ {{data.ClientName}}</span>
-                            <span *ngIf="data.EmailID!=''" matTooltip="EmailID"> ♦ {{data.EmailID}}</span>
+                            <span *ngIf="data.ClientName!=''" matTooltip="Prospect Client"> ♦ {{data.ClientName}}
+                            </span>
+                            <span *ngIf="data.EmailID!=''" matTooltip="EmailID">
+                              ♦ {{data.EmailID}}</span>
                             <span *ngIf="data.ContactPerson1 != ''" matTooltip="Contact Person"> ♦ {{data.ContactPerson1}} </span>
                             <span *ngIf="data.ContactPerson1 != ''" matTooltip="Contact Number"> ♦ {{data.ContactNumber1}} </span>
                           </div>

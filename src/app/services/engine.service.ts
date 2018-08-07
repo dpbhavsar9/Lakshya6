@@ -172,7 +172,6 @@ export class EngineService implements OnInit {
     this.headers.append('Allow', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
     this.headers.append('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
     this.headers.append('Content-Type', 'application/json; charset=utf-8');
-
     this.options = new RequestOptions();
     this.options.headers = this.headers;
   }
@@ -263,5 +262,6 @@ export class EngineService implements OnInit {
     return this.httpC.post(url, formData, { headers: header })
       .toPromise();
   }
+
 }
 

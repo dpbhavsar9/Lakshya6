@@ -56,7 +56,7 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
     'status': 'Hold',
     'data': []
   }];
-
+  excelData: any[] = [];
   collpaseArray: any[] = [];
   isCollapsed = true;
   private timerSubscription: Subscription;
@@ -154,6 +154,39 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
 
   toggleChart() {
     this.chartVisible = !this.chartVisible;
+  }
+
+  public exportExcel(): void {
+    const data = [];
+    this.excelData.forEach(e => {
+
+      data.push({
+        LeadNo: e.LeadNo,
+        Subject: e.Subject,
+        Description: e.LeadDescription,
+        Team: e.TeamName,
+        Priority: e.Priority,
+        Project: e.ProjectName,
+        LeadStatus: e.LeadStatusDescription,
+        TeamLeader: e.TeamLeaderName,
+        NewBy: e.NewByName,
+        AssignBy: e.AssignByName,
+        AssignTo: e.AssignToName,
+        LostBy: e.LostByName,
+        WonBy: e.WonByName,
+        HoldBy: e.HoldByName,
+        Company: e.CompanyName,
+        Category: e.LeadCategory + ' Diamond',
+        ClientName: e.ClientName,
+        EmailID: e.EmailID,
+        Alerts: e.AlertCount
+      });
+    });
+    if (this.dashboardState === 'byme') {
+      this.engineService.downloadExcel(data, 'Leads-CreatedByMe');
+    } else if (this.dashboardState === 'myleads') {
+      this.engineService.downloadExcel(data, 'Leads-ForMyTeam');
+    }
   }
 
   public updateFilter() {
@@ -538,12 +571,14 @@ export class DashboardToolsComponent implements OnInit, OnDestroy {
           res.forEach(element => {
             count = count + element.Count;
           });
+          this.excelData = res;
           this.engineService.updateByMeLeadCounter(count);
         } else if (this.dashboardState === 'myleads') {
           res = res.filter(x => x.TeamID.toString() === this._cookieService.get('TeamID').toString());
           res.forEach(element => {
             count = count + element.Count;
           });
+          this.excelData = res;
           this.engineService.updateForMeLeadCounter(count);
         }
 
